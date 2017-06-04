@@ -275,7 +275,7 @@ make in a tic-tac-toe game and the result that this move will lead to : 10 for a
 
 Usages:<br>
 ```
-# you need to give a 2D array representing the board of the game
+# you need to give a 2D array representing the board of the game as an argument
 board = []
 board.append([1,0,-1])
 board.append([0,0,1])
