@@ -76,9 +76,3 @@ def end_state(board):
             return True, 0
         else:
             return False, 0
-
-board = []
-board.append([1,0,-1])
-board.append([0,0,1])
-board.append([1,0,-1])
-print(minimax(board))
