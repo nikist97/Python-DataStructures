@@ -3,7 +3,7 @@
 ### Abstract Data Structures in Python
 
 **_Implementation for a Stack, a Queue and a Binary Search Tree in Python_** <br>
-**All of these are located in the AbstractDataStrucutes.py module** <br><br>
+**All of these are located in the AbstractDataStructures.py module** <br><br>
 
 - **_Stack (First-In-Last-Out)_** <br>
 The Stack's implementation is generic: you can specify the type of elements in the stack in the constructor.
