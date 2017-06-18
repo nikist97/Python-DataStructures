@@ -49,18 +49,18 @@ class InsertionSortTest(unittest.TestCase):
                          "Insertion sort produces wrong results with random list")
 
         # testing strings with no repetitions
-        strings_list = ["world", "hello", "python", "programming", "coding", "test"]
+        strings_list = ["world", "hello", "python", "programming", "coding", "Tests"]
         insertion_sort(strings_list)
-        python_sorted_strings = ["world", "hello", "python", "programming", "coding", "test"]
+        python_sorted_strings = ["world", "hello", "python", "programming", "coding", "Tests"]
         python_sorted_strings.sort()
 
         self.assertEqual(strings_list, python_sorted_strings,
                          "Insertion sort produces wrong results with strings with no repetitions")
 
         # testing strings with repetitions
-        strings_list = ["world", "hello", "python", "programming", "code", "test", "world", "hello", "python", "hello"]
+        strings_list = ["world", "hello", "python", "programming", "code", "Tests", "world", "hello", "python", "hello"]
         insertion_sort(strings_list)
-        python_sorted_strings = ["world", "hello", "python", "programming", "code", "test", "world", "hello", "python",
+        python_sorted_strings = ["world", "hello", "python", "programming", "code", "Tests", "world", "hello", "python",
                                  "hello"]
         python_sorted_strings.sort()
 

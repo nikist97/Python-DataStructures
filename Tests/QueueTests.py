@@ -27,7 +27,7 @@ class QueueTest(unittest.TestCase):
         queue = Queue()
         self.assertEqual(queue.peek(), None, "Top element of queue should be None at initialization")
         queue.enqueue(2)
-        queue.enqueue("test")
+        queue.enqueue("Tests")
         self.assertEqual(queue.peek(), 2, "Queue gives wrong peek")
 
     def test_enqueue(self):

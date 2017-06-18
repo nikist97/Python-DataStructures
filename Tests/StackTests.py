@@ -27,8 +27,8 @@ class StackTest(unittest.TestCase):
         stack = Stack()
         self.assertEqual(stack.peek(), None, "Top element of stack should be None at initialization")
         stack.push(2)
-        stack.push("test")
-        self.assertEqual(stack.peek(), "test", "Stack gives wrong peek")
+        stack.push("Tests")
+        self.assertEqual(stack.peek(), "Tests", "Stack gives wrong peek")
 
     def test_pop(self):
         stack = Stack()
