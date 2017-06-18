@@ -139,12 +139,3 @@ def merge_sort(elements):
 
         # returning the sorted merged_list
         return merged_list
-
-
-l = [3, 1, 2, -5]
-quick_sort(l)
-print(l)
-n = quick_sort(l)
-print(n, l)
-n.append(111)
-print(n, l)

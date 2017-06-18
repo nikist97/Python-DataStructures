@@ -83,8 +83,11 @@ def check_parenthesis(expression):
     return parenthesis.is_empty()
 
 
-# the evaluate_expression method, which takes as argument a mathematical expression and evaluates the value of it
+# the evaluate_expression method, which takes as argument a mathematical expression as a string
+# and evaluates the value of it, assertion error is thrown if a non string object is passed as an argument
 def evaluate_expression(expression):
+
+    assert type(expression) is str, "Expression must be a string object"
 
     # check for errors in parenthesis
     if not check_parenthesis(expression):

@@ -3,6 +3,9 @@
 
 # the main method used to solve the n-queen puzzle, argument n is number of queens to be placed
 def n_queen(n):
+
+    assert type(n) is int and n > 0, "Argument n must be a positive integer"
+
     return next_row(n, 0, [])
 
 
