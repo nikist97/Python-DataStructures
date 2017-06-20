@@ -59,11 +59,27 @@ def affine_cipher(message, key=(9, 2), encrypt=True):
         else:
             inverse = find_multiplicative_inverse(key[0], 26)
             i = inverse*(i - key[1])
-        i = i % 26
+        i %= 26
         return_message += list(letters.keys())[list(letters.values()).index(i)]
 
     return return_message
 
 
-def vigenere_cipher(message):
-    pass
+def vigenere_cipher(message, key="codes", encrypt=True):
+    global letters
+
+    num_key = tuple([letters[k] for k in key])
+
+    return_message = ""
+    for letter_index in range(0, len(message)):
+        i = letters[message[letter_index]]
+        displacement = num_key[letter_index % len(num_key)]
+        if encrypt:
+            i += displacement
+        else:
+            i -= displacement
+        i %= 26
+
+        return_message += list(letters.keys())[list(letters.values()).index(i)]
+
+    return return_message
