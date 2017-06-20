@@ -34,6 +34,7 @@ def caesar_cipher(message, key=1, encrypt=True):
     global letters
 
     return_message = ""
+
     for letter in message:
         i = letters[letter]
         if encrypt:
@@ -52,6 +53,7 @@ def affine_cipher(message, key=(9, 2), encrypt=True):
     assert gcd(key[0], 26) == 1, "The alpha argument of the key must be relatively prime with 26"
 
     return_message = ""
+
     for letter in message:
         i = letters[letter]
         if encrypt:
@@ -71,6 +73,7 @@ def vigenere_cipher(message, key="codes", encrypt=True):
     num_key = tuple([letters[k] for k in key])
 
     return_message = ""
+
     for letter_index in range(0, len(message)):
         i = letters[message[letter_index]]
         displacement = num_key[letter_index % len(num_key)]
