@@ -549,10 +549,10 @@ class BinaryHeap(ABC):
 
 
 # Abstract Data Type MinBinaryHeap - represents a BinaryHeap with a root its minimum element
-# noinspection PyAbstractClass
+# noinspection PyAbstractClass,PyPep8Naming
 class MinBinaryHeap(BinaryHeap):
 
-    # constructor for MinHeap, same arguments as abstract Heap class
+    # constructor for MinBinaryHeap, same arguments as abstract BinaryHeap class
     def __init__(self, elements_type=None):
         if elements_type is None:
             elements_type = int
@@ -561,7 +561,7 @@ class MinBinaryHeap(BinaryHeap):
         self.__elements = self._BinaryHeap__elements
         self.__elementsType = self._BinaryHeap__elementsType
 
-    # iterator goes through the sorted elements from
+    # iterator goes through the sorted elements starting from the min entry
     def __iter__(self):
         return iter(self.get_sorted_elements())
 
@@ -638,6 +638,109 @@ class MinBinaryHeap(BinaryHeap):
         return sorted_elements
 
     # removes and returns the smallest item in the heap and adds the new item, faster than remove_min followed by add
+    def replace_root(self, element):
+        if type(element) == self.__elementsType:
+            if len(self.__elements) > 0:
+                temp = self.__elements[0]
+                self.__elements[0] = element
+                self._BinaryHeap__percolate_down()
+                return temp
+            else:
+                raise ValueError("There are no elements in the heap")
+        else:
+            raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
+
+
+# Abstract Data Type MaxBinaryHeap - represents a BinaryHeap with a root its maximum element
+# noinspection PyAbstractClass,PyPep8Naming
+class MaxBinaryHeap(BinaryHeap):
+
+    # constructor for MaxBinaryHeap, same arguments as abstract BinaryHeap class
+    def __init__(self, elements_type=None):
+        if elements_type is None:
+            elements_type = int
+        BinaryHeap.__init__(self, elements_type)
+
+        self.__elements = self._BinaryHeap__elements
+        self.__elementsType = self._BinaryHeap__elementsType
+
+    # iterator goes through the sorted elements starting from the max entry
+    def __iter__(self):
+        return iter(self.get_sorted_elements())
+
+    # the percolate_up method which adjusts the heap after an addition operation,
+    # it gets the last element in the list and finds its place in the heap
+    def _BinaryHeap__percolate_up(self):
+        child = len(self.__elements) - 1
+
+        while child > 0:
+            parent = int((child - 1)/2)
+            if self.__elements[child] <= self.__elements[parent]:
+                break
+
+            temp = self.__elements[child]
+            self.__elements[child] = self.__elements[parent]
+            self.__elements[parent] = temp
+            child = parent
+
+    # the percolate_down method, which adjusts the heap after a remove_max operation,
+    #  it gets the first element in the list and finds its place in the heap
+    def _BinaryHeap__percolate_down(self):
+        parent = 0
+        child = 2*parent + 1
+
+        while child < len(self.__elements):
+            if child + 1 < len(self.__elements):
+                if self.__elements[child] < self.__elements[child+1]:
+                    child += 1
+
+            if self.__elements[child] <= self.__elements[parent]:
+                break
+
+            temp = self.__elements[child]
+            self.__elements[child] = self.__elements[parent]
+            self.__elements[parent] = temp
+
+            parent = child
+            child = 2*parent + 1
+
+    # the peek_max method, which returns the maximum element in the heap, but doesn't remove it,
+    # returns None if no elements in the heap
+    def peek_max(self):
+        if len(self.__elements) > 0:
+            return self.__elements[0]
+        else:
+            return None
+
+    # the remove_max method, which removes and returns the maximum element in the heap,
+    # raises a ValueError if there are no elements in the heap
+    def remove_max(self):
+        if len(self.__elements) > 0:
+            max_element = self.__elements[0]
+
+            self.__elements[0] = self.__elements[len(self.__elements) - 1]
+            self.__elements.pop()
+            self._BinaryHeap__percolate_down()
+
+            return max_element
+        else:
+            raise ValueError("There are no elements in the heap")
+
+    # returns the sorted elements in the heap starting from the maximum entry
+    def get_sorted_elements(self):
+        temp_elements = [k for k in self.__elements]
+        sorted_elements = []
+
+        while len(self.__elements) > 0:
+            sorted_elements.append(self.remove_max())
+
+        self.__elements = temp_elements
+        # noinspection PyAttributeOutsideInit
+        self._BinaryHeap__elements = temp_elements
+
+        return sorted_elements
+
+    # removes and returns the maximum item in the heap and adds the new item, faster than remove_max followed by add
     def replace_root(self, element):
         if type(element) == self.__elementsType:
             if len(self.__elements) > 0:
