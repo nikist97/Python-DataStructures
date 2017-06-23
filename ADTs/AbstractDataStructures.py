@@ -753,4 +753,4 @@ class MaxBinaryHeap(BinaryHeap):
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
 
-# TODO test MinBinaryHeap and MaxBinaryHeap
+# TODO test MinBinaryHeap, MaxBinaryHeap
