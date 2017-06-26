@@ -504,6 +504,11 @@ class BinaryHeap(ABC):
     def __iter__(self):
         pass
 
+    @abstractmethod
+    # overriding the __next__ method, so that we can use the iterator
+    def __next__(self):
+        pass
+
     # the is_empty method, which checks if the size of the heap is 0
     def is_empty(self):
         return len(self.__elements) == 0
@@ -563,7 +568,14 @@ class MinBinaryHeap(BinaryHeap):
 
     # iterator goes through the sorted elements starting from the min entry
     def __iter__(self):
-        return iter(self.get_sorted_elements())
+        return self
+
+    # overriding the next method in order to use the iterator
+    def __next__(self):
+        if not self.is_empty():
+            return self.remove_min()
+        else:
+            raise StopIteration
 
     # the percolate_up method which adjusts the heap after an addition operation,
     # it gets the last element in the list and finds its place in the heap
@@ -668,6 +680,13 @@ class MaxBinaryHeap(BinaryHeap):
     def __iter__(self):
         return iter(self.get_sorted_elements())
 
+    # overriding the next method in order to use the iterator
+    def __next__(self):
+        if not self.is_empty():
+            return self.remove_max()
+        else:
+            raise StopIteration
+
     # the percolate_up method which adjusts the heap after an addition operation,
     # it gets the last element in the list and finds its place in the heap
     def _BinaryHeap__percolate_up(self):
@@ -752,5 +771,3 @@ class MaxBinaryHeap(BinaryHeap):
                 raise ValueError("There are no elements in the heap")
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
-
-# TODO test MinBinaryHeap, MaxBinaryHeap
