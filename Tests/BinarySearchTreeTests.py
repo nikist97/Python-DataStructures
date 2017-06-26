@@ -4,7 +4,7 @@ import unittest
 from ADTs.AbstractDataStructures import BinarySearchTree
 
 
-class BinaryTreeTests(unittest.TestCase):
+class BinarySearchTreeTests(unittest.TestCase):
 
     def test_size(self):
         binary = BinarySearchTree(12)
