@@ -73,7 +73,7 @@ The Binary Search Tree's implementation is generic: you can specify the type of 
 in the constructor. If not specified, it is set to int, hence only integers can be added to the binary search tree.
 You can also initiate the root of the tree by specifying it in the constructor. If not specified a binary search tree
 with no root is created and the first added element becomes the root. The implementation includes all the common
-operations of a binary searc tree: contains, add, delete, get_maximum, get_minimum, etc.<br>
+operations of a binary search tree: contains, add, delete, get_maximum, get_minimum, etc.<br>
 
 Usages:<br>
 ```
@@ -122,6 +122,126 @@ tree.get_root() # returns the root element in the binary search
 # starting from the minimum element
 for element in tree:
     print(element)
+```
+
+
+<br> <br>
+
+- **_BinaryHeap_** <br>
+The BinaryHeap's implementation is generic: you can specify the type of elements in the heap in the constructor. If not 
+specified, it is set to int, hence only integers can be added to the heap. The BinaryHeap class is abstract. You cannot 
+instantiate it. The implementation includes two types of heaps, which you can use: MinBinaryHeap and MaxBinaryHeap.
+<br>
+**MinBinaryHeap** - a heap with its root being the minimum element <br>
+MinBinaryHeap implements the common operations of a heap: add, replace_root, remove_min, peek_min, size, etc.
+<br>
+**MaxBinaryHeap** - a heap with its root being the maximum element <br>
+MaxBinaryHeap implements the common operations of a heap: add, replace_root, remove_max, peek_max, size, etc.
+
+MinBinaryHeap Usages:<br>
+```
+min_heap = MinBinaryHeap() # type is set to default - int, hence only integers can be added
+# creates an empty heap
+
+min_heap = MinBinaryHeap(str) # type is set to str, hence only strings can be added
+# creates an empty heap
+
+min_heap.size() # returns the number of elements in the heap
+len(min_heap) # same as min_heap.size()
+min_heap.is_empty() # returns True if the heap doesn't have elements and False otherwise
+
+# the MinBinaryHeap class doesn't have a custom string representation
+
+min_heap.type() # returns the type of elements in the heap
+
+min_heap.add(element) # adds the element to the min binary heap on the place it should be located
+# add raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+
+min_heap.peek_min() # returns the minimum element (the root), but doesn't remove it from the heap
+# returns None if heap is empty
+
+min_heap.remove_min() # returns the minimum element (the root) and removes it from the heap
+# the method replaces the root with the second minimum element in the heap
+# it raises a ValueError if the heap is empty
+
+# returns the minimum element (the root) and removes it from the heap, by replacing it with the element argument
+min_heap.replace_root(element) 
+# same as min_heap.remove_min() followed by min_heap.add(element), but replace_root() is faster
+# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a ValueError if the heap is empty
+
+min_heap.get_sorted_elements() # returns a list with the sorted elements from the heap, the heap remains unchanged
+# the order is ascending; returns an empty list if the heap is empty
+
+# the iterator goes through each element in the heap in ascending order
+for element in min_heap:
+    print(element)
+# keep in mind that using the iterator will remove each element you go through from the heap, since it uses remove_min()
+# to generate the next element, hence when the iterator is finished the heap would be empty;
+# if you want to keep the elements in the heap, use get_sorted_elements() (although it's slightly slower)
+
+# another example with the iterator
+heap_iter = iter(min_heap)
+while True:
+    try:
+        print(heap_iter.__next__())
+    except StopIteration:
+        break
+min_heap.size() # will return 0 after iteration is finished, as explained above
+```
+
+<br>
+
+MaxBinaryHeap Usages:<br>
+```
+max_heap = MaxBinaryHeap() # type is set to default - int, hence only integers can be added
+# creates an empty heap
+
+max_heap = MaxBinaryHeap(str) # type is set to str, hence only strings can be added
+# creates an empty heap
+
+max_heap.size() # returns the number of elements in the heap
+len(max_heap) # same as max_heap.size()
+max_heap.is_empty() # returns True if the heap doesn't have elements and False otherwise
+
+# the MaxBinaryHeap class doesn't have a custom string representation
+
+max_heap.type() # returns the type of elements in the heap
+
+max_heap.add(element) # adds the element to the max binary heap on the place it should be located
+# add raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+
+max_heap.peek_max() # returns the maximum element (the root), but doesn't remove it from the heap
+# returns None if heap is empty
+
+max_heap.remove_max() # returns the maximum element (the root) and removes it from the heap
+# the method replaces the root with the second maximum element in the heap
+# it raises a ValueError if the heap is empty
+
+# returns the maximum element (the root) and removes it from the heap, by replacing it with the element argument
+max_heap.replace_root(element) 
+# same as max_heap.remove_max() followed by max_heap.add(element), but replace_root() is faster
+# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a ValueError if the heap is empty
+
+max_heap.get_sorted_elements() # returns a list with the sorted elements from the heap, the heap remains unchanged
+# the order is descending; returns an empty list if the heap is empty
+
+# the iterator goes through each element in the heap in descending order
+for element in max_heap:
+    print(element)
+# keep in mind that using the iterator will remove each element you go through from the heap, since it uses remove_max()
+# to generate the next element, hence when the iterator is finished the heap would be empty;
+# if you want to keep the elements in the heap, use get_sorted_elements() (although it's slightly slower)
+
+# another example with the iterator
+heap_iter = iter(max_heap)
+while True:
+    try:
+        print(heap_iter.__next__())
+    except StopIteration:
+        break
+max_heap.size() # will return 0 after iteration is finished, as explained above
 ```
 
 <br>
