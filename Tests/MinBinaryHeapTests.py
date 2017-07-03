@@ -178,5 +178,15 @@ class MinBinaryHeapTests(unittest.TestCase):
             except StopIteration:
                 break
 
+    def test_str(self):
+        heap = MinBinaryHeap()
+        self.assertEqual(str(heap), "[]", "Wrong str implementation")
+
+        heap.add(20)
+        heap.add(100)
+        heap.add(40)
+        heap.add(50)
+        self.assertEqual(str(heap), "[20, 50, 40, 100]", "Wrong str implementation")
+
 if __name__ == '__main__':
     unittest.main()
