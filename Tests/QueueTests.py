@@ -15,11 +15,41 @@ class QueueTest(unittest.TestCase):
             queue.dequeue()
         self.assertEqual(queue.size(), 40, "Incorrect queue size")
 
+        queue = Queue(str)
+        self.assertEqual(queue.size(), 0, "Queue size should be 0 at initialization")
+        queue.enqueue("b")
+        self.assertEqual(queue.size(), 1, "Incorrect queue size")
+        queue.enqueue("c")
+        queue.peek()
+        self.assertEqual(queue.size(), 2, "Incorrect queue size")
+
+    def test_str(self):
+        queue = Queue()
+        self.assertEqual(str(queue), "[]", "Wrong str representation")
+
+        queue.enqueue(1)
+        queue.enqueue(2.5)
+        self.assertEqual(str(queue), "[1, 2.5]", "Wrong str representation")
+
+        queue = Queue(int)
+        self.assertEqual(str(queue), "[]", "Wrong str representation")
+        for i in range(5):
+            queue.enqueue(i)
+        self.assertEqual(str(queue), "[0, 1, 2, 3, 4]", "Wrong str representation")
+
     def test_empty(self):
         queue = Queue()
         self.assertTrue(queue.is_empty(), "Queue should be empty")
         queue.enqueue("word")
         queue.enqueue("sentence")
+        queue.dequeue()
+        self.assertFalse(queue.is_empty(), "Queue should not be empty")
+
+        queue = Queue(float)
+        self.assertTrue(queue.is_empty(), "Queue should be empty")
+        queue.enqueue(2.5)
+        queue.peek()
+        queue.enqueue(1.54)
         queue.dequeue()
         self.assertFalse(queue.is_empty(), "Queue should not be empty")
 
@@ -30,13 +60,50 @@ class QueueTest(unittest.TestCase):
         queue.enqueue("Tests")
         self.assertEqual(queue.peek(), 2, "Queue gives wrong peek")
 
+        queue = Queue(int)
+        self.assertEqual(queue.peek(), None, "Top element of queue should be None at initialization")
+        queue.enqueue(23)
+        self.assertEqual(queue.peek(), 23, "Queue gives wrong peek")
+        queue.dequeue()
+        queue.enqueue(57)
+        queue.enqueue(0)
+        self.assertEqual(queue.peek(), 57, "Queue gives wrong peek")
+
     def test_enqueue(self):
         queue = Queue()
-        with self.assertRaises(ValueError):
-            queue.dequeue()
         queue.enqueue([1, 2, 3])
         queue.enqueue("item")
         self.assertEqual(queue.dequeue()[1], 2, "Queue dequeues wrong element")
+        self.assertEqual(len(queue), 1, "Wrong enqueue implementation")
+
+        queue = Queue(str)
+        with self.assertRaises(TypeError):
+            queue.enqueue(5)
+        self.assertEqual(len(queue), 0)
+        self.assertTrue(queue.is_empty())
+
+        queue.enqueue("2")
+        queue.enqueue("word")
+        self.assertEqual(len(queue), 2, "Wrong enqueue implementation")
+        self.assertFalse(queue.is_empty(), "Wrong enqueue implementation")
+        self.assertEqual(queue.dequeue(), "2", "Wrong enqueue implementation")
+
+    def test_dequeue(self):
+        queue = Queue()
+        with self.assertRaises(ValueError):
+            queue.dequeue()
+
+        queue.enqueue(4)
+        queue.enqueue("word")
+        self.assertEqual(queue.dequeue(), 4, "Wrong queue implementation")
+
+        queue = Queue(tuple)
+        with self.assertRaises(ValueError):
+            queue.dequeue()
+
+        queue.enqueue((2,))
+        queue.enqueue((1, 2, 3))
+        self.assertEqual(queue.dequeue()[0], 2, "Wrong dequeue implementation")
 
     def test_type(self):
         queue = Queue()
@@ -56,6 +123,34 @@ class QueueTest(unittest.TestCase):
 
         with self.assertRaises(TypeError):
             queue.enqueue(123)
+
+    def test_contains(self):
+        queue = Queue()
+        self.assertFalse(0 in queue, "Wrong contains implementation")
+
+        queue.enqueue(1)
+        queue.enqueue(10)
+        self.assertEqual(10 in queue, queue.contains(10))
+        self.assertTrue(10 in queue, "Wrong contains implementation")
+
+        queue = Queue(float)
+        queue.enqueue(2.3)
+        queue.enqueue(3.7)
+        queue.dequeue()
+        queue.peek()
+        self.assertTrue(3.7 in queue)
+        self.assertFalse(2.3 in queue)
+
+    def test_iterator(self):
+        queue = Queue(str)
+        words = ["word", "python", "java", "csharp"]
+        index = 0
+
+        for word in queue:
+            self.assertEqual(word, words[index], "Wrong iterator implementation")
+            index += 1
+
+        self.assertEqual(len(queue), 0)
 
 if __name__ == '__main__':
     unittest.main()

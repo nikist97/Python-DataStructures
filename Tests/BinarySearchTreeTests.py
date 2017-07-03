@@ -4,7 +4,7 @@ import unittest
 from ADTs.AbstractDataStructures import BinarySearchTree
 
 
-class BinarySearchTreeTests(unittest.TestCase):
+class BinarySearchTreeTest(unittest.TestCase):
 
     def test_size(self):
         binary = BinarySearchTree(12)
@@ -145,6 +145,48 @@ class BinarySearchTreeTests(unittest.TestCase):
         binary.add(1)
         binary.delete(1)
         self.assertTrue(binary.get_root() is None, "Binary tree get_root method doesn't work properly after deletion")
+
+    def test_get_min(self):
+        binary = BinarySearchTree(elements_type=int)
+        self.assertEqual(binary.get_minimum(), None, "Incorrect implementation of get_min")
+
+        binary = BinarySearchTree(root=10)
+        binary.add(11)
+        binary.add(5)
+        binary.add(223)
+        self.assertEqual(binary.get_minimum(), 5, "Incorrect implementation of get_min")
+
+        binary = BinarySearchTree(root=2.5, elements_type=float)
+        l = [2.4, 5.7, 3.3, 7.8, 8.99]
+        for i in l:
+            binary.add(i)
+        self.assertEqual(binary.get_minimum(), min(l))
+
+    def test_get_max(self):
+        binary = BinarySearchTree(elements_type=int)
+        self.assertEqual(binary.get_maximum(), None, "Incorrect implementation of get_max")
+
+        binary = BinarySearchTree(root=10)
+        binary.add(11)
+        binary.add(5)
+        binary.add(223)
+        self.assertEqual(binary.get_maximum(), 223, "Incorrect implementation of get_max")
+
+        binary = BinarySearchTree(root=2.5, elements_type=float)
+        l = [2.4, 5.7, 3.3, 7.8, 8.99]
+        for i in l:
+            binary.add(i)
+        self.assertEqual(binary.get_maximum(), max(l))
+
+    def test_str(self):
+        binary = BinarySearchTree()
+        self.assertEqual(str(binary), "Binary search tree with root: None")
+
+        binary = BinarySearchTree(5)
+        self.assertEqual(str(binary), "Binary search tree with root: 5")
+
+        binary = BinarySearchTree("root", elements_type=str)
+        self.assertEqual(str(binary), "Binary search tree with root: root")
 
 if __name__ == '__main__':
     unittest.main()
