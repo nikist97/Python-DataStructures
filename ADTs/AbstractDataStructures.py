@@ -19,6 +19,28 @@ class Stack(object):
     def __len__(self):
         return self.size()
 
+    # iterator method
+    def __iter__(self):
+        return self
+
+    # next method for iterator
+    def __next__(self):
+        if self.is_empty():
+            raise StopIteration
+        else:
+            return self.pop()
+
+    # the 'item in stack' method
+    def __contains__(self, item):
+        return self.contains(item)
+
+    # the contains method, which checks if an item is in the stack
+    def contains(self, item):
+        if self.__elementsType is None or type(item) == self.__elementsType:
+            return item in self.__elements
+        else:
+            raise TypeError("The parameter is not of type " + str(self.__elementsType))
+
     # the is_empty method, which checks if the size of the stack is 0
     def is_empty(self):
         return len(self.__elements) == 0
@@ -34,13 +56,10 @@ class Stack(object):
     # the push method, which pushes an item into the stack, raises a TypeError if elementType is not None,
     # but different from the parameter item's type
     def push(self, item):
-        if self.__elementsType is None:
+        if self.__elementsType is None or type(item) == self.__elementsType:
             self.__elements.append(item)
         else:
-            if type(item) == self.__elementsType:
-                self.__elements.append(item)
-            else:
-                raise TypeError("The element you are trying to push is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to push is not of type " + str(self.__elementsType))
 
     # the pop method, which takes out the last element that got into the stack;
     # it raises a ValueError if there is no element to pop (if size of the stack is 0)
@@ -77,6 +96,28 @@ class Queue(object):
     def __len__(self):
         return self.size()
 
+    # iterator implementation
+    def __iter__(self):
+        return self
+
+    # the next method for the iterator
+    def __next__(self):
+        if self.is_empty():
+            raise StopIteration
+        else:
+            return self.dequeue()
+
+    # the 'item in queue' method
+    def __contains__(self, item):
+        return self.contains(item)
+
+    # the contains method which checks if an item is in the queue
+    def contains(self, item):
+        if self.__elementsType is None or type(item) == self.__elementsType:
+            return item in self.__elements
+        else:
+            raise TypeError("The parameter is not of type " + str(self.__elementsType))
+
     # the is_empty method, which checks if the size of the queue is 0
     def is_empty(self):
         return len(self.__elements) == 0
@@ -89,16 +130,13 @@ class Queue(object):
     def type(self):
         return self.__elementsType
 
-    # the enqueue method, which inserts an item into the queue, raises a TypeError if elementsType is not None,
-    # but is different than the parameter item's type
+    # the enqueue method, which inserts an item into the queue, raises a TypeError if elementsType is not None and is
+    # different than the parameter item's type
     def enqueue(self, item):
-        if self.__elementsType is None:
+        if self.__elementsType is None or type(item) == self.__elementsType:
             self.__elements.append(item)
         else:
-            if type(item) == self.__elementsType:
-                self.__elements.append(item)
-            else:
-                raise TypeError("The element you are trying to push is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elementsType))
 
     # the dequeue method, which removes the item that got first in the queue
     # it raises a ValueError if there is no element to dequeue(if size of the queue is 0)
@@ -126,7 +164,7 @@ class BinarySearchTree(object):
     # the constructor for the binary tree, it has a root as an optional argument, if the root is specified the tree
     # is initialised with a root, else it is initialized with no root, the elements in the tree must be from the type
     # specified in the constructor, the default type that is used is int
-    def __init__(self, root=None, elements_type=None):
+    def __init__(self, root=None, elements_type=int):
         # variables used for the iterator of the binary tree
         self.__successor = None
         self.__iterator_limit = None
@@ -146,6 +184,13 @@ class BinarySearchTree(object):
             self.__number_of_items = 1
         else:
             raise TypeError("The binary tree can contain only elements of type " + str(elements_type) + ".")
+
+    # string representation of the binary search tree
+    def __str__(self):
+        if self.__root is not None:
+            return "Binary search tree with root: " + str(self.__root.get_value())
+        else:
+            return "Binary search tree with root: None"
 
     # overriding the __contains__ method
     def __contains__(self, item):
@@ -499,6 +544,14 @@ class BinaryHeap(ABC):
     def __len__(self):
         return self.size()
 
+    # the str(heap) method
+    def __str__(self):
+        return str(self.__elements)
+
+    # the 'item in priority queue' method
+    def __contains__(self, item):
+        return self.contains(item)
+
     @abstractmethod
     # overriding the __iter__ method, so that we can go through the elements of the heap
     def __iter__(self):
@@ -520,6 +573,13 @@ class BinaryHeap(ABC):
     # the type method, which returns the type of the heap elements
     def type(self):
         return self.__elementsType
+
+    # the contains method, which checks if an element is in the heap
+    def contains(self, item):
+        if type(item) == self.__elementsType:
+            return item in self.__elements
+        else:
+            raise TypeError("The parameter is not of type " + str(self.__elementsType))
 
     # the add method, which adds an element to the heap
     def add(self, element):
@@ -558,7 +618,7 @@ class BinaryHeap(ABC):
 class MinBinaryHeap(BinaryHeap):
 
     # constructor for MinBinaryHeap, same arguments as abstract BinaryHeap class
-    def __init__(self, elements_type=None):
+    def __init__(self, elements_type=int):
         if elements_type is None:
             elements_type = int
         BinaryHeap.__init__(self, elements_type)
@@ -668,7 +728,7 @@ class MinBinaryHeap(BinaryHeap):
 class MaxBinaryHeap(BinaryHeap):
 
     # constructor for MaxBinaryHeap, same arguments as abstract BinaryHeap class
-    def __init__(self, elements_type=None):
+    def __init__(self, elements_type=int):
         if elements_type is None:
             elements_type = int
         BinaryHeap.__init__(self, elements_type)
@@ -771,3 +831,129 @@ class MaxBinaryHeap(BinaryHeap):
                 raise ValueError("There are no elements in the heap")
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
+
+
+# Abstract Data Type PriorityQueue
+class PriorityQueue(object):
+
+    # constructor for the priority queue;
+    # elements_type denotes the type of elements that can be added to the priority queue, default is None, which allows
+    # all types of elements to be added to queue;
+    # reverse denotes a boolean, which represents what kind of priority queue to use, if set to False(default), then the
+    # element with greatest priority will be returned by dequeue, if set to True - it returns the element with minimum
+    # priority when using  dequeue
+    def __init__(self, elements_type=None, reverse=False):
+
+        if not reverse:
+            self.__indices = MaxBinaryHeap(int)
+        else:
+            self.__indices = MinBinaryHeap(int)
+
+        self.__elements = {}
+        self.__elements_type = elements_type
+
+    # the string representation for the priority queue returns the elements of the priority queue
+    def __str__(self):
+        return str(self.__elements)
+
+    # the len(priority_queue) method
+    def __len__(self):
+        return self.size()
+
+    # the 'item in priority queue' method
+    def __contains__(self, priority):
+        return self.contains(priority)
+
+    # iterator implementation
+    def __iter__(self):
+        return self
+
+    # the next method used for the iterator
+    def __next__(self):
+        if self.is_empty():
+            raise StopIteration
+        else:
+            return self.dequeue()
+
+    # the is_empty method, which checks if the size of the priority queue is 0
+    def is_empty(self):
+        return len(self.__elements) == 0
+
+    # the size method, which returns the size of the priority queue
+    def size(self):
+        return len(self.__elements)
+
+    # the type method, which returns the type of the priority queue elements
+    def type(self):
+        return self.__elements_type
+
+    def is_reversed(self):
+        return type(self.__indices) == MinBinaryHeap
+
+    # the enqueue method, which inserts an item into the queue with a given priority, raises a TypeError if
+    # elements_type is not None and is different than the parameter item's type;
+    # raises a TypeError if the type of the parameter priority is not int;
+    # if the priority parameter already exists in the queue, the element stored with this priority will be overwritten
+    # by the new element
+    def enqueue(self, item, priority):
+        if type(priority) != int:
+            raise TypeError("The priority must be an integer")
+
+        if self.__elements_type is not None and type(item) != self.__elements_type:
+            raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
+
+        if priority not in self.__elements:
+            self.__indices.add(priority)
+        self.__elements[priority] = item
+
+    # the dequeue method, which takes the element with the greatest or the lowest priority depending on the reverse
+    # argument in the constructor, then removes it from the priority queue and returns it;
+    # raises a ValueError if there are no elements in the priority queue
+    def dequeue(self):
+        if self.is_empty():
+            raise ValueError("The priority queue doesn't contain any elements")
+
+        if type(self.__indices) == MinBinaryHeap:
+            min_priority = self.__indices.remove_min()
+            element_to_return = self.__elements.get(min_priority)
+            self.__elements.pop(min_priority)
+            return element_to_return
+        elif type(self.__indices) == MaxBinaryHeap:
+            max_priority = self.__indices.remove_max()
+            element_to_return = self.__elements.get(max_priority)
+            self.__elements.pop(max_priority)
+            return element_to_return
+
+    # same as dequeue but doesn't remove the element from the priority queue and just returns it;
+    # returns None if there are no elements in the queue
+    def peek(self):
+        if self.is_empty():
+            return None
+
+        if type(self.__indices) == MinBinaryHeap:
+            return self.__elements.get(self.__indices.peek_min())
+        elif type(self.__indices) == MaxBinaryHeap:
+            return self.__elements.get(self.__indices.peek_max())
+
+    # get the element with the specified priority,
+    # returns None if no element with this priority exists,
+    # raises a TypeError if the parameter is not an integer
+    def get(self, priority):
+        if type(priority) != int:
+            raise TypeError("The priority parameter must be an integer.")
+
+        return self.__elements.get(priority)
+
+    # the contains method, which checks if a given priority is assigned to an object
+    def contains(self, priority):
+        if type(priority) == int:
+            return priority in self.__elements.keys()
+        else:
+            raise TypeError("Priorities must be of type int")
+
+    # the contains_element method checks if a given element is contained in the queue
+    def contains_element(self, element):
+        if self.__elements_type is not None and type(element) != self.__elements_type:
+            raise TypeError("Type of the parameter is not " + self.__elements_type)
+
+        return element in self.__elements.values()
