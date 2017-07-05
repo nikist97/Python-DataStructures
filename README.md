@@ -21,6 +21,12 @@ stack.is_empty() # returns True if stack is empty and False otherwise
 
 str(stack) # returns the string representation of the list of elements of the stack
 
+stack.contains(item) # returns True if the item is in the stack and False otherwise
+# contains raises a TypeError if the type of the stack is not None and is different 
+# than the type of the parameter
+boolean = item in stack 
+# same as boolean = stack.contains(item)
+
 stack.type() # returns the type of the elements in the stack, None if no type is specified
 
 stack.peek() # returns the last element that was added to the stack, but doesn't remove it
@@ -32,6 +38,12 @@ stack.pop() # same as peek(), but removes the last element that was added to the
 stack.push(element) # pushes the element to the top of the stack
 # push raises a TypeError if the stack has a specified type for elements
 # and the argument is not of that type
+
+# the implemenetation includes an iterator
+for element in stack:
+    print element
+# keep in mind that the iterator uses stack.pop() to get the next element, hence
+# after the iteration is over the stack would be empty
 ```
 
 <br> <br>
@@ -52,6 +64,12 @@ queue.is_empty() # return True if queue is empty and False otherwise
 
 str(queue) # return the string representation of the list of elements of the queue
 
+queue.contains(item) returns True if the item is in the queue and False otherwise
+# contains raises a TypeError if the type of the queue is not None and is different 
+# than the type of the parameter
+boolean = item in queue 
+# same as boolean = queue.contains(item)
+
 queue.type() # returns the type of the elements in the queue, None if no type is specified
 
 queue.peek() # returns the first element that was added to the queue, but doesn't remove it
@@ -63,6 +81,12 @@ queue.dequeue() # same as peek(), but removes the first element that was added t
 queue.enqueue(element) # enqueues the element to the back of the queue
 # enqueue raises a TypeError if the queue has a specified type for elements
 # and the argument is not of that type
+
+# the implemenetation includes an iterator
+for element in queue:
+    print element
+# keep in mind that the iterator uses queue.dequeue() to get the next element, hence
+# after the iteration is over the queue would be empty
 ```
 
 
@@ -93,7 +117,7 @@ tree = BinarySearchTree(root = "man", elements_type = str) # type is set to str,
 tree.get_number_of_elements() # returns the number of elements in the tree
 len(tree) # same as tree.get_number_of_elements()
 
-# the BinarySearchTree class doesn't have a custom string representation
+str(tree) # returns a string in the format Binary search tree with root 'root'
 
 tree.type() # returns the type of the elements in the binary search tree
 
@@ -150,7 +174,7 @@ min_heap.size() # returns the number of elements in the heap
 len(min_heap) # same as min_heap.size()
 min_heap.is_empty() # returns True if the heap doesn't have elements and False otherwise
 
-# the MinBinaryHeap class doesn't have a custom string representation
+str(min_heap) # returns a string of the list of elements in the heap
 
 min_heap.type() # returns the type of elements in the heap
 
@@ -204,7 +228,7 @@ max_heap.size() # returns the number of elements in the heap
 len(max_heap) # same as max_heap.size()
 max_heap.is_empty() # returns True if the heap doesn't have elements and False otherwise
 
-# the MaxBinaryHeap class doesn't have a custom string representation
+str(max_heap) # returns a string of the list of elements in the heap
 
 max_heap.type() # returns the type of elements in the heap
 
@@ -242,6 +266,72 @@ while True:
     except StopIteration:
         break
 max_heap.size() # will return 0 after iteration is finished, as explained above
+```
+
+
+<br> <br>
+
+- **_Priority Queue_** <br>
+The Priority Queue's implementation is generic: you can specify the type of elements in the queue in the constructor. 
+If not specified, it is set to None, hence objects of all types can be added to the priority queue. You can also set the reverse
+argument in the constructor. If reverse is set to False (default) the queue dequeues the element with the greatest priority, 
+else if the reverse argument is set to True - it dequeues the element with the lowest priority. The implementation includes 
+all the common operations of a priority queue: enqueue, dequeue, peek, size, etc.<br>
+
+Usages:<br>
+```
+priority_queue = PriorityQueue() # type is set to default None, hence objects of all types can be enqueued to the queue
+# the reverse argument is set to default False, hence dequeue returns the element with the highest priority
+
+priority_queue = PriorityQueue(elements_type=str, reverse=True) # type is set to str, hence only strings can be enqueued
+# the reverse argument is set to True, hence dequeue returns the element with the lowest priority
+
+priority_queue.size() # returns the number of elements in the queue
+len(priority_queue) # same as priority_queue.size()
+priority_queue.is_empty() # returns True if there are no elements in the queue and False otherwise
+
+
+str(priority_queue) # returns a string of the dictionary linking prioriies with elements in the queue
+
+priority_queue.type() # returns the type of elements that can be enqueued in the priority queue
+# if this method returns None, objects of all types can be enqueued
+
+priority_queue.is_reversed() # returns True if the queue dequeues the element with the lowest priority
+# returns False if the queue dequeues the element with the highest priority
+
+priority_queue.contains(priority) # returns True if the queue has an element, linked to the given priority and False otherwise
+# contains raises a TypeError if type of priority is not int
+boolean = priority in priority_queue # same as priority_queue.contains(priority)
+
+priority_queue.contains_element(element) # returns True if an element is contained in the queue
+# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
+
+priority_queue.enqueue(item, priority) # enqueues the given item and links it the given priority
+# raises TypeError if type(priority) is not int
+# raises TypeError if priority_queue.type() is not None and is different than the type of the given item
+# keep in mind that if there is another element linked to the same priority, the other element will be overriden by the given item
+priority_queue.enqueue("first_item", 5)
+priority_queue.enqueue("second_item", 5)
+# doing this will link priority 5 to str object "second_item" and "first_item" will be ignored
+
+priority_queue.peek() # returns element with minimum or maximum priority in the queue, but doesn't remove it from the queue
+# if priority_queue.is_reversed() is False, it returns the element with the maximum priority
+# if priority_queue.is_reversed() is True, it returns the element with the minimum priority
+# returns None if the queue is empty
+
+priority_queue.dequeue() # same as priority_queue.peek(), but removes the returned element from the queue
+# raises a ValueError if the queue is empty 
+
+priority_queue.get(priority) # returns the element linked to the given priority
+# returns None if no element is linked to this priority
+# raises a TypeError if type(priority) is not int
+
+# the implementation includes an iterator too
+for item in priority_queue:
+    print(item)
+# keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
+# is finished the priority_queue will be empty
+priority_queue.is_empty() # will return True
 ```
 
 <br>
