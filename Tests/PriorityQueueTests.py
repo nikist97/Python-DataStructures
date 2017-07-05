@@ -33,7 +33,9 @@ class PriorityQueueTest(unittest.TestCase):
 
     def test_type(self):
         priority_queue = PriorityQueue()
-        self.assertEqual(priority_queue.type(), int, "Wrong type at initialization")
+        self.assertEqual(priority_queue.type(), None, "Wrong type at initialization")
+        priority_queue.enqueue(5, 5)
+        priority_queue.enqueue("word", 10)
         priority_queue = PriorityQueue(str, True)
         self.assertEqual(priority_queue.type(), str, "Wrong type at initialization")
 
@@ -49,6 +51,36 @@ class PriorityQueueTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             priority_queue.get("7")
 
+    def test_reverse(self):
+        priority_queue = PriorityQueue()
+        self.assertFalse(priority_queue.is_reversed(), "Wrong reverse implementation")
+        priority_queue.enqueue(1, 10)
+        priority_queue.enqueue("word", 5)
+        self.assertEqual(priority_queue.peek(), 1, "Wrong reverse implementation")
+        self.assertEqual(priority_queue.dequeue(), 1, "Wrong reverse implementation")
+
+        priority_queue = PriorityQueue(int, False)
+        self.assertFalse(priority_queue.is_reversed(), "Wrong reverse implementation")
+        priority_queue.enqueue(1, 10)
+        priority_queue.enqueue(2, 5)
+        self.assertEqual(priority_queue.peek(), 1, "Wrong reverse implementation")
+        self.assertEqual(priority_queue.dequeue(), 1, "Wrong reverse implementation")
+
+        priority_queue = PriorityQueue(elements_type=str, reverse=True)
+        self.assertTrue(priority_queue.is_reversed(), "Wrong reverse implementation")
+        priority_queue.enqueue("python", 1)
+        priority_queue.enqueue("word", 2)
+        self.assertEqual(priority_queue.peek(), "python", "Wrong reverse implementation")
+        self.assertEqual(priority_queue.dequeue(), "python", "Wrong reverse implementation")
+
+        priority_queue = PriorityQueue(reverse=True)
+        self.assertTrue(priority_queue.is_reversed(), "Wrong reverse implementation")
+
+        priority_queue.enqueue(1, 10)
+        priority_queue.enqueue("word", 5)
+        self.assertEqual(priority_queue.peek(), "word", "Wrong reverse implementation")
+        self.assertEqual(priority_queue.dequeue(), "word", "Wrong reverse implementation")
+
     def test_str(self):
         priority_queue = PriorityQueue()
         self.assertEqual(str(priority_queue), "{}", "Wrong str implementation")
@@ -61,12 +93,18 @@ class PriorityQueueTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             priority_queue.contains("7")
 
+        self.assertFalse(priority_queue.contains_element("7"), "Contains_element fails")
+
         priority_queue = PriorityQueue(int, True)
         for i in range(10):
             priority_queue.enqueue(i**2, i)
 
         for j in range(10):
             self.assertTrue(j in priority_queue, "Wrong contains impementation")
+            self.assertTrue(priority_queue.contains_element(j**2), "Contains_element fails")
+
+        with self.assertRaises(TypeError):
+            priority_queue.contains_element("word")
 
     def test_enqueue(self):
         priority_queue = PriorityQueue(float, False)
@@ -120,6 +158,7 @@ class PriorityQueueTest(unittest.TestCase):
             self.assertEqual(value, max(list2))
             list2.remove(value)
         self.assertEqual(len(priority_queue), 0)
+        self.assertTrue(priority_queue.is_empty())
 
     def test_peek(self):
         priority_queue = PriorityQueue()
