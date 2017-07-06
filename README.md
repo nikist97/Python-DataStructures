@@ -2,7 +2,8 @@
 
 ### Abstract Data Structures in Python
 
-**_Implementation for a Stack, a Queue and a Binary Search Tree in Python_** <br>
+**_Implementation for a Stack, a Queue, a Binary Search Tree, a Max Binary Heap, a Min Binary Heap and a Priority Queue
+ in Python_** <br>
 **All of these are located in the AbstractDataStructures.py module** <br><br>
 
 - **_Stack (First-In-Last-Out)_** <br>
@@ -553,5 +554,3 @@ Usages:<br>
 ```
 # just run the tic-tac-toe.py file and the game will start.
 ```
-
-## Feel free to use these modules and extend them.
