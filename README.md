@@ -547,7 +547,7 @@ print(evaluate_expression("2+3-4/2*2+3*2/0.5")) # prints 16.0
 
 The tic-tac-toe.py file contains a simple tic-tac-toe game where you play
 against the computer. The computer plays by using the minimax algorithm in
-minimax.py. When yo finish a game click Enter to start a new game where you
+minimax.py. When you finish a game click Enter to start a new game where you
 go first or click Space to start a new game where the computer goes first.<br>
 
 Usages:<br>
