@@ -25,8 +25,11 @@ class Stack(object):
     # if elements_type is None, the stack can contain elements of many types simultaneously
     # otherwise, it can contain only elements from the type specified in the constructor
     def __init__(self, elements_type=None):
+        if elements_type is not None and type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
         self.__elements = []
-        self.__elementsType = elements_type
+        self.__elements_type = elements_type
 
     # the string representation for the stack returns the elements of the stack
     def __str__(self):
@@ -53,10 +56,10 @@ class Stack(object):
 
     # the contains method, which checks if an item is in the stack
     def contains(self, item):
-        if self.__elementsType is None or type(item) == self.__elementsType:
+        if self.__elements_type is None or type(item) == self.__elements_type:
             return item in self.__elements
         else:
-            raise TypeError("The parameter is not of type " + str(self.__elementsType))
+            raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
     # the is_empty method, which checks if the size of the stack is 0
     def is_empty(self):
@@ -68,15 +71,15 @@ class Stack(object):
 
     # the type method, which returns the type of the stack elements
     def type(self):
-        return self.__elementsType
+        return self.__elements_type
 
     # the push method, which pushes an item into the stack, raises a TypeError if elementType is not None,
     # but different from the parameter item's type
     def push(self, item):
-        if self.__elementsType is None or type(item) == self.__elementsType:
+        if self.__elements_type is None or type(item) == self.__elements_type:
             self.__elements.append(item)
         else:
-            raise TypeError("The element you are trying to push is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to push is not of type " + str(self.__elements_type))
 
     # the pop method, which takes out the last element that got into the stack;
     # it raises a ValueError if there is no element to pop (if size of the stack is 0)
@@ -102,8 +105,11 @@ class Queue(object):
     # if elements_type is None, the queue can contain elements of many types simultaneously
     # otherwise, it can contain only elements from the type specified in the constructor
     def __init__(self, elements_type=None):
+        if elements_type is not None and type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
         self.__elements = []
-        self.__elementsType = elements_type
+        self.__elements_type = elements_type
 
     # the string representation for the queue returns the elements of the queue
     def __str__(self):
@@ -130,10 +136,10 @@ class Queue(object):
 
     # the contains method which checks if an item is in the queue
     def contains(self, item):
-        if self.__elementsType is None or type(item) == self.__elementsType:
+        if self.__elements_type is None or type(item) == self.__elements_type:
             return item in self.__elements
         else:
-            raise TypeError("The parameter is not of type " + str(self.__elementsType))
+            raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
     # the is_empty method, which checks if the size of the queue is 0
     def is_empty(self):
@@ -145,15 +151,15 @@ class Queue(object):
 
     # the type method, which returns the type of the queue elements
     def type(self):
-        return self.__elementsType
+        return self.__elements_type
 
     # the enqueue method, which inserts an item into the queue, raises a TypeError if elementsType is not None and is
     # different than the parameter item's type
     def enqueue(self, item):
-        if self.__elementsType is None or type(item) == self.__elementsType:
+        if self.__elements_type is None or type(item) == self.__elements_type:
             self.__elements.append(item)
         else:
-            raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
 
     # the dequeue method, which removes the item that got first in the queue
     # it raises a ValueError if there is no element to dequeue(if size of the queue is 0)
@@ -188,8 +194,9 @@ class BinarySearchTree(object):
         self.__iterator_finished = None
         self.__current_item = None
 
-        if elements_type is None:
-            elements_type = int
+        if type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
         # initialising the binary search tree
         self.__elements_type = elements_type
 
@@ -554,8 +561,11 @@ class BinaryHeap(ABC):
     # the elements in the binary heap must be from the type specified in the constructor,
     # the default type that is used is int
     def __init__(self, elements_type=int):
+        if type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
         self.__elements = []
-        self.__elementsType = elements_type
+        self.__elements_type = elements_type
 
     # the len(heap) method
     def __len__(self):
@@ -589,23 +599,23 @@ class BinaryHeap(ABC):
 
     # the type method, which returns the type of the heap elements
     def type(self):
-        return self.__elementsType
+        return self.__elements_type
 
     # the contains method, which checks if an element is in the heap
     def contains(self, item):
-        if type(item) == self.__elementsType:
+        if type(item) == self.__elements_type:
             return item in self.__elements
         else:
-            raise TypeError("The parameter is not of type " + str(self.__elementsType))
+            raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
     # the add method, which adds an element to the heap
     def add(self, element):
-        if type(element) == self.__elementsType:
+        if type(element) == self.__elements_type:
             self.__elements.append(element)
 
             self.__percolate_up()
         else:
-            raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
     # the percolate_up method which adjusts the heap after an addition operation,
     # it gets the last element in the list and finds its place in the heap
@@ -636,12 +646,15 @@ class MinBinaryHeap(BinaryHeap):
 
     # constructor for MinBinaryHeap, same arguments as abstract BinaryHeap class
     def __init__(self, elements_type=int):
+        if type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
         if elements_type is None:
             elements_type = int
         BinaryHeap.__init__(self, elements_type)
 
         self.__elements = self._BinaryHeap__elements
-        self.__elementsType = self._BinaryHeap__elementsType
+        self.__elements_type = self._BinaryHeap__elements_type
 
     # iterator goes through the sorted elements starting from the min entry
     def __iter__(self):
@@ -728,7 +741,7 @@ class MinBinaryHeap(BinaryHeap):
 
     # removes and returns the smallest item in the heap and adds the new item, faster than remove_min followed by add
     def replace_root(self, element):
-        if type(element) == self.__elementsType:
+        if type(element) == self.__elements_type:
             if len(self.__elements) > 0:
                 temp = self.__elements[0]
                 self.__elements[0] = element
@@ -737,7 +750,7 @@ class MinBinaryHeap(BinaryHeap):
             else:
                 raise ValueError("There are no elements in the heap")
         else:
-            raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
 
 # Abstract Data Type MaxBinaryHeap - represents a BinaryHeap with a root its maximum element
@@ -746,12 +759,15 @@ class MaxBinaryHeap(BinaryHeap):
 
     # constructor for MaxBinaryHeap, same arguments as abstract BinaryHeap class
     def __init__(self, elements_type=int):
+        if type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
         if elements_type is None:
             elements_type = int
         BinaryHeap.__init__(self, elements_type)
 
         self.__elements = self._BinaryHeap__elements
-        self.__elementsType = self._BinaryHeap__elementsType
+        self.__elements_type = self._BinaryHeap__elements_type
 
     # iterator goes through the sorted elements starting from the max entry
     def __iter__(self):
@@ -838,7 +854,7 @@ class MaxBinaryHeap(BinaryHeap):
 
     # removes and returns the maximum item in the heap and adds the new item, faster than remove_max followed by add
     def replace_root(self, element):
-        if type(element) == self.__elementsType:
+        if type(element) == self.__elements_type:
             if len(self.__elements) > 0:
                 temp = self.__elements[0]
                 self.__elements[0] = element
@@ -847,7 +863,7 @@ class MaxBinaryHeap(BinaryHeap):
             else:
                 raise ValueError("There are no elements in the heap")
         else:
-            raise TypeError("The element you are trying to add is not of type " + str(self.__elementsType))
+            raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
 
 # Abstract Data Type PriorityQueue
@@ -860,6 +876,11 @@ class PriorityQueue(object):
     # element with greatest priority will be returned by dequeue, if set to True - it returns the element with minimum
     # priority when using  dequeue
     def __init__(self, elements_type=None, reverse=False):
+        if elements_type is not None and type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
+        if type(reverse) != bool:
+            raise TypeError(str(reverse) + " is not a valid boolean variable")
 
         if not reverse:
             self.__indices = MaxBinaryHeap(int)
@@ -974,3 +995,243 @@ class PriorityQueue(object):
             raise TypeError("Type of the parameter is not " + self.__elements_type)
 
         return element in self.__elements.values()
+
+
+# Abstract Data Type Graph
+class Graph(object):
+
+    # a constructor for the graph
+    def __init__(self, elements_type=None, directed=False, oriented=False, weighted=False):
+        if type(elements_type) != type:
+            raise TypeError(str(elements_type) + " is not a valid type")
+
+        self.__elements_type = elements_type
+
+        if oriented and not directed:
+            raise ValueError("A graph cannot be oriented, but not directed at the same time")
+
+        self.__directed = directed
+        self.__oriented = oriented
+        self.__weighted = weighted
+        self.__vertices_set = set()
+        self.__vertices_list = []
+        self.__edges = []
+        for i in range(10):
+            self.__edges.append([None, None, None, None, None, None, None, None, None, None])
+
+    # len(graph) method
+    def __len__(self):
+        return self.size()
+
+    # string representation for the graph
+    def __str__(self):
+        return "Graph: directed - " + str(self.__directed) + ", oriented - " + str(self.__oriented) + \
+               ", weighted - " + str(self.__weighted)
+
+    # iterator for the graph
+    def __iter__(self):
+        return iter(self.__vertices_list)
+
+    # the 'element in graph' method
+    def __contains__(self, item):
+        return self.contains(item)
+
+    # returns the number of nodes in the graph
+    def size(self):
+        return len(self.__vertices_set)
+
+    # a method to return the type of elements in the graph
+    def type(self):
+        return self.__elements_type
+
+    # a method to return whether the graph is weighted
+    def is_weighted(self):
+        return self.__weighted
+
+    # a method to return whether the graph is oriented
+    def is_oriented(self):
+        return self.__oriented
+
+    # a method to return whether the graph is directed
+    def is_directed(self):
+        return self.__directed
+
+    # returns whether the graph contains the element
+    def contains(self, item):
+        if self.__elements_type is not None and type(item) != self.__elements_type:
+            raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
+
+        return item in self.__vertices_set
+
+    # checks if an edge from first_item to the second_item exists, returns the weight of the edge
+    def contains_edge(self, first_item, second_item):
+        if self.__elements_type is not None and type(first_item) != self.__elements_type:
+            raise TypeError("The first argument is not of type " + str(self.__elements_type))
+
+        if self.__elements_type is not None and type(second_item) != self.__elements_type:
+            raise TypeError("The second argument is not of type " + str(self.__elements_type))
+
+        if first_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the first argument")
+
+        if second_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the second argument")
+
+        return self.__edges[self.__vertices_list.index(first_item)][self.__vertices_list.index(second_item)] is not None
+
+    # get the weight of an edge of a weighted graph
+    def get_edge_weight(self, first_item, second_item):
+        if self.__elements_type is not None and type(first_item) != self.__elements_type:
+            raise TypeError("The first argument is not of type " + str(self.__elements_type))
+
+        if self.__elements_type is not None and type(second_item) != self.__elements_type:
+            raise TypeError("The second argument is not of type " + str(self.__elements_type))
+
+        if first_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the first argument")
+
+        if second_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the second argument")
+
+        if not self.__weighted:
+            raise ValueError("The graph is not weighted. Use the contains_edge method.")
+
+        index_1 = self.__vertices_list.index(first_item)
+        index_2 = self.__vertices_list.index(second_item)
+
+        if self.__edges[index_1][index_2] is None:
+            raise ValueError("The edge doesn't exist.")
+        else:
+            return self.__edges[index_1][index_2]
+
+    # a getter method for the vertices of the graph
+    def vertices(self):
+        return self.__vertices_list
+
+    # a getter method for the edges of the graph
+    def edges(self):
+        return self.__edges
+
+    def edges_of(self, item):
+        if self.__elements_type is not None and type(item) != self.__elements_type:
+            raise TypeError("The argument is not of type " + str(self.__elements_type))
+
+        if item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the argument")
+
+        init_index = self.__vertices_list.index(item)
+        connected_vertices = []
+        for index in self.__edges[init_index]:
+            if self.__edges[init_index][index] is not None:
+                connected_vertices.append(self.__vertices_list[index])
+
+        return connected_vertices
+
+    # the add method which adds a node to the graph
+    def add_node(self, item):
+        if self.__elements_type is not None and type(item) != self.__elements_type:
+            raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
+
+        if item not in self.__vertices_set:
+            self.__vertices_set.add(item)
+            self.__vertices_list.append(item)
+
+            if len(self.__vertices_set) > len(self.__edges):
+                new_edges = []
+                for i in range(2*len(self.__edges)):
+                    for j in range(2*len(self.__edges)):
+                        try:
+                            new_edges[i][j] = self.__edges[i][j]
+                        except IndexError:
+                            new_edges[i][j] = None
+
+                self.__edges = new_edges
+
+    # the remove method which removes a node from the graph
+    def remove_node(self, item):
+        if self.__elements_type is not None and type(item) != self.__elements_type:
+            raise TypeError("The item you are trying to remove is not of type " + str(self.__elements_type))
+
+        if item in self.__vertices_set:
+            index = self.__vertices_list.index(item)
+            self.__vertices_set.remove(item)
+            del self.__vertices_list[index]
+
+            self.__edges[index] = []
+            for i in range(len(self.__edges)):
+                self.__edges[index].append(None)
+
+            for node_edges in self.__edges:
+                if node_edges[index] is not None:
+                    node_edges[index] = None
+        else:
+            raise KeyError("The graph doesn't contain the node you are trying to delete")
+
+    # the add_edge method which adds an edge between the two nodes
+    def add_edge(self, first_item, second_item, edge_weight=None):
+        if self.__elements_type is not None and type(first_item) != self.__elements_type:
+            raise TypeError("The item from which you are trying to add an edge is not of type "
+                            + str(self.__elements_type))
+
+        if self.__elements_type is not None and type(second_item) != self.__elements_type:
+            raise TypeError("The item to which you are trying to add an edge is not of type "
+                            + str(self.__elements_type))
+
+        if edge_weight is not None and (type(edge_weight) != float and type(edge_weight) != int):
+            raise TypeError("The edge weight must be an integer")
+
+        if first_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the node from which you are trying to add an edge")
+
+        if second_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the node to which you are trying to add an edge")
+
+        first_index = self.__vertices_list.index(first_item)
+        second_index = self.__vertices_list.index(second_item)
+
+        weight = None
+        if self.__weighted:
+            if edge_weight is not None:
+                weight = edge_weight
+            else:
+                raise ValueError("Edge weight cannot be none when the graph is weighted.")
+
+        if self.__directed:
+            if self.__oriented:
+                if self.__edges[second_index][first_index] is None:
+                    if self.__weighted:
+                        self.__edges[first_index][second_index] = weight
+                    else:
+                        self.__edges[first_index][second_index] = 1
+                else:
+                    raise KeyError("The graph is oriented and an edge with this nodes already exists")
+            else:
+                self.__edges[first_index][second_index] = 1
+        else:
+            self.__edges[first_index][second_index] = 1
+            self.__edges[second_index][first_index] = 1
+
+    # the remove_edge method which removes an edge between the two nodes
+    def remove_edge(self, first_item, second_item):
+        if self.__elements_type is not None and type(first_item) != self.__elements_type:
+            raise TypeError("The item from which you are trying to remove an edge is not of type "
+                            + str(self.__elements_type))
+
+        if self.__elements_type is not None and type(second_item) != self.__elements_type:
+            raise TypeError("The item to which you are trying to remove an edge is not of type "
+                            + str(self.__elements_type))
+
+        if first_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the node from which you are trying to remove an edge")
+
+        if second_item not in self.__vertices_set:
+            raise KeyError("The graph doesn't contain the node to which you are trying to remove an edge")
+
+        first_index = self.__vertices_list.index(first_item)
+        second_index = self.__vertices_list.index(second_item)
+
+        if self.__directed:
+            self.__edges[first_index][second_index] = None
+        else:
+            self.__edges[first_index][second_index] = None
+            self.__edges[second_index][first_index] = None
