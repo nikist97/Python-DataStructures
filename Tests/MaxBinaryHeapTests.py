@@ -58,6 +58,12 @@ class MaxBinaryHeapTests(unittest.TestCase):
         self.assertEqual(heap.size(), 5, "Size method is not correct")
 
     def test_type(self):
+        with self.assertRaises(TypeError):
+            heap = MaxBinaryHeap(elements_type=5.4)
+
+        with self.assertRaises(TypeError):
+            heap = MaxBinaryHeap(elements_type=None)
+
         heap = MaxBinaryHeap()
         self.assertEqual(heap.type(), int, "type method is not correct")
 

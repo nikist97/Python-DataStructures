@@ -49,6 +49,9 @@ class PriorityQueueTest(unittest.TestCase):
         self.assertEqual(len(priority_queue), 1, "Wrong len implementation")
 
     def test_type(self):
+        with self.assertRaises(TypeError):
+            priority_queue = PriorityQueue(elements_type=5.4)
+
         priority_queue = PriorityQueue()
         self.assertEqual(priority_queue.type(), None, "Wrong type at initialization")
         priority_queue.enqueue(5, 5)

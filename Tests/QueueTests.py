@@ -126,6 +126,9 @@ class QueueTest(unittest.TestCase):
         queue = Queue()
         self.assertEqual(queue.type(), None)
 
+        with self.assertRaises(TypeError):
+            queue = Queue(elements_type="type")
+
         queue = Queue(elements_type=list)
         self.assertEqual(queue.type(), list)
 

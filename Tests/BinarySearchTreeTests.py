@@ -116,6 +116,12 @@ class BinarySearchTreeTest(unittest.TestCase):
         self.assertEqual(count, 0, "Iterator doesn't work with empty tree")
 
     def test_type(self):
+        with self.assertRaises(TypeError):
+            BinarySearchTree(elements_type=None)
+
+        with self.assertRaises(TypeError):
+            BinarySearchTree(elements_type=2)
+
         binary = BinarySearchTree(elements_type=str)
         with self.assertRaises(TypeError):
             binary.add(4)

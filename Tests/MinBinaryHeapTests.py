@@ -58,6 +58,12 @@ class MinBinaryHeapTests(unittest.TestCase):
         self.assertEqual(heap.size(), 5, "Size method is not correct")
 
     def test_type(self):
+        with self.assertRaises(TypeError):
+            heap = MinBinaryHeap(elements_type=5.4)
+
+        with self.assertRaises(TypeError):
+            heap = MinBinaryHeap(elements_type=None)
+
         heap = MinBinaryHeap()
         self.assertEqual(heap.type(), int, "type method is not correct")
 

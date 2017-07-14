@@ -107,6 +107,9 @@ class StackTest(unittest.TestCase):
         stack = Stack()
         self.assertEqual(stack.type(), None)
 
+        with self.assertRaises(TypeError):
+            stack = Stack(elements_type=3)
+
         stack = Stack(elements_type=list)
         self.assertEqual(stack.type(), list)
 
