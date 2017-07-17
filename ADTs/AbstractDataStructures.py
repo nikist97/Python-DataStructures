@@ -224,6 +224,10 @@ class BinarySearchTree(object):
     def __len__(self):
         return self.get_number_of_elements()
 
+    # is_empty method checks if number of elements is 0
+    def is_empty(self):
+        return self.get_number_of_elements() == 0
+
     # overriding the __iter__ method, so that we can go through the elements of the tree
     def __iter__(self):
         self.__current_item = self.__get_minimum_node()
@@ -1002,19 +1006,19 @@ class Graph(object):
 
     # a constructor for the graph
     def __init__(self, elements_type=None, directed=False, oriented=False, weighted=False):
-        if type(elements_type) != type:
+        if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
         self.__elements_type = elements_type
 
         if oriented and not directed:
-            raise ValueError("A graph cannot be oriented, but not directed at the same time")
+            raise ValueError("A graph cannot be oriented and not directed at the same time")
 
         self.__directed = directed
         self.__oriented = oriented
         self.__weighted = weighted
-        self.__vertices_set = set()
-        self.__vertices_list = []
+        self.__nodes_set = set()
+        self.__nodes_list = []
         self.__edges = []
         for i in range(10):
             self.__edges.append([None, None, None, None, None, None, None, None, None, None])
@@ -1030,7 +1034,7 @@ class Graph(object):
 
     # iterator for the graph
     def __iter__(self):
-        return iter(self.__vertices_list)
+        return iter(self.__nodes_list)
 
     # the 'element in graph' method
     def __contains__(self, item):
@@ -1038,7 +1042,11 @@ class Graph(object):
 
     # returns the number of nodes in the graph
     def size(self):
-        return len(self.__vertices_set)
+        return len(self.__nodes_set)
+
+    # is_empty method checks if the size of the graph is 0
+    def is_empty(self):
+        return self.size() == 0
 
     # a method to return the type of elements in the graph
     def type(self):
@@ -1061,7 +1069,7 @@ class Graph(object):
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
 
-        return item in self.__vertices_set
+        return item in self.__nodes_set
 
     # checks if an edge from first_item to the second_item exists, returns the weight of the edge
     def contains_edge(self, first_item, second_item):
@@ -1071,13 +1079,13 @@ class Graph(object):
         if self.__elements_type is not None and type(second_item) != self.__elements_type:
             raise TypeError("The second argument is not of type " + str(self.__elements_type))
 
-        if first_item not in self.__vertices_set:
+        if first_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the first argument")
 
-        if second_item not in self.__vertices_set:
+        if second_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the second argument")
 
-        return self.__edges[self.__vertices_list.index(first_item)][self.__vertices_list.index(second_item)] is not None
+        return self.__edges[self.__nodes_list.index(first_item)][self.__nodes_list.index(second_item)] is not None
 
     # get the weight of an edge of a weighted graph
     def get_edge_weight(self, first_item, second_item):
@@ -1087,17 +1095,17 @@ class Graph(object):
         if self.__elements_type is not None and type(second_item) != self.__elements_type:
             raise TypeError("The second argument is not of type " + str(self.__elements_type))
 
-        if first_item not in self.__vertices_set:
+        if first_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the first argument")
 
-        if second_item not in self.__vertices_set:
+        if second_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the second argument")
 
         if not self.__weighted:
             raise ValueError("The graph is not weighted. Use the contains_edge method.")
 
-        index_1 = self.__vertices_list.index(first_item)
-        index_2 = self.__vertices_list.index(second_item)
+        index_1 = self.__nodes_list.index(first_item)
+        index_2 = self.__nodes_list.index(second_item)
 
         if self.__edges[index_1][index_2] is None:
             raise ValueError("The edge doesn't exist.")
@@ -1105,8 +1113,8 @@ class Graph(object):
             return self.__edges[index_1][index_2]
 
     # a getter method for the vertices of the graph
-    def vertices(self):
-        return self.__vertices_list
+    def nodes(self):
+        return self.__nodes_list
 
     # a getter method for the edges of the graph
     def edges(self):
@@ -1116,27 +1124,27 @@ class Graph(object):
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The argument is not of type " + str(self.__elements_type))
 
-        if item not in self.__vertices_set:
+        if item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the argument")
 
-        init_index = self.__vertices_list.index(item)
-        connected_vertices = []
+        init_index = self.__nodes_list.index(item)
+        connected_nodes = []
         for index in self.__edges[init_index]:
             if self.__edges[init_index][index] is not None:
-                connected_vertices.append(self.__vertices_list[index])
+                connected_nodes.append(self.__nodes_list[index])
 
-        return connected_vertices
+        return connected_nodes
 
     # the add method which adds a node to the graph
     def add_node(self, item):
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
 
-        if item not in self.__vertices_set:
-            self.__vertices_set.add(item)
-            self.__vertices_list.append(item)
+        if item not in self.__nodes_set:
+            self.__nodes_set.add(item)
+            self.__nodes_list.append(item)
 
-            if len(self.__vertices_set) > len(self.__edges):
+            if len(self.__nodes_set) > len(self.__edges):
                 new_edges = []
                 for i in range(2*len(self.__edges)):
                     for j in range(2*len(self.__edges)):
@@ -1152,10 +1160,10 @@ class Graph(object):
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to remove is not of type " + str(self.__elements_type))
 
-        if item in self.__vertices_set:
-            index = self.__vertices_list.index(item)
-            self.__vertices_set.remove(item)
-            del self.__vertices_list[index]
+        if item in self.__nodes_set:
+            index = self.__nodes_list.index(item)
+            self.__nodes_set.remove(item)
+            del self.__nodes_list[index]
 
             self.__edges[index] = []
             for i in range(len(self.__edges)):
@@ -1180,14 +1188,14 @@ class Graph(object):
         if edge_weight is not None and (type(edge_weight) != float and type(edge_weight) != int):
             raise TypeError("The edge weight must be an integer")
 
-        if first_item not in self.__vertices_set:
+        if first_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the node from which you are trying to add an edge")
 
-        if second_item not in self.__vertices_set:
+        if second_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the node to which you are trying to add an edge")
 
-        first_index = self.__vertices_list.index(first_item)
-        second_index = self.__vertices_list.index(second_item)
+        first_index = self.__nodes_list.index(first_item)
+        second_index = self.__nodes_list.index(second_item)
 
         weight = None
         if self.__weighted:
@@ -1221,14 +1229,14 @@ class Graph(object):
             raise TypeError("The item to which you are trying to remove an edge is not of type "
                             + str(self.__elements_type))
 
-        if first_item not in self.__vertices_set:
+        if first_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the node from which you are trying to remove an edge")
 
-        if second_item not in self.__vertices_set:
+        if second_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the node to which you are trying to remove an edge")
 
-        first_index = self.__vertices_list.index(first_item)
-        second_index = self.__vertices_list.index(second_item)
+        first_index = self.__nodes_list.index(first_item)
+        second_index = self.__nodes_list.index(second_item)
 
         if self.__directed:
             self.__edges[first_index][second_index] = None

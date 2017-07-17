@@ -117,6 +117,7 @@ tree = BinarySearchTree(root = "man", elements_type = str) # type is set to str,
 
 tree.get_number_of_elements() # returns the number of elements in the tree
 len(tree) # same as tree.get_number_of_elements()
+tree.is_empty() # returns True if the tree is empty and False otherwise
 
 str(tree) # returns a string in the format Binary search tree with root 'root'
 
