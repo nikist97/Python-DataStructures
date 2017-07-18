@@ -1120,6 +1120,7 @@ class Graph(object):
     def edges(self):
         return self.__edges
 
+    # returns the connected nodes to the given item
     def edges_of(self, item):
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The argument is not of type " + str(self.__elements_type))
@@ -1129,7 +1130,7 @@ class Graph(object):
 
         init_index = self.__nodes_list.index(item)
         connected_nodes = []
-        for index in self.__edges[init_index]:
+        for index in range(len(self.__edges[init_index])):
             if self.__edges[init_index][index] is not None:
                 connected_nodes.append(self.__nodes_list[index])
 
@@ -1147,11 +1148,13 @@ class Graph(object):
             if len(self.__nodes_set) > len(self.__edges):
                 new_edges = []
                 for i in range(2*len(self.__edges)):
+                    node_edges = []
                     for j in range(2*len(self.__edges)):
                         try:
-                            new_edges[i][j] = self.__edges[i][j]
+                            node_edges.append(self.__edges[i][j])
                         except IndexError:
-                            new_edges[i][j] = None
+                            node_edges.append(None)
+                    new_edges.append(node_edges)
 
                 self.__edges = new_edges
 
@@ -1186,7 +1189,7 @@ class Graph(object):
                             + str(self.__elements_type))
 
         if edge_weight is not None and (type(edge_weight) != float and type(edge_weight) != int):
-            raise TypeError("The edge weight must be an integer")
+            raise TypeError("The edge weight must be of type integer or float")
 
         if first_item not in self.__nodes_set:
             raise KeyError("The graph doesn't contain the node from which you are trying to add an edge")
@@ -1214,10 +1217,17 @@ class Graph(object):
                 else:
                     raise KeyError("The graph is oriented and an edge with this nodes already exists")
             else:
-                self.__edges[first_index][second_index] = 1
+                if self.__weighted:
+                    self.__edges[first_index][second_index] = weight
+                else:
+                    self.__edges[first_index][second_index] = 1
         else:
-            self.__edges[first_index][second_index] = 1
-            self.__edges[second_index][first_index] = 1
+            if self.__weighted:
+                self.__edges[first_index][second_index] = weight
+                self.__edges[second_index][first_index] = weight
+            else:
+                self.__edges[first_index][second_index] = 1
+                self.__edges[second_index][first_index] = 1
 
     # the remove_edge method which removes an edge between the two nodes
     def remove_edge(self, first_item, second_item):
