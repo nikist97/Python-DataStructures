@@ -1,9 +1,11 @@
 # Abstract Data Structures and Algorithms-Python
 
+##_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_
+
 ### Abstract Data Structures in Python
 
-**_Implementation for a Stack, a Queue, a Binary Search Tree, a Max Binary Heap, a Min Binary Heap and a Priority Queue
- in Python_** <br>
+**_Implementation for Stack, Queue, Binary Search Tree, Max Binary Heap, Min Binary Heap, Priority Queue and 
+Graph in Python_** <br>
 **All of these are located in the AbstractDataStructures.py module** <br><br>
 
 - **_Stack (First-In-Last-Out)_** <br>
@@ -339,6 +341,9 @@ priority_queue.is_empty() # will return True
 <br>
 
 ### Algorithms
+
+**_Implementation for sorting algorithms, n-queen solver algorithm and minimax algorithm 
+for playing tic-tac-toe in Python_** <br>
 
 **_Sorting Algorithms in Python - Insertion Sort, Selection Sort, Bubble Sort,
 Merge Sort, Quick Sort_** <br>
