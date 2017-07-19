@@ -16,6 +16,7 @@ limitations under the License.
 
 
 from abc import ABC, abstractmethod
+from copy import deepcopy
 
 
 # Abstract Data Type stack, Last In First Out (LIFO)
@@ -1067,7 +1068,7 @@ class Graph(object):
     # returns whether the graph contains the element
     def contains(self, item):
         if self.__elements_type is not None and type(item) != self.__elements_type:
-            raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
+            raise TypeError("The item you are trying to find is not of type " + str(self.__elements_type))
 
         return item in self.__nodes_set
 
@@ -1112,13 +1113,15 @@ class Graph(object):
         else:
             return self.__edges[index_1][index_2]
 
-    # a getter method for the vertices of the graph
+    # a getter method for the vertices of the graph, returns a copy of the list, so that the original list containing
+    # the nodes of the graph is not manually altered by the user
     def nodes(self):
-        return self.__nodes_list
+        return deepcopy(self.__nodes_list)
 
-    # a getter method for the edges of the graph
+    # a getter method for the edges of the graph, returns a copy of the list, so that the original list containing
+    # the edges of the graph is not manually altered by the user
     def edges(self):
-        return self.__edges
+        return deepcopy(self.__edges)
 
     # returns the connected nodes to the given item
     def edges_of(self, item):
@@ -1140,6 +1143,9 @@ class Graph(object):
     def add_node(self, item):
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
+
+        if item is None:
+            raise AttributeError("You cannot add None nodes to the graph")
 
         if item not in self.__nodes_set:
             self.__nodes_set.add(item)
@@ -1247,6 +1253,9 @@ class Graph(object):
 
         first_index = self.__nodes_list.index(first_item)
         second_index = self.__nodes_list.index(second_item)
+
+        if self.__edges[first_index][second_index] is None:
+            raise KeyError("The graph doesn't contain the edge you are trying to delete.")
 
         if self.__directed:
             self.__edges[first_index][second_index] = None
