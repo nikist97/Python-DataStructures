@@ -375,7 +375,7 @@ class GraphTest(unittest.TestCase):
             graph.add_node(node)
         edges = graph.edges()
         for l in edges:
-            self.assertEqual(l, [None]*10, "Wrong edges implementation")
+            self.assertEqual(l, [None]*5, "Wrong edges implementation")
 
         graph.add_edge(0, 1)
         graph.add_edge(1, 2)
@@ -404,7 +404,7 @@ class GraphTest(unittest.TestCase):
         graph = Graph(int)
         with self.assertRaises(TypeError):
             graph.add_node(5.0)
-        self.assertEqual(len(graph.edges()), 10, "Wrong number of edges at initialization")
+        self.assertEqual(len(graph.edges()), 5, "Wrong number of edges at initialization")
         for i in range(100):
             graph.add_node(i*2)
         self.assertEqual(len(graph.edges()), 160, "Wrong add_node implementation")

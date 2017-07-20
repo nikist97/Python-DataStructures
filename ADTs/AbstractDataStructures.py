@@ -1021,8 +1021,11 @@ class Graph(object):
         self.__nodes_set = set()
         self.__nodes_list = []
         self.__edges = []
-        for i in range(10):
-            self.__edges.append([None, None, None, None, None, None, None, None, None, None])
+        for i in range(5):
+            none_list = []
+            for j in range(5):
+                none_list.append(None)
+            self.__edges.append(none_list)
 
     # len(graph) method
     def __len__(self):
