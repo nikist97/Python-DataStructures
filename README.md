@@ -170,11 +170,16 @@ The BinaryHeap's implementation is generic: you can specify the type of elements
 specified, it is set to int, hence only integers can be added to the heap. The BinaryHeap class is abstract. You cannot 
 instantiate it. The implementation includes two types of heaps, which you can use: MinBinaryHeap and MaxBinaryHeap.
 <br>
+
 **MinBinaryHeap** - a heap with its root being the minimum element <br>
 MinBinaryHeap implements the common operations of a heap: add, replace_root, remove_min, peek_min, size, etc.
+
 <br>
+
 **MaxBinaryHeap** - a heap with its root being the maximum element <br>
 MaxBinaryHeap implements the common operations of a heap: add, replace_root, remove_max, peek_max, size, etc.
+
+<br>
 
 MinBinaryHeap _API_ : 
 ```python
