@@ -14,7 +14,9 @@ If not specified, it is set to None and elements of any type can be added to the
 implementation includes all the common operations of a stack: peek, push, pop, size, etc.<br>
 
 _API_ :
-```
+```python
+from ADTs.AbstractDataStructures import Stack # import the stack data structure
+
 stack = Stack() # type is set to None, items of any types can be added
 stack = Stack(elements_type = int) # type is set to int, hence only integers can be pushed
 
@@ -24,6 +26,7 @@ stack.is_empty() # returns True if stack is empty and False otherwise
 
 str(stack) # returns the string representation of the list of elements of the stack
 
+item = "test_item"
 stack.contains(item) # returns True if the item is in the stack and False otherwise
 # contains raises a TypeError if the type of the stack is not None and is different 
 # than the type of the parameter
@@ -38,13 +41,14 @@ stack.peek() # returns the last element that was added to the stack, but doesn't
 stack.pop() # same as peek(), but removes the last element that was added to the stack
 # pop raises a ValueError if there are no elements in the stack
 
+element = "test_item"
 stack.push(element) # pushes the element to the top of the stack
 # push raises a TypeError if the stack has a specified type for elements
 # and the argument is not of that type
 
 # the implemenetation includes an iterator
 for element in stack:
-    print element
+    print(element)
 # keep in mind that the iterator uses stack.pop() to get the next element, hence
 # after the iteration is over the stack would be empty
 ```
@@ -57,7 +61,8 @@ If not specified, it is set to None and elements of any type can be added to the
 implementation includes all the common operations of a queue: enqueue, dequeue, peek, size, etc.<br>
 
 _API_ :
-```
+```python
+from ADTs.AbstractDataStructures import Queue # import the queue data structure
 queue = Queue() # type is set to None, items of any types can be added
 queue = Queue(elements_type = str) # type is set to str, hence only strings can be enqueued
 
@@ -67,7 +72,8 @@ queue.is_empty() # return True if queue is empty and False otherwise
 
 str(queue) # return the string representation of the list of elements of the queue
 
-queue.contains(item) returns True if the item is in the queue and False otherwise
+item = "test_item"
+queue.contains(item) # returns True if the item is in the queue and False otherwise
 # contains raises a TypeError if the type of the queue is not None and is different 
 # than the type of the parameter
 boolean = item in queue 
@@ -81,13 +87,14 @@ queue.peek() # returns the first element that was added to the queue, but doesn'
 queue.dequeue() # same as peek(), but removes the first element that was added to the queue
 # dequeue raises a ValueError if there are no elements in the queue
 
+element = "test_element"
 queue.enqueue(element) # enqueues the element to the back of the queue
 # enqueue raises a TypeError if the queue has a specified type for elements
 # and the argument is not of that type
 
 # the implemenetation includes an iterator
 for element in queue:
-    print element
+    print(element)
 # keep in mind that the iterator uses queue.dequeue() to get the next element, hence
 # after the iteration is over the queue would be empty
 ```
@@ -103,7 +110,9 @@ with no root is created and the first added element becomes the root. The implem
 operations of a binary search tree: contains, add, delete, get_maximum, get_minimum, etc.<br>
 
 _API_ :
-```
+```python
+from ADTs.AbstractDataStructures import BinarySearchTree # import the BinarySearchTree data structure
+
 tree = BinarySearchTree() # type is set to default - int, hence only integers can be added,
 # creates an empty tree with no root
 
@@ -125,10 +134,11 @@ str(tree) # returns a string in the format Binary search tree with root 'root'
 
 tree.type() # returns the type of the elements in the binary search tree
 
+element = "test_element"
 tree.contains(element) # returns true if the element exists in the binary search tree
 # contains raises a TypeError if the type of the argument is not the same as the type of the elements in the tree
 
-element in tree # same as tree.contains(element)
+boolean = element in tree # same as boolean = tree.contains(element)
 
 tree.add(element) # adds the element to the binary tree on the place it should be located
 # add raises a TypeError if the type of the argument is not the same as the type of the elements in the tree
@@ -167,7 +177,9 @@ MinBinaryHeap implements the common operations of a heap: add, replace_root, rem
 MaxBinaryHeap implements the common operations of a heap: add, replace_root, remove_max, peek_max, size, etc.
 
 MinBinaryHeap _API_ : 
-```
+```python
+from ADTs.AbstractDataStructures import MinBinaryHeap # import the min heap
+
 min_heap = MinBinaryHeap() # type is set to default - int, hence only integers can be added
 # creates an empty heap
 
@@ -182,6 +194,7 @@ str(min_heap) # returns a string of the list of elements in the heap
 
 min_heap.type() # returns the type of elements in the heap
 
+element = "test_element"
 min_heap.add(element) # adds the element to the min binary heap on the place it should be located
 # add raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
 
@@ -221,7 +234,9 @@ min_heap.size() # will return 0 after iteration is finished, as explained above
 <br>
 
 MaxBinaryHeap _API_:
-```
+```python
+from ADTs.AbstractDataStructures import MaxBinaryHeap # import the max heap
+
 max_heap = MaxBinaryHeap() # type is set to default - int, hence only integers can be added
 # creates an empty heap
 
@@ -236,6 +251,7 @@ str(max_heap) # returns a string of the list of elements in the heap
 
 max_heap.type() # returns the type of elements in the heap
 
+element = "test_element"
 max_heap.add(element) # adds the element to the max binary heap on the place it should be located
 # add raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
 
@@ -283,7 +299,9 @@ else if the reverse argument is set to True - it dequeues the element with the l
 all the common operations of a priority queue: enqueue, dequeue, peek, size, etc.<br>
 
 _API_ :
-```
+```python
+from ADTs.AbstractDataStructures import PriorityQueue # import the priority queue data structure
+
 priority_queue = PriorityQueue() # type is set to default None, hence objects of all types can be enqueued to the queue
 # the reverse argument is set to default False, hence dequeue returns the element with the highest priority
 
@@ -303,13 +321,16 @@ priority_queue.type() # returns the type of elements that can be enqueued in the
 priority_queue.is_reversed() # returns True if the queue dequeues the element with the lowest priority
 # returns False if the queue dequeues the element with the highest priority
 
+priority = 10
 priority_queue.contains(priority) # returns True if the queue has an element, linked to the given priority and False otherwise
 # contains raises a TypeError if type of priority is not int
 boolean = priority in priority_queue # same as priority_queue.contains(priority)
 
+element = "test_element"
 priority_queue.contains_element(element) # returns True if an element is contained in the queue
 # raises TypeError if priority_queue.type() is not None and is different than the type of the given element
 
+item = "test_item"
 priority_queue.enqueue(item, priority) # enqueues the given item and links it the given priority
 # raises TypeError if type(priority) is not int
 # raises TypeError if priority_queue.type() is not None and is different than the type of the given item
@@ -371,7 +392,9 @@ Note the initial size of the matrix, which is 5 by 5 matrix. The indices of 5.5 
 respectively and the graph is not directed. That's why edges[0][2] = edges[2][0] = 1.
 
 _API_ :
-```
+```python
+from ADTs.AbstractDataStructures import Graph # import the graph data structure
+
 graph = Graph() # initialize a graph with None elements type, hence all types of elements can be added to the graph
 # the initialized graph is also nor directed, neither oriented, neither weighted
 
@@ -399,10 +422,13 @@ graph.is_oriented() # returns True if the graph is oriented and False otherwise
 
 graph.is_weighted() # returns True if the graph is weighted and False otherwise
 
+item = "test_element"
 graph.contains(item) # returns True if item is in the set of nodes of the graph and False otherwise
 # raises a TypeError if the type of the graph is not None and is different than the type of the argument
-item in graph # same as graph.contains(item)
+boolean = item in graph # same as graph.contains(item)
 
+first_item = "first_test_item"
+second_item = "second_test_item"
 graph.contains_edge(first_item, second_item) # returns True if an edge from first_item to second_item exists
 # raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
 # raises a KeyError if first_item or second_item is not a node that the graph contains
@@ -436,6 +462,7 @@ graph.edges_of(item) # returns a list of all nodes to which there is an edge fro
 # raises a TypeError if the type of the graph is not None and is different than the type of the argument
 # raises a KeyError if the item if not a node in the graph
 
+edge_weight = "test_edge_weight"
 graph.add_edge(first_item, second_item, edge_weight) # adds an edge from first_item to second_item with the given edge_weight if appropriate
 # edge_weight should only be specified if the graph is weighted, otherwise, just skip this argument (set to None by default)
 # raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
