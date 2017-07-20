@@ -13,7 +13,7 @@ The Stack's implementation is generic: you can specify the type of elements in t
 If not specified, it is set to None and elements of any type can be added to the stack. The
 implementation includes all the common operations of a stack: peek, push, pop, size, etc.<br>
 
-Usages:<br>
+_API_ :
 ```
 stack = Stack() # type is set to None, items of any types can be added
 stack = Stack(elements_type = int) # type is set to int, hence only integers can be pushed
@@ -56,7 +56,7 @@ The Queue's implementation is generic: you can specify the type of elements in t
 If not specified, it is set to None and elements of any type can be added to the queue. The
 implementation includes all the common operations of a queue: enqueue, dequeue, peek, size, etc.<br>
 
-Usages:<br>
+_API_ :
 ```
 queue = Queue() # type is set to None, items of any types can be added
 queue = Queue(elements_type = str) # type is set to str, hence only strings can be enqueued
@@ -102,7 +102,7 @@ You can also initiate the root of the tree by specifying it in the constructor. 
 with no root is created and the first added element becomes the root. The implementation includes all the common
 operations of a binary search tree: contains, add, delete, get_maximum, get_minimum, etc.<br>
 
-Usages:<br>
+_API_ :
 ```
 tree = BinarySearchTree() # type is set to default - int, hence only integers can be added,
 # creates an empty tree with no root
@@ -166,7 +166,7 @@ MinBinaryHeap implements the common operations of a heap: add, replace_root, rem
 **MaxBinaryHeap** - a heap with its root being the maximum element <br>
 MaxBinaryHeap implements the common operations of a heap: add, replace_root, remove_max, peek_max, size, etc.
 
-MinBinaryHeap Usages:<br>
+MinBinaryHeap _API_ : 
 ```
 min_heap = MinBinaryHeap() # type is set to default - int, hence only integers can be added
 # creates an empty heap
@@ -220,7 +220,7 @@ min_heap.size() # will return 0 after iteration is finished, as explained above
 
 <br>
 
-MaxBinaryHeap Usages:<br>
+MaxBinaryHeap _API_:
 ```
 max_heap = MaxBinaryHeap() # type is set to default - int, hence only integers can be added
 # creates an empty heap
@@ -282,7 +282,7 @@ argument in the constructor. If reverse is set to False (default) the queue dequ
 else if the reverse argument is set to True - it dequeues the element with the lowest priority. The implementation includes 
 all the common operations of a priority queue: enqueue, dequeue, peek, size, etc.<br>
 
-Usages:<br>
+_API_ :
 ```
 priority_queue = PriorityQueue() # type is set to default None, hence objects of all types can be enqueued to the queue
 # the reverse argument is set to default False, hence dequeue returns the element with the highest priority
@@ -336,6 +336,125 @@ for item in priority_queue:
 # keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
 # is finished the priority_queue will be empty
 priority_queue.is_empty() # will return True
+```
+
+<br> <br>
+
+- **_Graph_** <br>
+The graph's implementation is generic: you can specify the type of elements in the graph in the constructor. 
+If not specified, it is set to None, hence objects of all types can be added to the graph. You can also set the
+directed, oriented and weighted arguments in the constructor if you want to have a graph with a special feature.
+By default, those arguments are set to False. Keep in mind that you cannot initialize a graph, which is oriented and
+not directed at the same time. <br>
+Nodes of the graph are stored in a list and a set, which allows fast checking
+whether the graph contains a certain node in cost of memory. The graph doesn't support duplicate node values <br>
+Edges of the graph are stored in a square matrix: 2-dimensional list which is resized automatically when needed. 
+The initial length of the edges list is 5. A value of None in the matrix represents the absence of an edge. If the graph
+is not weighted a value of 1 represents the presence of a node. If the graph is weighted, an edge would be represented by 
+its weight in the matrix and it must be either float or int. <br>
+The indices in the 2-dimensional list are the indices of the nodes in the list. E.g. <br> 
+if the list of nodes is:
+```python
+nodes = [5.5, "word", 100]
+```
+and we have a non-directed and non-weighted graph with an edge between 5.5 and 100, the edges matrix will be
+```python
+edges = [
+[None, None, 1, None, None],
+[None, None, None, None, None],
+[1, None, None, None, None],
+[None, None, None, None, None],
+[None, None, None, None, None]
+]
+```
+Note the initial size of the matrix, which is 5 by 5 matrix. The indices of 5.5 and 100 in the list of nodes are 0 and 2
+respectively and the graph is not directed. That's why edges[0][2] = edges[2][0] = 1.
+
+_API_ :
+```
+graph = Graph() # initialize a graph with None elements type, hence all types of elements can be added to the graph
+# the initialized graph is also nor directed, neither oriented, neither weighted
+
+graph = Graph(elements_type=int, directed=True, oriented=False, weighted=True)
+# only integers can be added to the initialized graph; the graph is directed, but not oriented; the graph is also weighted
+ 
+graph = Graph(elements_type=str, directed=False, oriented=True, weighted=True)
+# this raises a ValueError since a graph cannot be oriented and not directed at the same time
+
+graph = Graph(float, True, True, True)
+# only floats can be added to the initialized graph; the graph is directed, oriented and weighted
+
+graph.size() # returns the number of elements in the graph
+len(graph) # same as graph.size()
+graph.is_empty() # returns True if there are no nodes in the graph and False otherwise
+
+str(graph) # returns a string in the format 'Graph: directed - boolean, oriented - boolean, weighted - boolean'
+
+graph.type() # returns the type of node values in the graph, returns None if all types of elements are allowed
+# if this method doesn't return None, only nodes of the returned type can be added to the graph
+
+graph.is_directed() # returns True if the graph is directed and False otherwise
+
+graph.is_oriented() # returns True if the graph is oriented and False otherwise
+
+graph.is_weighted() # returns True if the graph is weighted and False otherwise
+
+graph.contains(item) # returns True if item is in the set of nodes of the graph and False otherwise
+# raises a TypeError if the type of the graph is not None and is different than the type of the argument
+item in graph # same as graph.contains(item)
+
+graph.contains_edge(first_item, second_item) # returns True if an edge from first_item to second_item exists
+# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a KeyError if first_item or second_item is not a node that the graph contains
+# if the graph is not directed the result will be the same even if you reverse the order of the arguments
+
+graph.get_edge_weight(first_item, second_item)
+# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a KeyError if first_item or second_item is not a node that the graph contains
+# raises a ValueError if the graph is not weighted
+# raises a ValueError if an edge between first_item and second_item doesn't exist
+# if the graph is not directed the result will be the same even if you reverse the order of the arguments
+
+graph.nodes() # returns a deep copy of the list of nodes of the graph
+# a deep copy is returned to avoid manual changes of the graph by changing the elements in the returned list
+ 
+graph.add_node(item) # adds item to the nodes of the graph if it is not already added
+# raises a TypeError if the type of the graph is not None and is different than the type of the argument
+# raises an AttributeError if item is None
+# if item is already added as a node to the graph, the function does nothing
+
+graph.remove_node(item) 
+# raises a TypeError if the type of the graph is not None and is different than the type of the argument
+# raises a KeyError if item is not a node in the graph
+# remove a node in the graph also removes all edges related to this node (going to and from this node)
+
+graph.edges() # returns a deep copy of the square matrix (2D list) representing the edges of the graph
+# a deep copy is returned to avoid manual changes of the graph by changing the elements in the returned list
+
+graph.edges_of(item) # returns a list of all nodes to which there is an edge from the argument
+# returns an empty list if there are no such nodes
+# raises a TypeError if the type of the graph is not None and is different than the type of the argument
+# raises a KeyError if the item if not a node in the graph
+
+graph.add_edge(first_item, second_item, edge_weight) # adds an edge from first_item to second_item with the given edge_weight if appropriate
+# edge_weight should only be specified if the graph is weighted, otherwise, just skip this argument (set to None by default)
+# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a TypeError if edge_weight is specified and is not of type float or int
+# raises a KeyError if first_item or second_item is not a node that the graph contains
+# raises a ValueError if the graph is weighted and edge_weight is not specified or it is None
+# raises a KeyError if the graph is oriented and an edgre from second_item to first_item already exists
+
+graph.remove_edge(first_item, second_item) # removes the edge from first_item to second_item
+# if the graph is not directed, this function removes the edge from second_item to first_item too
+# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a KeyError if first_item or second_item is not a node that the graph contains
+# raises a KeyError if there is no edge from first_item to second_item
+
+# the implementation includes an iterator too
+for node in graph:
+    print(node)
+# the iterator goes through all nodes in the graph
+# the __iter__ method actually returns the iterator of the list of nodes of the graph
 ```
 
 <br>
