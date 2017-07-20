@@ -1,6 +1,6 @@
 # Abstract Data Structures and Algorithms-Python
 
-##_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_
+**_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
 ### Abstract Data Structures in Python
 
@@ -500,7 +500,9 @@ Takes a list of elements as an argument and sorts the list. Can be used either w
 assignment to a variable.<br>
 
 Usages:<br>
-```
+```python
+from Algorithms.SortingAlgorithms import insertion_sort
+
 elements = [5, 965, -32, 21, 96, -13]
 
 insertion_sort(elements) # sorts the elements argument
@@ -523,7 +525,9 @@ Takes a list of elements as an argument and sorts the list. Can be used either w
 assignment to a variable.<br>
 
 Usages:<br>
-```
+```python
+from Algorithms.SortingAlgorithms import selection_sort
+
 elements = [5, 965, -32, 21, 96, -13]
 
 selection_sort(elements) # sorts the elements argument
@@ -546,7 +550,9 @@ Takes a list of elements as an argument and sorts the list. Can be used either w
 assignment to a variable.<br>
 
 Usages:<br>
-```
+```python
+from Algorithms.SortingAlgorithms import bubble_sort
+
 elements = [5, 965, -32, 21, 96, -13]
 
 bubble_sort(elements) # sorts the elements argument
@@ -570,7 +576,9 @@ assignment to a variable. This is because the method returns a new list with the
 elements of the argument list.<br>
 
 Usages:<br>
-```
+```python
+from Algorithms.SortingAlgorithms import merge_sort
+
 elements = [5, 965, -32, 21, 96, -13]
 
 # WRONG WAY - no assignemnt of the result
@@ -598,7 +606,9 @@ Takes a list of elements as an argument and sorts the list. Can be used either w
 assignment to a variable.<br>
 
 Usages:<br>
-```
+```python
+from Algorithms.SortingAlgorithms import quick_sort
+
 elements = [5, 965, -32, 21, 96, -13]
 
 quick_sort(elements) # sorts the elements argument
@@ -622,7 +632,8 @@ print(elements, new_list) # prints the same list twice, because both reference t
 **This is located in the N-queen.py module** <br>
 
 Usages:<br>
-```
+```python
+from Algorithms.NQueen import n_queen
 # returns the solution indices of the places to put a queen
 n_queen(4) # returns [1, 3, 0, 2]
 # this means (0th row, 1st column), (1st row, 3rd column), (2nd row, 0th column) and
@@ -637,7 +648,9 @@ make in a tic-tac-toe game and the result that this move will lead to : 10 for a
 **This is located in the minimax.py module** <br>
 
 Usages:<br>
-```
+```python
+from Algorithms.minimax import minimax
+
 # you need to give a 2D array representing the board of the game as an argument
 board = []
 board.append([1,0,-1])
@@ -650,7 +663,7 @@ board.append([1,0,-1])
 # calling minimax we get a tuple (score, position)
 # position is a tuple representing a position in the 2D array (i,j)
 # score is 10 -> for a move leading to a win,
--10 -> for a move leading to a loss, 0 -> for a move leading to a tie
+# -10 -> for a move leading to a loss, 0 -> for a move leading to a tie
 
 minimax(board) # returns (10, (1, 0))
 
@@ -670,7 +683,9 @@ only operations such as addition, subtraction, multiplication, division.
 The result is returned as a float number.<br>
 
 Usages:<br>
-```
+```python
+from Applications.ExpressionEvaluator import evaluate_expression
+
 expression = "(7 - 4)*(5 + 3)/2" # the expression is given as a string
 print(evaluate_expression(expression)) # prints 12.0
 
@@ -703,6 +718,6 @@ minimax.py. When you finish a game click Enter to start a new game where you
 go first or click Space to start a new game where the computer goes first.<br>
 
 Usages:<br>
-```
+```python
 # just run the tic-tac-toe.py file and the game will start.
 ```
