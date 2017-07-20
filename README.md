@@ -633,7 +633,7 @@ print(elements, new_list) # prints the same list twice, because both reference t
 
 Usages:<br>
 ```python
-from Algorithms.NQueen import n_queen
+from Algorithms.nQueen import n_queen
 # returns the solution indices of the places to put a queen
 n_queen(4) # returns [1, 3, 0, 2]
 # this means (0th row, 1st column), (1st row, 3rd column), (2nd row, 0th column) and
