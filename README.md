@@ -459,6 +459,23 @@ graph.remove_node(item)
 # raises a KeyError if item is not a node in the graph
 # remove a node in the graph also removes all edges related to this node (going to and from this node)
 
+old_node = "test_old_node"
+new_node = "test_new_node"
+graph.replace_node(old_node, new_node) # replaces old_node with new_node in the graph list of nodes if possible
+# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a KeyError if old_node is not a node the graph contains
+# raises a KeyError if new_node is a node the graph contains, since duplicate nodes are not allowed
+
+# the replacing of a node in the graph doesn't affect the edges in the graph, e.g.
+connected_nodes = graph.edges_of(old_node)
+graph.replace_node(old_node, new_node)
+new_connected_nodes = graph.edges_of(new_node)
+print(connected_nodes == new_connected_nodes) 
+# will print True, since edges of the old node are not affected, only the value is replaced
+# the method is useful, since it retains the edges of the old node 
+# and is faster than first removing the old node and then adding the new node
+
+
 graph.edges() # returns a deep copy of the square matrix (2D list) representing the edges of the graph
 # a deep copy is returned to avoid manual changes of the graph by changing the elements in the returned list
 

@@ -496,3 +496,66 @@ class GraphTest(unittest.TestCase):
         new_list = [k for k in graph]
         new_list.sort()
         self.assertEqual(new_list, init_list, "Wrong iterator implementation")
+
+    def test_replace_node(self):
+        graph = Graph(int, directed=False)
+
+        with self.assertRaises(TypeError):
+            graph.replace_node("str", 5)
+
+        with self.assertRaises(TypeError):
+            graph.replace_node(5, "str")
+
+        for i in range(10):
+            graph.add_node(i)
+
+        with self.assertRaises(KeyError):
+            graph.replace_node(55, 6)
+
+        with self.assertRaises(KeyError):
+            graph.replace_node(5, 5)
+        with self.assertRaises(KeyError):
+            graph.replace_node(4, 9)
+
+        graph.add_edge(1, 3)
+        graph.add_edge(1, 5)
+        graph.add_edge(6, 2)
+        graph.add_edge(2, 1)
+
+        self.assertEqual(graph.edges_of(1), [2, 3, 5])
+        graph.replace_node(1, 11)
+        self.assertEqual(graph.edges_of(11), [2, 3, 5], "Wrong replace_node implementation.")
+        with self.assertRaises(KeyError):
+            graph.edges_of(1)
+        with self.assertRaises(KeyError):
+            graph.replace_node(1, 2)
+
+        graph.replace_node(9, 99)
+        self.assertEqual(graph.edges_of(99), [], "Wrong replace_nood implementation")
+
+        graph = Graph()
+        for node in ["string", 5.5, 10, 10.1, "word"]:
+            graph.add_node(node)
+
+        with self.assertRaises(KeyError):
+            graph.replace_node(5, "5")
+
+        with self.assertRaises(KeyError):
+            graph.replace_node(5.5, "word")
+
+        graph.add_edge(5.5, 10)
+        graph.add_edge(10.1, 5.5)
+        graph.add_edge("string", "word")
+        graph.add_edge("word", 5.5)
+
+        self.assertEqual(graph.edges_of(5.5), [10, 10.1, "word"])
+        graph.replace_node(5.5, "5.5")
+        graph.replace_node(10, "10")
+        graph.replace_node(10.1, "10.1")
+
+        for test_node in [5.5, 10, 10.1]:
+            self.assertTrue(str(test_node) in graph, "Wrong replace_node implementation")
+            self.assertFalse(test_node in graph, "Wrong replce_node implementation")
+
+        self.assertEqual(graph.edges_of("5.5"), ["10", "10.1", "word"], "Wrong replace_node implementation")
+        self.assertEqual(graph.edges_of("10"), ["5.5",], "Wrong replace_node implementation")

@@ -1265,3 +1265,21 @@ class Graph(object):
         else:
             self.__edges[first_index][second_index] = None
             self.__edges[second_index][first_index] = None
+
+    # a method, which replaces an old node with the new_node by not removing the old node's edges
+    def replace_node(self, old_node, new_node):
+        if self.__elements_type is not None and type(old_node) != self.__elements_type:
+            raise TypeError("The first argument is not of type " + str(self.__elements_type))
+
+        if self.__elements_type is not None and type(new_node) != self.__elements_type:
+            raise TypeError("The second argument is not of type " + str(self.__elements_type))
+
+        if old_node not in self.__nodes_set:
+            raise KeyError("You cannot replace a node, which the graph doesn't contain.")
+
+        if new_node in self.__nodes_set:
+            raise KeyError("The new node is a node, which the graph already contains.")
+
+        self.__nodes_set.remove(old_node)
+        self.__nodes_set.add(new_node)
+        self.__nodes_list[self.__nodes_list.index(old_node)] = new_node
