@@ -809,7 +809,7 @@ while True:
 nodes = list(breadth_first_search_generator(graph, start_node="float"))
 # after execution nodes would be ["float", 1.5]
 
-# Errors that might be raised when using breadth_first_search_genrator function:
+# Errors that might be raised when using breadth_first_search_generator function:
     # TypeError if the first argument is not of type Graph
     # ValueError if the graph is empty - I mean with no nodes in it
     # TypeError if start_node is provided and its type is different than the type of the graph 
