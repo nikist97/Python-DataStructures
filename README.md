@@ -510,7 +510,7 @@ for node in graph:
 
 ### Algorithms
 
-**_Implementation for sorting algorithms, n-queen solver algorithm and minimax algorithm 
+**_Implementation for sorting algorithms, searching algorithms, n-queen solver algorithm and minimax algorithm 
 for playing tic-tac-toe in Python_** <br>
 
 **_Sorting Algorithms in Python - Insertion Sort, Selection Sort, Bubble Sort,
@@ -521,7 +521,7 @@ Merge Sort, Quick Sort_** <br>
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.SortingAlgorithms import insertion_sort
 
@@ -546,7 +546,7 @@ print(elements, new_list) # prints the same list twice, because both reference t
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.SortingAlgorithms import selection_sort
 
@@ -571,7 +571,7 @@ print(elements, new_list) # prints the same list twice, because both reference t
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.SortingAlgorithms import bubble_sort
 
@@ -597,7 +597,7 @@ Takes a list of elements as an argument and sorts the list. Can only be used wit
 assignment to a variable. This is because the method returns a new list with the sorted
 elements of the argument list.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.SortingAlgorithms import merge_sort
 
@@ -627,7 +627,7 @@ print(elements, new_list) # prints [5, 965, -32, 21, 96, -13], [-32, -13, 5, 21,
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.SortingAlgorithms import quick_sort
 
@@ -648,12 +648,181 @@ new_list.append(111) # appends 111 to the list that new_list references
 print(elements, new_list) # prints the same list twice, because both reference the sorted list
 ```
 
+**_Searching Algorithms in Python - Breadth First Search_** <br>
+**All of these are located in the SearchingAlgorithms.py module** <br><br>
+
+- **_Breadth First Search algorithm_** <br>
+Implemented in three different functions.<br>
+
+First function - <b>breadth_first_search</b> - takes a graph, a function object and a start
+node as arguments. The graph is traversed using the BFS algorithm and for each node the function object passed as argument 
+is applied. If the function returns any result (different than None), the result is returned and the traversal is stopped.
+The start node argument is optional. If you pass it as None (default option), then the first node in the list of nodes in 
+the graph will be used.<br>
+
+The second function - <b>breadth_first_search_list</b> - takes a graph and a start node as arguments. The graph is traversed
+using the BFS algorithm and a list of nodes is returned. The order in the list is the same as the nodes traversal order.
+Same principles as for the previous function applied here for the start node argument.<br>
+
+The third function - <b>breadth_first_search_generator</b> - aboslutely the same idea as breadth_first_search_list. Same arguments,
+same implementation, the only difference is that it returns a generator, which yields the nodes from the breath first
+search traversal one by one.<br>
+
+Examples of <b>breadth_first_search</b> function:<br>
+```python
+from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from Algorithms.SearchAlgorithms import breadth_first_search # import the bfs function
+
+graph = Graph(int, directed=True) # initialize the graph
+for node in range(10):
+    graph.add_node(node) # fill the graph with some nodes
+# fill the graph with some edges
+graph.add_edge(0, 1)
+graph.add_edge(0, 3)
+graph.add_edge(0, 4)
+graph.add_edge(1, 2)
+graph.add_edge(2, 5)
+graph.add_edge(4, 6)
+graph.add_edge(5, 7)
+graph.add_edge(5, 8)
+graph.add_edge(8, 9)
+
+# define a test function to use, keep in mind that the first argument of the function must be the current node 
+# that is being traversed
+def print_func(current_node):
+    print(current_node)
+
+# apply breadth first search with the function defined above
+breadth_first_search(graph, print_func, start_node=None)
+# the start node is set to None (default option) for clarity reasons
+# calling the above function will print the nodes in the following order 0, 1, 3, 4, 2, 6, 5, 7, 8, 9 (BFS traversal)
+# each node will be on new line, since each print is a different call to the test_func
+
+# define another test function, but this times a function with arguments, still the first argument must be the current node
+# that is being traversed
+def search_func(current_node, search_node, nodes_list):
+    nodes_list.append(current_node)
+    
+    if current_node == search_node:
+        return True
+
+# apply breadth first search with the function defined above
+test_list = []
+result = breadth_first_search(graph, search_func, None, 9, test_list)
+# NB! when using a function which takes arguments in the bfs method, we must first declare the start_node (set it to None
+# if you want to start from the first node in the list of nodes in the graph) and then declare all other arguments that 
+# would be passed to the function argument
+
+# calling the function above we want to pass the values 9 and test_list to the search_func function,
+# hence we want to search for the value of 9 and append all nodes we traverse to the empty test_list
+# if we find the node we are searching for, the function returns True and the traversal stops
+
+# Therefore when the above function is executed, result will be True and test_list would be [0, 1, 3, 4, 2, 6, 5, 7, 8, 9]
+# Since 9 is the last node in the bfs traversal, every node would be appended to test_list
+
+# However, if we start the traversal from node 9 and search for node 9 again:
+test_list = [] # reset the test_list
+result = breadth_first_search(graph, search_func, 9, 9, test_list) # call breadth_first_search
+# result would still be True since we find the node 9, but test list would be [9]
+# this is because we start from node 9 and we are searching for node 9, hence only the first node is traversed
+
+# Keep in mind that the traversal of the graph will stop only if the function provided in the arguments returns a result
+# different than None; if it does - this result is returned and the traversal is stopped
+
+# Another thing to keep in mind is that if we start with a node that is not connected to any nodes, the function will
+# traverse only this node
+breadth_first_search(graph, print_func, 9) 
+# will print only 9, since the graph is directed and there is no edge starting from 9
+
+# Also if we traverse the whole graph and no result is returned, the function will return None
+test_list = [] # reset the test_list
+result = breadth_first_search(graph, search_func, 9, 100, test_list) # starting from node 9 and searching for node 100
+# result would be None and test_list would be [9], as we explained above only node 9 will be traversed
+
+# Errors that might be raised when using breadth_first_search function:
+    # TypeError if the first argument is not of type Graph
+    # TypeError if the second argument is not callable
+    # ValueError if the graph is empty - I mean with no nodes in it
+    # TypeError if start_node is provided and its type is different than the type of the graph 
+        # (of course, this applies only if graph.type() is not None)
+    # KeyError if start_node is not a node, which the graph contains
+```
+
+Examples of <b>breadth_first_search_list</b> function:<br>
+```python
+from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from Algorithms.SearchAlgorithms import breadth_first_search_list # import the bfs function
+
+graph = Graph(elements_type=None, directed=True, oriented=True) # initialize the graph
+for node in ["str", 5, 1.5, "float", "int"]:
+    graph.add_node(node) # add some nodes in the graph
+        
+# add some edges in the graph
+graph.add_edge("str", 5)
+graph.add_edge(5, "int")
+graph.add_edge(5, "float")
+graph.add_edge("float", 1.5)
+
+# apply the breadth_first_search_list function to the graph
+nodes = breadth_first_search_list(graph, start_node=None) # returns the list of nodes in the order of the bfs traversal
+# the start node is set to None (default option) for clarity reasons
+# after execution, nodes would be ["str", 5, "float", "int", 1.5]
+
+# apply the breadth_first_search_list function to the graph starting from node "float"
+nodes = breadth_first_search_list(graph, start_node="float")
+# after execution nodes would be ["float", 1.5]
+
+# Errors that might be raised when using breadth_first_search_list function:
+    # TypeError if the first argument is not of type Graph
+    # ValueError if the graph is empty - I mean with no nodes in it
+    # TypeError if start_node is provided and its type is different than the type of the graph 
+        # (of course, this applies only if graph.type() is not None)
+    # KeyError if start_node is not a node, which the graph contains
+```
+
+Examples of <b>breadth_first_search_generator</b> function:<br>
+```python
+from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from Algorithms.SearchAlgorithms import breadth_first_search_generator # import the bfs function
+
+graph = Graph(elements_type=None, directed=True, oriented=True) # initialize the graph
+for node in ["str", 5, 1.5, "float", "int"]:
+    graph.add_node(node) # add some nodes in the graph
+        
+# add some edges in the graph
+graph.add_edge("str", 5)
+graph.add_edge(5, "int")
+graph.add_edge(5, "float")
+graph.add_edge("float", 1.5)
+
+# apply the breadth_first_search_generator function to the graph
+generator = breadth_first_search_generator(graph, start_node=None) # returns a generator of nodes in the order of the bfs traversal
+# the start node is set to None (default option) for clarity reasons
+while True:
+    try:
+        print(next(generator)) # prints the traversed node that was yielded
+    except StopIteration as err:
+        break
+# prints the nodes in the following order: "str", 5, "float", "int", 1.5
+
+# apply the breadth_first_search_generator function to the graph starting from node "float"
+nodes = list(breadth_first_search_generator(graph, start_node="float"))
+# after execution nodes would be ["float", 1.5]
+
+# Errors that might be raised when using breadth_first_search_genrator function:
+    # TypeError if the first argument is not of type Graph
+    # ValueError if the graph is empty - I mean with no nodes in it
+    # TypeError if start_node is provided and its type is different than the type of the graph 
+        # (of course, this applies only if graph.type() is not None)
+    # KeyError if start_node is not a node, which the graph contains
+```
+
 <br>
 
 **_Backtracking algorithm for the famous N-queen problem_** <br>
 **This is located in the N-queen.py module** <br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.nQueen import n_queen
 # returns the solution indices of the places to put a queen
@@ -669,7 +838,7 @@ make in a tic-tac-toe game and the result that this move will lead to : 10 for a
  -10 for a loss and 0 for a tie._** <br>
 **This is located in the minimax.py module** <br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Algorithms.minimax import minimax
 
@@ -704,7 +873,7 @@ algorithm to evaluate simple mathematical expressions. By simple I mean includin
 only operations such as addition, subtraction, multiplication, division.
 The result is returned as a float number.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 from Applications.ExpressionEvaluator import evaluate_expression
 
@@ -739,7 +908,7 @@ against the computer. The computer plays by using the minimax algorithm in
 minimax.py. When you finish a game click Enter to start a new game where you
 go first or click Space to start a new game where the computer goes first.<br>
 
-Usages:<br>
+Examples:<br>
 ```python
 # just run the tic-tac-toe.py file and the game will start.
 ```
