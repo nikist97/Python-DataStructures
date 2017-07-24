@@ -15,7 +15,7 @@ limitations under the License.
 """
 
 
-from Cryptography.math_algorithms import gcd, find_multiplicative_inverse
+from Cryptography.MathAlgorithms import gcd, find_multiplicative_inverse
 
 letters = {
     "a": 0,

@@ -1067,14 +1067,14 @@ print(evaluate_expression("2+3-4/2*2+3*2/0.5")) # prints 16.0
 <br>
 
 **_Tic-Tac-Toe game_** <br>
-**This is located in tic-tac-toe.py** <br><br>
+**This is located in TicTacToe.py** <br><br>
 
-The tic-tac-toe.py file contains a simple tic-tac-toe game where you play
+The TicTacToe.py file contains a simple tic-tac-toe game where you play
 against the computer. The computer plays by using the minimax algorithm in
 minimax.py. When you finish a game click Enter to start a new game where you
 go first or click Space to start a new game where the computer goes first.<br>
 
 Examples:<br>
 ```python
-# just run the tic-tac-toe.py file and the game will start.
+# just run the TicTacToe.py file and the game will start.
 ```
