@@ -17,6 +17,12 @@ limitations under the License.
 import pygame
 import sys
 
+import os
+from os.path import dirname
+path = dirname(dirname(os.path.abspath(__file__)))
+if path not in sys.path:
+    sys.path.append(path)
+
 from Algorithms.nQueen import n_queen
 
 
