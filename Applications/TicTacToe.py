@@ -16,6 +16,14 @@ limitations under the License.
 
 
 import pygame
+
+import os
+import sys
+from os.path import dirname
+path = dirname(dirname(os.path.abspath(__file__)))
+if path not in sys.path:
+    sys.path.append(path)
+
 from Algorithms.minimax import minimax, end_state
 
 
