@@ -995,6 +995,11 @@ from Algorithms.nQueen import n_queen
 n_queen(4) # returns [1, 3, 0, 2]
 # this means (0th row, 1st column), (1st row, 3rd column), (2nd row, 0th column) and
 # (3rd row, 2nd column) are the places to put a queen on the 4x4 board
+
+# if you want to save all the states that were covered before finding a solution, pass a second argument as empty list
+covered_paths = []
+n_queen(6, covered_paths)
+# after execution covered_paths will be a list of lists, and every list in it would be a state the algorithm has covered
 ```
 
 <br>
@@ -1077,4 +1082,41 @@ go first or click Space to start a new game where the computer goes first.<br>
 Examples:<br>
 ```python
 # just run the TicTacToe.py file and the game will start.
+```
+
+**_N-Queen Visualization_** <br>
+**This is located in nQueenVisualization.py** <br><br>
+
+The nQueenVisualization.py file contains a simple pygame script, which shows how will the queens will be placed on a 
+square grid when applying the algorithm.<br>
+
+Examples:<br>
+```python
+# just run the nQueenVisualization.py file and the window will open
+# When running you have to pass as a command line argument the number of queens you want to place on the board
+
+# e.g. in command prompt type: python nQueenVisualization.py 6
+
+# keep in mind that the minimum number of queens for which there is a solution is 4, hence this is the default option
+# if an argument is not passed
+```
+
+**_N-Queen Animation_** <br>
+**This is located in nQueenAnimation.py** <br><br>
+
+The nQueenAnimation.py file contains a simple pygame animation, which shows the process of searching for a solution using
+the bactracking algorithm for the n-queen problem.<br>
+
+Examples:<br>
+```python
+# just run the nQueenAnimation.py file and the animation will start
+# When running you have to pass as a command line argument the number of queens you want to place on the board
+
+# e.g. in command prompt type: python nQueenAnimation.py 6
+
+# keep in mind that the minimum number of queens for which there is a solution is 4, hence this is the default option
+# if an argument is not passed
+
+# another thing to keep in mind is that the speed of the animation may be increased or decreased by changing the delay
+# in the pygame.time.delay method (line 117 - nQueenAnimation.py)
 ```
