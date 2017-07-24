@@ -19,27 +19,33 @@ limitations under the License.
 
 
 # the main method used to solve the n-queen puzzle, argument n is number of queens to be placed
-def n_queen(n):
+def n_queen(n, test_path=None):
 
     assert type(n) is int and n > 0, "Argument n must be a positive integer"
 
-    return next_row(n, 0, [])
+    if test_path is not None:
+        assert type(test_path) == list and len(test_path) == 0
+
+    return next_row(n, 0, [], test_path)
 
 
 # the next_row method which returns a list with indices representing the solution, if there is one
-def next_row(n, current_row, solution):
+def next_row(n, current_row, solution, test_path=None):
     # if we reached the last row, we are done, return the solution
     if current_row == n:
         return solution
 
     # else go through each column
     for index in range(n):
+        if test_path is not None:
+            test_path.append(solution + [index])
+
         # if we have a legal queen solution for now, go to the next place
         if legal_queen(index, current_row, solution):
             # append the next place in solutions
             solution.append(index)
             # recursively call next_row to continue with the next row
-            new_solution = next_row(n, current_row+1, solution)
+            new_solution = next_row(n, current_row+1, solution, test_path)
             # if it didn't return None, return the solution
             if new_solution is not None:
                 return new_solution
