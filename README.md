@@ -2,13 +2,15 @@
 
 **_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
+Navigate to [stack](#stack)
+
 ### Abstract Data Structures in Python
 
 **_Implementation for Stack, Queue, Binary Search Tree, Max Binary Heap, Min Binary Heap, Priority Queue and 
 Graph in Python_** <br>
 **All of these are located in the AbstractDataStructures.py module** <br><br>
 
-- **_Stack (First-In-Last-Out)_** <br>
+- **_Stack<a name="stack"></a> (First-In-Last-Out)_** <br>
 The Stack's implementation is generic: you can specify the type of elements in the stack in the constructor.
 If not specified, it is set to None and elements of any type can be added to the stack. The
 implementation includes all the common operations of a stack: peek, push, pop, size, etc.<br>
