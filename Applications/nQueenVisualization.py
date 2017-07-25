@@ -76,7 +76,6 @@ size = (540, 540)
 
 def main(n):
     solution = n_queen(n)
-    print(solution)
     pygame.init()
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('N-Queen')
