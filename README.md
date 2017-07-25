@@ -999,7 +999,7 @@ nodes = list(depth_first_search_generator(graph, start_node="float"))
 
 Examples:<br>
 ```python
-from Algorithms.nQueen import n_queen
+from Algorithms.nQueen import n_queen, n_queen_generator
 # returns the solution indices of the places to put a queen
 n_queen(4) # returns [1, 3, 0, 2]
 # this means (0th row, 1st column), (1st row, 3rd column), (2nd row, 0th column) and
@@ -1009,6 +1009,17 @@ n_queen(4) # returns [1, 3, 0, 2]
 covered_paths = []
 n_queen(6, covered_paths)
 # after execution covered_paths will be a list of lists, and every list in it would be a state the algorithm has covered
+
+# you can also use the n_queen_generator, which generates each path the algorithm checks one by one and if a StopIteration
+# error is raised the last returned path must be the actual solution
+generator = n_queen_generator(7)
+solution = None
+while True:
+    try:
+        solution = next(generator)
+    except StopIteration as err:
+        break
+print(solution) # prints the solution to the n_queen problem - [0, 2, 4, 6, 1, 3, 5]
 ```
 
 <br>
