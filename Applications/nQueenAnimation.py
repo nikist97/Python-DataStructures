@@ -23,30 +23,24 @@ root_path = dirname(dirname(os.path.abspath(__file__)))
 if root_path not in sys.path:
     sys.path.append(root_path)
 
-from Algorithms.nQueen import n_queen
+from Algorithms.nQueen import n_queen_generator
 
 
 # the Board class represents n-queen board
 class Board(object):
 
     # constructor for the board
-    def __init__(self, grids, square_width, color, queen_color, solution):
+    def __init__(self, grids, square_width, color, queen_color):
         self.color = color
         self.queen_color = queen_color
         self.grids_num = grids
-        self.solution = solution
-
-        assert self.grids_num == len(solution)
 
         # the board used for n-queen algorithm
         self.board = []
         for i in range(self.grids_num):
             to_add = []
             for j in range(self.grids_num):
-                if j != self.solution[i]:
-                    to_add.append(0)
-                else:
-                    to_add.append(1)
+                to_add.append(0)
             self.board.append(to_add)
 
         # square width must be positive
@@ -90,9 +84,7 @@ size = (540, 540)
 
 
 def main(n):
-    paths = []
-    index = 0
-    solution = n_queen(n, paths)
+    generator = n_queen_generator(n)
 
     pygame.init()
     screen = pygame.display.set_mode(size)
@@ -100,7 +92,7 @@ def main(n):
 
     running = True
     clock = pygame.time.Clock()
-    board = Board(n, int(size[0] / n), black, red, solution)
+    board = Board(n, int(size[0] / n), black, red)
 
     while running:
         screen.fill(white)
@@ -109,16 +101,17 @@ def main(n):
             if event.type == pygame.QUIT:
                 running = False
 
-        if index < len(paths):
-            path = paths[index]
+        try:
+            path = next(generator)
             board.update_board(path)
+        except StopIteration:
+            pass
 
         board.draw(screen)
         pygame.time.delay(400)
 
         pygame.display.flip()
         clock.tick()
-        index += 1
 
     pygame.quit()
 

@@ -21,7 +21,7 @@ limitations under the License.
 # the main method used to solve the n-queen puzzle, argument n is number of queens to be placed
 def n_queen(n, test_path=None):
 
-    assert type(n) is int and n > 0, "Argument n must be a positive integer"
+    assert type(n) is int and n >= 4, "Argument n must be a positive integer > 4"
 
     if test_path is not None:
         assert type(test_path) == list and len(test_path) == 0
@@ -66,3 +66,25 @@ def legal_queen(index, current_row, solution):
                                         solution[row] - current_row + row == index:
             return False
     return True
+
+
+# n_queen generator method to generate each path the algorithm tries - non recursive solution
+def n_queen_generator(n):
+    assert type(n) is int and n >= 4, "Argument n must be a positive integer > 4"
+    solution = []
+    current_row = 0
+    test_range = range(n)
+    while len(solution) != n:
+        test_current_row = current_row
+        for index in test_range:
+            yield solution + [index]
+            if legal_queen(index, current_row, solution):
+                current_row += 1
+                solution.append(index)
+                test_range = range(n)
+                break
+        if test_current_row == current_row:
+            last_index = solution[len(solution)-1]
+            solution.remove(last_index)
+            current_row -= 1
+            test_range = range(last_index+1, n)
