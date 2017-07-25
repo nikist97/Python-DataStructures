@@ -2,7 +2,14 @@
 
 **_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
-Navigate to [stack](#stack)
+Navigate to data structures: [Stack](#stack), [Queue](#queue), [Binary Search Tree](#bst), [Min Binary Heap](#minbh), 
+[Max Binary Heap](#maxbh), [Priority Queue](#pq), [Graph](#graph)
+<br><br>
+Navigate to algorithms: [Insertion Sort](#is), [Selection Sort](#ss), [Bubble Sort](#bs), [Merge Sort](#ms), 
+[Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [Minimax](#minimax)
+<br><br>
+Navigate to applications: [Expression Evaluator](#ee), [Tic-Tac-Toe game against the computer](#tic-tac-toe), 
+[N-Queen solver visualization](#nqueen-visualization), [N-Queen solver animation](#nqueen-animation)
 
 ### Abstract Data Structures in Python
 
@@ -57,7 +64,7 @@ for element in stack:
 
 <br> <br>
 
-- **_Queue (First-In-First-Out)_** <br>
+- **_Queue<a name="queue"></a> (First-In-First-Out)_** <br>
 The Queue's implementation is generic: you can specify the type of elements in the queue in the constructor.
 If not specified, it is set to None and elements of any type can be added to the queue. The
 implementation includes all the common operations of a queue: enqueue, dequeue, peek, size, etc.<br>
@@ -104,7 +111,7 @@ for element in queue:
 
 <br> <br>
 
-- **_Binary Search Tree_** <br>
+- **_Binary Search Tree<a name="bst"></a>_** <br>
 The Binary Search Tree's implementation is generic: you can specify the type of elements in the binary search tree
 in the constructor. If not specified, it is set to int, hence only integers can be added to the binary search tree.
 You can also initiate the root of the tree by specifying it in the constructor. If not specified a binary search tree
@@ -183,7 +190,7 @@ MaxBinaryHeap implements the common operations of a heap: add, replace_root, rem
 
 <br>
 
-MinBinaryHeap _API_ : 
+MinBinaryHeap<a name="minbh"></a> _API_ : 
 ```python
 from ADTs.AbstractDataStructures import MinBinaryHeap # import the min heap
 
@@ -240,7 +247,7 @@ min_heap.size() # will return 0 after iteration is finished, as explained above
 
 <br>
 
-MaxBinaryHeap _API_:
+MaxBinaryHeap<a name="maxbh"></a> _API_:
 ```python
 from ADTs.AbstractDataStructures import MaxBinaryHeap # import the max heap
 
@@ -298,7 +305,7 @@ max_heap.size() # will return 0 after iteration is finished, as explained above
 
 <br> <br>
 
-- **_Priority Queue_** <br>
+- **_Priority Queue<a name="pq"></a>_** <br>
 The Priority Queue's implementation is generic: you can specify the type of elements in the queue in the constructor. 
 If not specified, it is set to None, hence objects of all types can be added to the priority queue. You can also set the reverse
 argument in the constructor. If reverse is set to False (default) the queue dequeues the element with the greatest priority, 
@@ -368,7 +375,7 @@ priority_queue.is_empty() # will return True
 
 <br> <br>
 
-- **_Graph_** <br>
+- **_Graph<a name="graph"></a>_** <br>
 The graph's implementation is generic: you can specify the type of elements in the graph in the constructor. 
 If not specified, it is set to None, hence objects of all types can be added to the graph. You can also set the
 directed, oriented and weighted arguments in the constructor if you want to have a graph with a special feature.
@@ -519,7 +526,7 @@ for playing tic-tac-toe in Python_** <br>
 Merge Sort, Quick Sort_** <br>
 **All of these are located in the SortingAlgorithms.py module** <br><br>
 
-- **_Insertion Sort_** <br>
+- **_Insertion Sort<a name="is"></a>_** <br>
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
@@ -544,7 +551,7 @@ new_list.append(111) # appends 111 to the list that new_list references
 print(elements, new_list) # prints the same list twice, because both reference the sorted list
 ```
 
-- **_Selection Sort_** <br>
+- **_Selection Sort<a name="ss"></a>_** <br>
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
@@ -569,7 +576,7 @@ new_list.append(111) # appends 111 to the list that new_list references
 print(elements, new_list) # prints the same list twice, because both reference the sorted list
 ```
 
-- **_Bubble Sort_** <br>
+- **_Bubble Sort<a name="bs"></a>_** <br>
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
@@ -594,7 +601,7 @@ new_list.append(111) # appends 111 to the list that new_list references
 print(elements, new_list) # prints the same list twice, because both reference the sorted list
 ```
 
-- **_Merge Sort_** <br>
+- **_Merge Sort<a name="ms"></a>_** <br>
 Takes a list of elements as an argument and sorts the list. Can only be used with
 assignment to a variable. This is because the method returns a new list with the sorted
 elements of the argument list.<br>
@@ -625,7 +632,7 @@ new_list.append(111) # appends 111 only to the sorted new_list
 print(elements, new_list) # prints [5, 965, -32, 21, 96, -13], [-32, -13, 5, 21, 96, 965, 111]
 ```
 
-- **_Quick Sort_** <br>
+- **_Quick Sort<a name="qs"></a>_** <br>
 Takes a list of elements as an argument and sorts the list. Can be used either with or without
 assignment to a variable.<br>
 
@@ -653,7 +660,7 @@ print(elements, new_list) # prints the same list twice, because both reference t
 **_Searching Algorithms in Python - Breadth First Search, Depth First Search_** <br>
 **All of these are located in the SearchingAlgorithms.py module** <br><br>
 
-- **_Breadth First Search algorithm_** <br>
+- **_Breadth First Search<a name="bfs"></a> algorithm_** <br>
 Implemented in three different functions.<br>
 
 First function - <b>breadth_first_search</b> - takes a graph, a function object and a start
@@ -819,7 +826,7 @@ nodes = list(breadth_first_search_generator(graph, start_node="float"))
     # KeyError if start_node is not a node, which the graph contains
 ```
 
-- **_Depth First Search algorithm_** <br>
+- **_Depth First Search<a name="dfs"></a> algorithm_** <br>
 Implemented in three different functions.<br>
 
 First function - <b>depth_first_search</b> - takes a graph, a function object and a start
@@ -987,7 +994,7 @@ nodes = list(depth_first_search_generator(graph, start_node="float"))
 
 <br>
 
-**_Backtracking algorithm for the famous N-queen problem_** <br>
+**_Backtracking algorithm for the famous N-queen<a name="nqueen"></a> problem_** <br>
 **This is located in the N-queen.py module** <br>
 
 Examples:<br>
@@ -1006,7 +1013,7 @@ n_queen(6, covered_paths)
 
 <br>
 
-**_Minimax algorithm for the tic-tac-toe game. It returns the best move to
+**_Minimax <a name="minimax"></a> algorithm for the tic-tac-toe game. It returns the best move to
 make in a tic-tac-toe game and the result that this move will lead to : 10 for a win,
  -10 for a loss and 0 for a tie._** <br>
 **This is located in the minimax.py module** <br>
@@ -1038,7 +1045,7 @@ minimax(board) # returns (10, (1, 0))
 
 ### Basic applications of data structures and algorithms
 
-**_Expression Evaluator_** <br>
+**_Expression Evaluator<a name="ee"></a>_** <br>
 **This is located in ExpressionEvaluator.py** <br><br>
 
 The ExpressionEvaluator.py file contains an implementation of a simple
@@ -1073,7 +1080,7 @@ print(evaluate_expression("2+3-4/2*2+3*2/0.5")) # prints 16.0
 
 <br>
 
-**_Tic-Tac-Toe game_** <br>
+**_Tic-Tac-Toe<a name="tic-tac-toe"></a> game_** <br>
 **This is located in TicTacToe.py** <br><br>
 
 The TicTacToe.py file contains a simple tic-tac-toe game where you play
@@ -1086,7 +1093,7 @@ Examples:<br>
 # just run the TicTacToe.py file and the game will start.
 ```
 
-**_N-Queen Visualization_** <br>
+**_N-Queen Visualization<a name="nqueen-visualization"></a>_** <br>
 **This is located in nQueenVisualization.py** <br><br>
 
 The nQueenVisualization.py file contains a simple pygame script, which shows how will the queens will be placed on a 
@@ -1103,7 +1110,7 @@ Examples:<br>
 # if an argument is not passed
 ```
 
-**_N-Queen Animation_** <br>
+**_N-Queen Animation<a name="nqueen-animation"></a>_** <br>
 **This is located in nQueenAnimation.py** <br><br>
 
 The nQueenAnimation.py file contains a simple pygame animation, which shows the process of searching for a solution using
