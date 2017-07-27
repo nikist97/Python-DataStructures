@@ -6,7 +6,8 @@ Navigate to data structures: [Stack](#stack), [Queue](#queue), [Binary Search Tr
 [Max Binary Heap](#maxbh), [Priority Queue](#pq), [Graph](#graph)
 <br><br>
 Navigate to algorithms: [Insertion Sort](#is), [Selection Sort](#ss), [Bubble Sort](#bs), [Merge Sort](#ms), 
-[Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [Minimax](#minimax)
+[Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [Minimax](#minimax),
+[Minimax with Alpha-Beta Pruning](#minimax)
 <br><br>
 Navigate to applications: [Expression Evaluator](#ee), [Tic-Tac-Toe game against the computer](#tic-tac-toe), 
 [N-Queen solver visualization](#nqueen-visualization), [N-Queen solver animation](#nqueen-animation)
@@ -1024,14 +1025,14 @@ print(solution) # prints the solution to the n_queen problem - [0, 2, 4, 6, 1, 3
 
 <br>
 
-**_Minimax <a name="minimax"></a> algorithm for the tic-tac-toe game. It returns the best move to
-make in a tic-tac-toe game and the result that this move will lead to : 10 for a win,
+**_Minimax <a name="minimax"></a> and Minimax with Alpha-Beta pruning algorithms for the tic-tac-toe game. 
+Both return the best move to make in a tic-tac-toe game and the result that this move will lead to : 10 for a win,
  -10 for a loss and 0 for a tie._** <br>
-**This is located in the minimax.py module** <br>
+**These are located in the minimax.py module** <br>
 
 Examples:<br>
 ```python
-from Algorithms.minimax import minimax
+from Algorithms.minimax import minimax, pruned_minimax
 
 # you need to give a 2D array representing the board of the game as an argument
 board = []
@@ -1042,14 +1043,31 @@ board.append([1,0,-1])
 # -1 -> opposite player tick
 # 0 -> no player has ticked this place
 
-# calling minimax we get a tuple (score, position)
+# calling minimax we get a tuple (position, score)
 # position is a tuple representing a position in the 2D array (i,j)
 # score is 10 -> for a move leading to a win,
 # -10 -> for a move leading to a loss, 0 -> for a move leading to a tie
 
-minimax(board) # returns (10, (1, 0))
+minimax(board) # returns ((1,0), 10)
 
 # this means that by putting 1 into position (1,0) you will get a win
+
+# pruned_minimax takes the same argument, a 2D list representing the board
+# the algorithm uses alpha-beta pruning
+# it returns a tuple (position, alpha, beta), where alpha value is the one we are interested in
+pruned_minimax(board) # returns ((1, 0), 10, inf)
+
+# this means that by putting 1 into position (1,0) you will get a win, the alpha value shows the maximum score we can reach
+# beta value is infinite at the root node
+
+# if you compare the runtimes of both algorithms on an empty board such as the following:
+board = []
+board.append([0, 0, 0])
+board.append([0, 0, 0])
+board.append([0, 0, 0])
+minimax(board)
+pruned_minimax(board)
+# you will see that the second algorithm is much faster, because it uses Alpha-Beta pruning
 ```
 
 <br>
@@ -1095,7 +1113,7 @@ print(evaluate_expression("2+3-4/2*2+3*2/0.5")) # prints 16.0
 **This is located in TicTacToe.py** <br><br>
 
 The TicTacToe.py file contains a simple tic-tac-toe game where you play
-against the computer. The computer plays by using the minimax algorithm in
+against the computer. The computer plays by using the Minimax algorithm with Alpha-Beta pruning in
 minimax.py. When you finish a game click Enter to start a new game where you
 go first or click Space to start a new game where the computer goes first.<br>
 

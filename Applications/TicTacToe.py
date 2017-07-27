@@ -24,7 +24,7 @@ path = dirname(dirname(os.path.abspath(__file__)))
 if path not in sys.path:
     sys.path.append(path)
 
-from Algorithms.minimax import minimax, end_state
+from Algorithms.minimax import pruned_minimax, end_state
 
 
 # the Board class represents the tic-tac-toe board
@@ -62,7 +62,8 @@ class Board(object):
         self.players[1].clear()
 
         if change_turns:
-            self.players[1].add_position(0, 1, self.minimax_board, 1)
+            computer_position = pruned_minimax(self.minimax_board)
+            self.players[1].add_position(computer_position[0][0], computer_position[0][1], self.minimax_board, 1)
 
     # process_input takes the events that happened as an argument and processes them
     def process_input(self, events):
@@ -75,9 +76,9 @@ class Board(object):
                         y = int(mouse_position[1] / self.square_width)
                         if (x, y) not in self.players[1].positions:
                             if self.players[0].add_position(x, y, self.minimax_board):
-                                computer_position = minimax(self.minimax_board)
+                                computer_position = pruned_minimax(self.minimax_board)
                                 if not end_state(self.minimax_board)[0]:
-                                    self.players[1].add_position(computer_position[1][0], computer_position[1][1],
+                                    self.players[1].add_position(computer_position[0][0], computer_position[0][1],
                                                                  self.minimax_board, 1)
         else:
             for event in events:

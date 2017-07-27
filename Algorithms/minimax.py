@@ -22,7 +22,11 @@ limitations under the License.
 # turn is a variable to represent which turn is it (1 for the player calling minimax or -1 for the other player)
 def minimax(board, turn=1):
     # state_scores holds the scores for each possible state for the next movie to be made
-    state_scores = {}
+    if turn == 1:
+        optimal_value = -20
+    else:
+        optimal_value = 20
+    position = -1, -1
 
     # check if the board is not in an end state
     if not end_state(board)[0]:
@@ -32,37 +36,23 @@ def minimax(board, turn=1):
                 if board[i][j] == 0:
                     # choosing this place and calling minimax recursively to calculate the score if we choose this place
                     board[i][j] = turn
-                    state_scores[(i, j)] = minimax(board, turn*(-1))[0]
+                    result = minimax(board, turn*(-1))
+                    if turn == 1 and optimal_value < result[1]:
+                        optimal_value = result[1]
+                        position = (i, j)
+                    elif turn == -1 and optimal_value > result[1]:
+                        optimal_value = result[1]
+                        position = (i, j)
+
                     # resetting the available space
                     board[i][j] = 0
 
     # if the board is in an end state put the score from the end state of the board: 10 for win, 0 for tie, -10 for loss
     else:
-        state_scores[(-1, -1)] = end_state(board)[1]
+        position = -1, -1
+        optimal_value = end_state(board)[1]
 
-    # if the turn is the turn of the player calling minimax
-    if turn == 1:
-        # get the maximum score and return it and the position associated with this score
-        max_value = -20
-        i = -1
-        j = -1
-        for test in state_scores:
-            if state_scores[test] > max_value:
-                max_value = state_scores[test]
-                i, j = test
-        return max_value, (i, j)
-
-    # if the turn is the turn of the other player
-    else:
-        # get the minimum score and return it and the positioc associated with this score
-        min_value = 20
-        i = -1
-        j = -1
-        for test in state_scores:
-            if state_scores[test] < min_value:
-                min_value = state_scores[test]
-                i, j = test
-        return min_value, (i, j)
+    return position, optimal_value
 
 
 # the end_state method takes a 2D array representing the board as an argument and check if there is an end state
@@ -88,8 +78,53 @@ def end_state(board):
             for j in range(3):
                 if board[i][j] == 0:
                     filled_board = False
+                    break
 
         if filled_board:
             return True, 0
         else:
             return False, 0
+
+
+# minimax algorithm with alpha-beta pruning
+def pruned_minimax(board, turn=1, alpha=None, beta=None):
+    if alpha is None:
+        alpha = -float("inf")
+    if beta is None:
+        beta = float("inf")
+
+    state = end_state(board)
+    position = -1, -1
+
+    # check if the board is not in an end state
+    if not state[0]:
+        # searching for the first available space
+        for i in range(3):
+            for j in range(3):
+                if board[i][j] == 0:
+                    # choosing this place and calling minimax recursively to calculate the score if we choose this place
+                    board[i][j] = turn
+                    result = pruned_minimax(board, turn * (-1), alpha, beta)
+
+                    if turn == 1 and result[2] > alpha:
+                        alpha = result[2]
+                        position = (i, j)
+                    elif turn == -1 and result[1] < beta:
+                        position = (i, j)
+                        beta = result[1]
+
+                    # resetting the available space
+                    board[i][j] = 0
+
+                    if alpha >= beta:
+                        return position, alpha, beta
+
+        return position, alpha, beta
+
+    # if the board is in an end state put the score from the end state of the board: 10 for win, 0 for tie, -10 for loss
+    else:
+        if turn == 1 and state[1] > alpha:
+            alpha = state[1]
+        elif turn == -1 and state[1] < beta:
+            beta = state[1]
+        return position, alpha, beta
