@@ -997,7 +997,7 @@ class PriorityQueue(object):
     # the contains_element method checks if a given element is contained in the queue
     def contains_element(self, element):
         if self.__elements_type is not None and type(element) != self.__elements_type:
-            raise TypeError("Type of the parameter is not " + self.__elements_type)
+            raise TypeError("Type of the parameter is not " + str(self.__elements_type))
 
         return element in self.__elements.values()
 
