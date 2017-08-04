@@ -920,7 +920,7 @@ class PriorityQueue(object):
 
     # the is_empty method, which checks if the size of the priority queue is 0
     def is_empty(self):
-        return len(self.__elements) == 0
+        return self.size() == 0
 
     # the size method, which returns the size of the priority queue
     def size(self):
@@ -1000,6 +1000,134 @@ class PriorityQueue(object):
             raise TypeError("Type of the parameter is not " + str(self.__elements_type))
 
         return element in self.__elements.values()
+
+
+# DuplicatePriorityQueue - a priority queue which allows duplicates for priority
+class DuplicatePriorityQueue(PriorityQueue):
+
+    # overriding the constructor to get a reference to the elements
+    def __init__(self, elements_type=None, reverse=False):
+        super().__init__(elements_type, reverse)
+        self.__elements = self._PriorityQueue__elements
+        self.__indices = self._PriorityQueue__indices
+        self.__duplicates = 0
+
+    # overriding the size method to handle duplicate priorities
+    def size(self):
+        if self.__duplicates == 0:
+            return super().size()
+        else:
+            size = 0
+            for element in self.__elements.values():
+                if type(element) == Queue:
+                    size += len(element)
+                else:
+                    size += 1
+            return size
+
+    def number_of_duplicates(self):
+        return self.__duplicates
+
+    # override the enqueue method to allow duplicate priorities
+    def enqueue(self, item, priority):
+        if type(priority) != int:
+            raise TypeError("The priority must be an integer")
+
+        if self.type() is not None and type(item) != self.type():
+            raise TypeError("The element you are trying to enqueue is not of type " + str(self.type()))
+
+        if priority not in self.__elements:
+            self.__indices.add(priority)
+            self.__elements[priority] = item
+        else:
+            element = self.__elements[priority]
+            if type(element) == Queue:
+                element.enqueue(item)
+            else:
+                duplicates = Queue(self.type())
+                duplicates.enqueue(element)
+                duplicates.enqueue(item)
+                self.__elements[priority] = duplicates
+                self.__duplicates += 1
+
+    # override the dequeue method to work with duplicate values
+    def dequeue(self):
+        if self.is_empty():
+            raise ValueError("The priority queue doesn't contain any elements")
+
+        if type(self.__indices) == MinBinaryHeap:
+            min_priority = self.__indices.peek_min()
+            element_to_return = self.__elements.get(min_priority)
+            if type(element_to_return) != Queue:
+                self.__indices.remove_min()
+                self.__elements.pop(min_priority)
+                return element_to_return
+            else:
+                if len(element_to_return) == 2:
+                    to_return = element_to_return.dequeue()
+                    self.__elements[min_priority] = element_to_return.dequeue()
+                    self.__duplicates -= 1
+                    return to_return
+                else:
+                    return element_to_return.dequeue()
+
+        elif type(self.__indices) == MaxBinaryHeap:
+            max_priority = self.__indices.peek_max()
+            element_to_return = self.__elements.get(max_priority)
+            if type(element_to_return) != Queue:
+                self.__indices.remove_max()
+                self.__elements.pop(max_priority)
+                return element_to_return
+            else:
+                if len(element_to_return) == 2:
+                    to_return = element_to_return.dequeue()
+                    self.__elements[max_priority] = element_to_return.dequeue()
+                    self.__duplicates -= 1
+                    return to_return
+                else:
+                    return element_to_return.dequeue()
+
+    # override the peek method to work with duplicate values
+    def peek(self):
+        if self.is_empty():
+            return None
+
+        to_peek = None
+        if type(self.__indices) == MinBinaryHeap:
+            to_peek = self.__elements.get(self.__indices.peek_min())
+        elif type(self.__indices) == MaxBinaryHeap:
+            to_peek = self.__elements.get(self.__indices.peek_max())
+
+        if type(to_peek) != Queue:
+            return to_peek
+        else:
+            return to_peek.peek()
+
+    # override the get method to work with duplicate priorities
+    def get(self, priority):
+        if type(priority) != int:
+            raise TypeError("The priority parameter must be an integer.")
+        element = self.__elements.get(priority)
+        if type(element) != Queue:
+            return element
+        else:
+            return element.peek()
+
+    # override the contains_element method to search in values with duplicate priorities, too
+    def contains_element(self, element):
+        if self.type() is not None and type(element) != self.type():
+            raise TypeError("Type of the parameter is not " + str(self.type()))
+
+        if self.__duplicates == 0:
+            return super().contains_element(element)
+
+        for test_element in self.__elements.values():
+            if type(test_element) != Queue and test_element == element:
+                return True
+            elif type(test_element) == Queue:
+                if element in test_element:
+                    return True
+        return False
 
 
 # Abstract Data Type Graph
