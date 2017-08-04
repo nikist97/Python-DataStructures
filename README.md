@@ -328,7 +328,7 @@ len(priority_queue) # same as priority_queue.size()
 priority_queue.is_empty() # returns True if there are no elements in the queue and False otherwise
 
 
-str(priority_queue) # returns a string of the dictionary linking prioriies with elements in the queue
+str(priority_queue) # returns a string of the dictionary linking priorities with elements in the queue
 
 priority_queue.type() # returns the type of elements that can be enqueued in the priority queue
 # if this method returns None, objects of all types can be enqueued
@@ -355,6 +355,9 @@ priority_queue.enqueue("first_item", 5)
 priority_queue.enqueue("second_item", 5)
 # doing this will link priority 5 to str object "second_item" while str object "first_item" will be ignored and 
 # removed from the queue
+# Another thing to note is that you can enqueue the same element to different priorities
+priority_queue.enqueue("item", 10)
+priority_queue.enqueue("item", 11)
 
 priority_queue.peek() # returns element with minimum or maximum priority in the queue, but doesn't remove it from the queue
 # if priority_queue.is_reversed() is False, it returns the element with the maximum priority
@@ -374,6 +377,88 @@ for item in priority_queue:
 # keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
 # is finished the priority_queue will be empty
 priority_queue.is_empty() # will return True
+```
+
+<br> <br>
+
+- **_Duplicate Priority Queue<a name="dpq"></a>_** <br>
+The Duplicate Priority Queue behaves exactly as the normal Priority Queue with the only difference being that it allows
+elements with duplicated priorities. This, however is not true for the normal Priority Queue, since in its implementation
+if you enqueue an element with a priority that is already linked to some old element, then the old element would be replaced
+by the new enqueued element. By using a duplicate priority queue, no elements are ignored. Instead, if you dequeue and there 
+are two elements with the same priority, then they will be dequeued in the order they were enqueued.<br>
+
+_API_ :
+```python
+from ADTs.AbstractDataStructures import DuplicatePriorityQueue # import the priority queue data structure
+
+queue = DuplicatePriorityQueue() # type is set to default None, hence objects of all types can be enqueued to the queue
+# the reverse argument is set to default False, hence dequeue returns the element with the highest priority
+
+queue = DuplicatePriorityQueue(elements_type=str, reverse=True) # type is set to str, hence only strings can be enqueued
+# the reverse argument is set to True, hence dequeue returns the element with the lowest priority
+
+queue.size() # returns the number of elements in the queue, 
+# elements with the same priority are NOT counted as one element, but as ordinary elements
+len(queue) # same as queue.size()
+queue.is_empty() # returns True if there are no elements in the queue and False otherwise
+
+
+str(queue) # returns a string of the dictionary linking priorities with elements in the queue
+# keep in mind that if there is a priority linked to more than one element, the string representation will return
+# the priority linked to a Queue object
+
+queue.type() # returns the type of elements that can be enqueued in the priority queue
+# if this method returns None, objects of all types can be enqueued
+
+queue.is_reversed() # returns True if the queue dequeues the element with the lowest priority
+# returns False if the queue dequeues the element with the highest priority
+
+priority = 10
+queue.contains(priority) # returns True if the queue has an element or elements, linked to the given priority and False otherwise
+# contains raises a TypeError if type of priority is not int
+boolean = priority in queue # same as queue.contains(priority)
+
+element = "test_element"
+queue.contains_element(element) # returns True if an element is contained in the queue
+# raises TypeError if queue.type() is not None and is different than the type of the given element
+
+item = "test_item"
+queue.enqueue(item, priority) # enqueues the given item and links it the given priority
+# raises TypeError if type(priority) is not int
+# raises TypeError if priority_queue.type() is not None and is different than the type of the given item
+# in this implementation of a priority queue, if there is already an item with the given priority in the queue, then both 
+# items will be retained and when dequeuing they will be dequeued in the order they were enqueued
+queue.enqueue("first_item", 5)
+queue.enqueue("second_item", 5)
+queue.dequeue() # dequeues "first_item"
+queue.dequeue() # dequeues "second_item"
+# Another thing to note is that you can enqueue the same element to different priorities
+queue.enqueue("item", 10)
+queue.enqueue("item", 11)
+
+queue.peek() # returns element with minimum or maximum priority in the queue, but doesn't remove it from the queue
+# if priority_queue.is_reversed() is False, it returns the element with the maximum priority
+# if priority_queue.is_reversed() is True, it returns the element with the minimum priority
+# returns None if the queue is empty
+# if there are more than one elements with the same priority, peek() will return the first element that was enqueued
+
+queue.dequeue() # same as priority_queue.peek(), but removes the returned element from the queue
+# raises a ValueError if the queue is empty 
+# if there are more than one elements with the same priority, dequeue() will return and remove them in the order they were
+# enqueued
+
+queue.get(priority) # returns the element linked to the given priority
+# returns None if no element is linked to this priority
+# raises a TypeError if type(priority) is not int
+# if there are more than one elements with the same priority, get() will return the first element that was enqueued
+
+# the implementation includes an iterator too
+for item in queue:
+    print(item)
+# keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
+# is finished the queue will be empty
+queue.is_empty() # will return True
 ```
 
 <br> <br>
