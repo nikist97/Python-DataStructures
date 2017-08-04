@@ -2,14 +2,14 @@
 
 **_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
-Navigate to data structures: [Stack](#stack), [Queue](#queue), [Binary Search Tree](#bst), [Min Binary Heap](#minbh), 
+_Navigate to data structures:_ [Stack](#stack), [Queue](#queue), [Binary Search Tree](#bst), [Min Binary Heap](#minbh), 
 [Max Binary Heap](#maxbh), [Priority Queue](#pq), [Graph](#graph)
 <br><br>
-Navigate to algorithms: [Insertion Sort](#is), [Selection Sort](#ss), [Bubble Sort](#bs), [Merge Sort](#ms), 
+_Navigate to algorithms:_ [Insertion Sort](#is), [Selection Sort](#ss), [Bubble Sort](#bs), [Merge Sort](#ms), 
 [Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [Minimax](#minimax),
 [Minimax with Alpha-Beta Pruning](#minimax)
 <br><br>
-Navigate to applications: [Expression Evaluator](#ee), [Tic-Tac-Toe game against the computer](#tic-tac-toe), 
+_Navigate to applications:_ [Expression Evaluator](#ee), [Tic-Tac-Toe game against minimax](#tic-tac-toe), 
 [N-Queen solver visualization](#nqueen-visualization), [N-Queen solver animation](#nqueen-animation)
 
 ### Abstract Data Structures in Python
@@ -349,10 +349,12 @@ item = "test_item"
 priority_queue.enqueue(item, priority) # enqueues the given item and links it the given priority
 # raises TypeError if type(priority) is not int
 # raises TypeError if priority_queue.type() is not None and is different than the type of the given item
-# keep in mind that if there is another element linked to the same priority, the other element will be overriden by the given item
+# keep in mind that if there is another element linked to the same priority, the other element will be replaced
+#  by the new element
 priority_queue.enqueue("first_item", 5)
 priority_queue.enqueue("second_item", 5)
-# doing this will link priority 5 to str object "second_item" and "first_item" will be ignored
+# doing this will link priority 5 to str object "second_item" while str object "first_item" will be ignored and 
+# removed from the queue
 
 priority_queue.peek() # returns element with minimum or maximum priority in the queue, but doesn't remove it from the queue
 # if priority_queue.is_reversed() is False, it returns the element with the maximum priority
