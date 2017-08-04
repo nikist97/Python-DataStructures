@@ -3,7 +3,7 @@
 **_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
 _Navigate to data structures:_ [Stack](#stack), [Queue](#queue), [Binary Search Tree](#bst), [Min Binary Heap](#minbh), 
-[Max Binary Heap](#maxbh), [Priority Queue](#pq), [Graph](#graph)
+[Max Binary Heap](#maxbh), [Priority Queue](#pq), [Duplicate Priority Queue](#dpq), [Graph](#graph)
 <br><br>
 _Navigate to algorithms:_ [Insertion Sort](#is), [Selection Sort](#ss), [Bubble Sort](#bs), [Merge Sort](#ms), 
 [Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [Minimax](#minimax),
