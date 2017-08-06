@@ -61,6 +61,10 @@ for element in stack:
     print(element)
 # keep in mind that the iterator uses stack.pop() to get the next element, hence
 # after the iteration is over the stack would be empty
+
+stack.remove(element) # removes the element from the stack
+# raises a TypeError if the stack has a specified type for elements and the argument is not of that type
+# raises a KeyError if the stack doesn't contain the element specified as argument
 ```
 
 <br> <br>
@@ -107,6 +111,10 @@ for element in queue:
     print(element)
 # keep in mind that the iterator uses queue.dequeue() to get the next element, hence
 # after the iteration is over the queue would be empty
+
+queue.remove(element) # removes the element from the queue
+# raises a TypeError if the queue has a specified type for elements and the argument is not of that type
+# raises a KeyError if the queue doesn't contain the element specified as argument
 ```
 
 

@@ -98,6 +98,16 @@ class Stack(object):
         else:
             return None
 
+    # the remove method, which removes an element from stack
+    def remove(self, element):
+        if self.__elements_type is None or type(element) == self.__elements_type:
+            try:
+                self.__elements.remove(element)
+            except ValueError:
+                raise KeyError("The element you are trying to remove is not contained in the stack")
+        else:
+            raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
+
 
 # Abstract Data Type Queue, First In First Out (FIFO)
 class Queue(object):
@@ -166,10 +176,7 @@ class Queue(object):
     # it raises a ValueError if there is no element to dequeue(if size of the queue is 0)
     def dequeue(self):
         if len(self.__elements) > 0:
-            element = self.__elements[0]
-            new_elements = [self.__elements[x] for x in range(1, len(self.__elements))]
-            self.__elements = new_elements
-            return element
+            return self.__elements.pop(0)
         else:
             raise ValueError("There are no elements in the queue")
 
@@ -180,6 +187,16 @@ class Queue(object):
             return self.__elements[0]
         else:
             return None
+
+    # the remove method, which removes an element from the queue
+    def remove(self, element):
+        if self.__elements_type is None or type(element) == self.__elements_type:
+            try:
+                self.__elements.remove(element)
+            except ValueError:
+                raise KeyError("The element you are trying to remove is not contained in the queue")
+        else:
+            raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
 
 
 # Abstract Data Type Binary Search Tree

@@ -172,5 +172,32 @@ class QueueTest(unittest.TestCase):
 
         self.assertEqual(len(queue), 0)
 
+    def test_remove(self):
+        queue = Queue()
+        with self.assertRaises(KeyError):
+            queue.remove(5)
+
+        queue.enqueue(5)
+        queue.enqueue("str")
+        queue.enqueue(5.5)
+        self.assertEqual(queue.peek(), 5)
+        self.assertEqual(len(queue), 3)
+        queue.remove(5)
+        self.assertEqual(len(queue), 2)
+        self.assertEqual(queue.peek(), "str", "Wrong remove implementation")
+
+        queue = Queue(int)
+        with self.assertRaises(TypeError):
+            queue.remove("string")
+        for i in range(10):
+            queue.enqueue(i)
+        queue.remove(0)
+        queue.remove(1)
+        self.assertEqual(str(queue), str(list(range(2, 10))), "Wrong remove implementation")
+        queue.remove(5)
+        queue.remove(9)
+        self.assertEqual(str(queue), "[2, 3, 4, 6, 7, 8]", "Wrong remove implementation")
+        self.assertEqual(queue.dequeue(), 2, "Wrong remove implementation")
+
 if __name__ == '__main__':
     unittest.main()

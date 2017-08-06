@@ -108,7 +108,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(stack.type(), None)
 
         with self.assertRaises(TypeError):
-            stack = Stack(elements_type=3)
+            Stack(elements_type=3)
 
         stack = Stack(elements_type=list)
         self.assertEqual(stack.type(), list)
@@ -183,7 +183,34 @@ class StackTest(unittest.TestCase):
             boolean = 4 in stack
 
         with self.assertRaises(TypeError):
-            boolean = stack.contains("word")
+            stack.contains("word")
+
+    def test_remove(self):
+        stack = Stack()
+        with self.assertRaises(KeyError):
+            stack.remove(5)
+
+        stack.push(5)
+        stack.push("str")
+        stack.push(5.5)
+        self.assertEqual(stack.peek(), 5.5)
+        self.assertEqual(len(stack), 3)
+        stack.remove(5.5)
+        self.assertEqual(len(stack), 2)
+        self.assertEqual(stack.peek(), "str", "Wrong remove implementation")
+
+        stack = Stack(int)
+        with self.assertRaises(TypeError):
+            stack.remove("string")
+        for i in range(10):
+            stack.push(i)
+        stack.remove(0)
+        stack.remove(1)
+        self.assertEqual(str(stack), str(list(range(2, 10))), "Wrong remove implementation")
+        stack.remove(5)
+        stack.remove(9)
+        self.assertEqual(str(stack), "[2, 3, 4, 6, 7, 8]", "Wrong remove implementation")
+        self.assertEqual(stack.pop(), 8, "Wrong remove implementation")
 
 if __name__ == '__main__':
     unittest.main()
