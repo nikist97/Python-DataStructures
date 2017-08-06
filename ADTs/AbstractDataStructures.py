@@ -649,6 +649,11 @@ class BinaryHeap(ABC):
     def replace(self, old_element, new_element):
         pass
 
+    @abstractmethod
+    # the remove method, which finds an element and removes it from the heap
+    def remove(self, element):
+        pass
+
 
 # Abstract Data Type MinBinaryHeap - represents a BinaryHeap with a root its minimum element
 # noinspection PyAbstractClass,PyPep8Naming
@@ -809,6 +814,51 @@ class MinBinaryHeap(BinaryHeap):
         if not replaced:
             raise KeyError("The element you are trying to replace is not contained in the heap.")
 
+    def remove(self, element):
+        if type(element) != self.__elements_type:
+            raise TypeError("The argument is not of type " + str(self.__elements_type))
+
+        removed = False
+        for index in range(len(self.__elements)):
+            if self.__elements[index] == element:
+                self.__elements[index] = self.__elements[len(self.__elements) - 1]
+                self.__elements.pop()
+
+                parent = index
+                child = 2 * parent + 1
+                while child < len(self.__elements):
+                    if child + 1 < len(self.__elements):
+                        if self.__elements[child] > self.__elements[child + 1]:
+                            child += 1
+
+                    if self.__elements[child] >= self.__elements[parent]:
+                        break
+
+                    temp = self.__elements[child]
+                    self.__elements[child] = self.__elements[parent]
+                    self.__elements[parent] = temp
+
+                    parent = child
+                    child = 2 * parent + 1
+
+                child = index
+                if child < len(self.__elements):
+                    while child > 0:
+                        parent = int((child - 1) / 2)
+                        if self.__elements[child] >= self.__elements[parent]:
+                            break
+
+                        temp = self.__elements[child]
+                        self.__elements[child] = self.__elements[parent]
+                        self.__elements[parent] = temp
+                        child = parent
+
+                removed = True
+                break
+
+        if not removed:
+            raise KeyError("The element you are trying to remove is not contained in the heap.")
+
 
 # Abstract Data Type MaxBinaryHeap - represents a BinaryHeap with a root its maximum element
 # noinspection PyAbstractClass,PyPep8Naming
@@ -968,6 +1018,51 @@ class MaxBinaryHeap(BinaryHeap):
 
         if not replaced:
             raise KeyError("The element you are trying to replace is not contained in the heap.")
+
+    def remove(self, element):
+        if type(element) != self.__elements_type:
+            raise TypeError("The argument is not of type " + str(self.__elements_type))
+
+        removed = False
+        for index in range(len(self.__elements)):
+            if self.__elements[index] == element:
+                self.__elements[index] = self.__elements[len(self.__elements) - 1]
+                self.__elements.pop()
+
+                parent = index
+                child = 2 * parent + 1
+                while child < len(self.__elements):
+                    if child + 1 < len(self.__elements):
+                        if self.__elements[child] < self.__elements[child + 1]:
+                            child += 1
+
+                    if self.__elements[child] <= self.__elements[parent]:
+                        break
+
+                    temp = self.__elements[child]
+                    self.__elements[child] = self.__elements[parent]
+                    self.__elements[parent] = temp
+
+                    parent = child
+                    child = 2 * parent + 1
+
+                child = index
+                if child < len(self.__elements):
+                    while child > 0:
+                        parent = int((child - 1) / 2)
+                        if self.__elements[child] <= self.__elements[parent]:
+                            break
+
+                        temp = self.__elements[child]
+                        self.__elements[child] = self.__elements[parent]
+                        self.__elements[parent] = temp
+                        child = parent
+
+                removed = True
+                break
+
+        if not removed:
+            raise KeyError("The element you are trying to removed is not contained in the heap.")
 
 
 # Abstract Data Type PriorityQueue

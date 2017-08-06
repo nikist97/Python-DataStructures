@@ -256,7 +256,50 @@ class MinBinaryHeapTests(unittest.TestCase):
         heap.replace(48, 0)
         self.assertEqual(str(heap), "[0, 4, 1, 48, 4, 60, 51, 100, 51]", "Wrong replace implementation")
         heap.replace(48, 0)
-        self.assertEqual(str(heap), "[0, 0, 1, 4, 4, 60, 51, 100, 51]", "Wrong replace implementation")
+        heap.replace(51, 52)
+        heap.replace(51, 53)
+        self.assertEqual(str(heap), "[0, 0, 1, 4, 4, 60, 52, 100, 53]", "Wrong replace implementation")
+
+    def test_remove(self):
+        heap = MinBinaryHeap(float)
+        with self.assertRaises(KeyError):
+            heap.remove(5.5)
+
+        heap.add(5.5)
+        self.assertFalse(heap.is_empty())
+        with self.assertRaises(TypeError):
+            heap.remove(15)
+        heap.remove(5.5)
+        self.assertTrue(heap.is_empty())
+
+        heap.add(10.0)
+        heap.add(11.5)
+        heap.add(15.0)
+        heap.add(2.3)
+        heap.add(3.9)
+        heap.remove(2.3)
+        self.assertEqual(heap.peek_min(), 3.9, "Wrong remove implementation")
+        self.assertFalse(heap.contains(2.3), "Wrong remove implementation")
+        self.assertEqual(str(heap), "[3.9, 10.0, 15.0, 11.5]", "Wrong remove implementation")
+
+        heap.add(10.9)
+        heap.add(10.5)
+        heap.remove(3.9)
+        self.assertFalse(heap.contains(3.9), "Wrong remove implementation")
+        self.assertEqual(str(heap), "[10.0, 10.9, 10.5, 11.5, 15.0]", "Wrong remove implementation")
+
+        heap.add(2.1)
+        heap.add(2.2)
+        heap.add(1.1)
+        heap.replace(10.0, 11.7)
+        heap.replace(10.5, 11.1)
+        heap.replace(2.2, 11.0)
+        heap.add(10.6)
+        heap.remove(11.1)
+        self.assertEqual(str(heap), "[1.1, 2.1, 10.9, 10.6, 15.0, 11.0, 11.7, 11.5]", "Wrong heap implementation")
+
+        heap.remove(11.5)
+        self.assertEqual(str(heap), "[1.1, 2.1, 10.9, 10.6, 15.0, 11.0, 11.7]", "Wrong heap implementation")
 
 if __name__ == '__main__':
     unittest.main()
