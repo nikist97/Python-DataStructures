@@ -399,6 +399,13 @@ for item in priority_queue:
 # keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
 # is finished the priority_queue will be empty
 priority_queue.is_empty() # will return True
+
+priority_queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
+# raises TypeError if type(priority) is not int
+# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
+# raises KeyError if the element is not contained in the queue
+# if there is another element already assigned to the new priority, the old element will be replaced with the element 
+# given as argument, thus the old element will be ignored and removed
 ```
 
 <br> <br>

@@ -1195,6 +1195,30 @@ class PriorityQueue(object):
 
         return element in self.__elements.values()
 
+    # the replace_priority method, which finds an element and replaces its priority with the new one
+    def replace_priority(self, element, new_priority):
+        if self.__elements_type is not None and type(element) != self.__elements_type:
+            raise TypeError("Type of the first parameter is not " + str(self.__elements_type))
+
+        if type(new_priority) != int:
+            raise TypeError("The priority parameter must be an integer.")
+
+        replaced = False
+        for priority in self.__elements:
+            if self.__elements[priority] == element:
+                if priority != new_priority:
+                    self.__elements.pop(priority)
+                    if new_priority not in self.__indices:
+                        self.__indices.replace(priority, new_priority)
+                    else:
+                        self.__indices.remove(priority)
+                    self.__elements[new_priority] = element
+                replaced = True
+                break
+
+        if not replaced:
+            raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+
 
 # DuplicatePriorityQueue - a priority queue which allows duplicates for priority
 class DuplicatePriorityQueue(PriorityQueue):

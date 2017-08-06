@@ -50,7 +50,7 @@ class PriorityQueueTest(unittest.TestCase):
 
     def test_type(self):
         with self.assertRaises(TypeError):
-            priority_queue = PriorityQueue(elements_type=5.4)
+            PriorityQueue(elements_type=5.4)
 
         priority_queue = PriorityQueue()
         self.assertEqual(priority_queue.type(), None, "Wrong type at initialization")
@@ -210,3 +210,43 @@ class PriorityQueueTest(unittest.TestCase):
             self.assertEqual(priority_queue.get(n), n*3, "Wrong peek implementation")
 
         self.assertEqual(len(priority_queue), 10)
+
+    def test_replace_priority(self):
+        priority_queue = PriorityQueue(int, True)
+        with self.assertRaises(TypeError):
+            priority_queue.replace_priority("element", 10.5)
+        with self.assertRaises(KeyError):
+            priority_queue.replace_priority(10, 5)
+        with self.assertRaises(TypeError):
+            priority_queue.replace_priority(5, 5.5)
+
+        priority_queue.enqueue(0, 10)
+        priority_queue.enqueue(1, 1)
+        priority_queue.enqueue(2, 2)
+        priority_queue.enqueue(3, 5)
+        self.assertEqual(priority_queue.peek(), 1)
+        self.assertEqual(priority_queue.get(0), None)
+        self.assertEqual(priority_queue.get(10), 0)
+        priority_queue.replace_priority(0, 0)
+        self.assertEqual(priority_queue.get(10), None, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.get(0), 0, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.peek(), 0, "Wrong replace_priority implementation")
+
+        priority_queue.replace_priority(3, -1)
+        self.assertEqual(priority_queue.get(5), None, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.get(-1), 3, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.peek(), 3, "Wrong replace_priority implementation")
+
+        self.assertEqual(priority_queue.get(20), None)
+        priority_queue.replace_priority(2, 20)
+        self.assertEqual(priority_queue.get(20), 2)
+
+        priority_queue = PriorityQueue()
+        priority_queue.enqueue("str", 5)
+        priority_queue.replace_priority("str", 10)
+        self.assertEqual(priority_queue.get(5), None)
+        self.assertEqual(priority_queue.get(10), "str")
+        self.assertEqual(priority_queue.dequeue(), "str")
+
+if __name__ == "__main__":
+    unittest.main()
