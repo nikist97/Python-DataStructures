@@ -244,6 +244,17 @@ while True:
     except StopIteration:
         break
 min_heap.size() # will return 0 after iteration is finished, as explained above
+
+old_element, new_element = 10, 100
+min_heap.replace(old_element, new_element) # replaces the old element with the new element and readjusts the heap after
+# the replacement
+# raises a TypeError if the type of the first or the second argument is not the same as the type of the 
+# elements in the heap
+# raises a KeyError if the old_element argument is not contained in the heap
+
+min_heap.remove(element)  # removes the element and readjusts the heap after deletion
+# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a KeyError if the element argument is not contained in the heap
 ```
 
 <br>
@@ -301,6 +312,17 @@ while True:
     except StopIteration:
         break
 max_heap.size() # will return 0 after iteration is finished, as explained above
+
+old_element, new_element = 10, 100
+max_heap.replace(old_element, new_element) # replaces the old element with the new element and readjusts the heap after
+# the replacement
+# raises a TypeError if the type of the first or the second argument is not the same as the type of the 
+# elements in the heap
+# raises a KeyError if the old_element argument is not contained in the heap
+
+max_heap.remove(element)  # removes the element and readjusts the heap after deletion
+# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a KeyError if the element argument is not contained in the heap
 ```
 
 
