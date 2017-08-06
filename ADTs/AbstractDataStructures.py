@@ -644,6 +644,11 @@ class BinaryHeap(ABC):
     def replace_root(self, element):
         pass
 
+    @abstractmethod
+    # the replace method, which finds an element and replaces it with the new element
+    def replace(self, old_element, new_element):
+        pass
+
 
 # Abstract Data Type MinBinaryHeap - represents a BinaryHeap with a root its minimum element
 # noinspection PyAbstractClass,PyPep8Naming
@@ -757,6 +762,53 @@ class MinBinaryHeap(BinaryHeap):
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
+    # the replace method, which finds the old element and replaces it with the new element
+    def replace(self, old_element, new_element):
+        if type(old_element) != self.__elements_type:
+            raise TypeError("The first argument is not of type " + str(self.__elements_type))
+
+        if type(new_element) != self.__elements_type:
+            raise TypeError("The second argument is not of type " + str(self.__elements_type))
+
+        replaced = False
+        for index in range(len(self.__elements)):
+            if self.__elements[index] == old_element:
+                self.__elements[index] = new_element
+
+                parent = index
+                child = 2*parent + 1
+                while child < len(self.__elements):
+                    if child + 1 < len(self.__elements):
+                        if self.__elements[child] > self.__elements[child + 1]:
+                            child += 1
+
+                    if self.__elements[child] >= self.__elements[parent]:
+                        break
+
+                    temp = self.__elements[child]
+                    self.__elements[child] = self.__elements[parent]
+                    self.__elements[parent] = temp
+
+                    parent = child
+                    child = 2 * parent + 1
+
+                child = index
+                while child > 0:
+                    parent = int((child - 1) / 2)
+                    if self.__elements[child] >= self.__elements[parent]:
+                        break
+
+                    temp = self.__elements[child]
+                    self.__elements[child] = self.__elements[parent]
+                    self.__elements[parent] = temp
+                    child = parent
+
+                replaced = True
+                break
+
+        if not replaced:
+            raise KeyError("The element you are trying to replace is not contained in the heap.")
+
 
 # Abstract Data Type MaxBinaryHeap - represents a BinaryHeap with a root its maximum element
 # noinspection PyAbstractClass,PyPep8Naming
@@ -869,6 +921,53 @@ class MaxBinaryHeap(BinaryHeap):
                 raise ValueError("There are no elements in the heap")
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
+
+    # the replace method, which finds the old element and replaces it with the new element
+    def replace(self, old_element, new_element):
+        if type(old_element) != self.__elements_type:
+            raise TypeError("The first argument is not of type " + str(self.__elements_type))
+
+        if type(new_element) != self.__elements_type:
+            raise TypeError("The second argument is not of type " + str(self.__elements_type))
+
+        replaced = False
+        for index in range(len(self.__elements)):
+            if self.__elements[index] == old_element:
+                self.__elements[index] = new_element
+
+                parent = index
+                child = 2*parent + 1
+                while child < len(self.__elements):
+                    if child + 1 < len(self.__elements):
+                        if self.__elements[child] < self.__elements[child + 1]:
+                            child += 1
+
+                    if self.__elements[child] <= self.__elements[parent]:
+                        break
+
+                    temp = self.__elements[child]
+                    self.__elements[child] = self.__elements[parent]
+                    self.__elements[parent] = temp
+
+                    parent = child
+                    child = 2 * parent + 1
+
+                child = index
+                while child > 0:
+                    parent = int((child - 1) / 2)
+                    if self.__elements[child] <= self.__elements[parent]:
+                        break
+
+                    temp = self.__elements[child]
+                    self.__elements[child] = self.__elements[parent]
+                    self.__elements[parent] = temp
+                    child = parent
+
+                replaced = True
+                break
+
+        if not replaced:
+            raise KeyError("The element you are trying to replace is not contained in the heap.")
 
 
 # Abstract Data Type PriorityQueue
