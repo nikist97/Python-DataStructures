@@ -1345,7 +1345,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         if self.type() is not None and type(element) != self.type():
             raise TypeError("Type of the parameter is not " + str(self.type()))
 
-        if self.has_duplicates():
+        if not self.has_duplicates():
             return super().contains_element(element)
 
         for test_element in self.__elements.values():
