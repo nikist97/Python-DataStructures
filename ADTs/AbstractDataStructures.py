@@ -1245,23 +1245,11 @@ class DuplicatePriorityQueue(PriorityQueue):
         super().__init__(elements_type, reverse)
         self.__elements = self._PriorityQueue__elements
         self.__indices = self._PriorityQueue__indices
-        self.__duplicates = 0
+        self.__size = 0
 
     # overriding the size method to handle duplicate priorities
     def size(self):
-        if self.__duplicates == 0:
-            return super().size()
-        else:
-            size = 0
-            for element in self.__elements.values():
-                if type(element) == Queue:
-                    size += len(element)
-                else:
-                    size += 1
-            return size
-
-    def number_of_duplicates(self):
-        return self.__duplicates
+        return self.__size
 
     # override the enqueue method to allow duplicate priorities
     def enqueue(self, item, priority):
@@ -1283,7 +1271,7 @@ class DuplicatePriorityQueue(PriorityQueue):
                 duplicates.enqueue(element)
                 duplicates.enqueue(item)
                 self.__elements[priority] = duplicates
-                self.__duplicates += 1
+        self.__size += 1
 
     # override the dequeue method to work with duplicate values
     def dequeue(self):
@@ -1296,14 +1284,16 @@ class DuplicatePriorityQueue(PriorityQueue):
             if type(element_to_return) != Queue:
                 self.__indices.remove_min()
                 self.__elements.pop(min_priority)
+                self.__size -= 1
                 return element_to_return
             else:
                 if len(element_to_return) == 2:
                     to_return = element_to_return.dequeue()
                     self.__elements[min_priority] = element_to_return.dequeue()
-                    self.__duplicates -= 1
+                    self.__size-= 1
                     return to_return
                 else:
+                    self.__size -= 1
                     return element_to_return.dequeue()
 
         elif type(self.__indices) == MaxBinaryHeap:
@@ -1312,14 +1302,16 @@ class DuplicatePriorityQueue(PriorityQueue):
             if type(element_to_return) != Queue:
                 self.__indices.remove_max()
                 self.__elements.pop(max_priority)
+                self.__size -= 1
                 return element_to_return
             else:
                 if len(element_to_return) == 2:
                     to_return = element_to_return.dequeue()
                     self.__elements[max_priority] = element_to_return.dequeue()
-                    self.__duplicates -= 1
+                    self.__size -= 1
                     return to_return
                 else:
+                    self.__size -= 1
                     return element_to_return.dequeue()
 
     # override the peek method to work with duplicate values
@@ -1353,7 +1345,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         if self.type() is not None and type(element) != self.type():
             raise TypeError("Type of the parameter is not " + str(self.type()))
 
-        if self.__duplicates == 0:
+        if self.has_duplicates():
             return super().contains_element(element)
 
         for test_element in self.__elements.values():
@@ -1363,6 +1355,10 @@ class DuplicatePriorityQueue(PriorityQueue):
                 if element in test_element:
                     return True
         return False
+    
+    # a method to check if there are items with duplicated priorities
+    def has_duplicates(self):
+        return self.size() != len(self.__elements)
 
 
 # Abstract Data Type Graph
