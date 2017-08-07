@@ -1213,17 +1213,22 @@ class PriorityQueue(object):
         return element in self.__elements.values()
 
     # the replace_priority method, which finds an element and replaces its priority with the new one
-    def replace_priority(self, element, new_priority):
+    def replace_priority(self, element, new_priority, comparison=None):
         if self.__elements_type is not None and type(element) != self.__elements_type:
             raise TypeError("Type of the first parameter is not " + str(self.__elements_type))
 
         if type(new_priority) != int:
             raise TypeError("The priority parameter must be an integer.")
 
+        if comparison is not None and comparison != 1 and comparison != -1:
+            raise ValueError("The comparison argument must be None for no comparison, -1 - for less than comparison"
+                             "and 1 for greater than comparison")
+
         replaced = False
         for priority in self.__elements:
             if self.__elements[priority] == element:
-                if priority != new_priority:
+                if (comparison is None and priority != new_priority) or (comparison == 1 and new_priority > priority)\
+                            or (comparison == -1 and new_priority < priority):
                     self.__elements.pop(priority)
                     if new_priority not in self.__indices:
                         self.__indices.replace(priority, new_priority)
@@ -1290,7 +1295,7 @@ class DuplicatePriorityQueue(PriorityQueue):
                 if len(element_to_return) == 2:
                     to_return = element_to_return.dequeue()
                     self.__elements[min_priority] = element_to_return.dequeue()
-                    self.__size-= 1
+                    self.__size -= 1
                     return to_return
                 else:
                     self.__size -= 1
@@ -1359,6 +1364,67 @@ class DuplicatePriorityQueue(PriorityQueue):
     # a method to check if there are items with duplicated priorities
     def has_duplicates(self):
         return self.size() != len(self.__elements)
+
+    # overriding the replace_priority method to work with duplicate priorities, too
+    def replace_priority(self, element, new_priority, comparison=None):
+        if self.type() is not None and type(element) != self.type():
+            raise TypeError("Type of the first parameter is not " + str(self.type()))
+
+        if type(new_priority) != int:
+            raise TypeError("The priority parameter must be an integer.")
+
+        if comparison is not None and comparison != 1 and comparison != -1:
+            raise ValueError("The comparison argument must be None for no comparison, -1 - for less than comparison"
+                             "and 1 for greater than comparison")
+
+        replaced = False
+        for priority in self.__elements:
+            test_element = self.__elements[priority]
+            if type(test_element) == Queue:
+                if element in test_element:
+                    if (comparison is None and priority != new_priority) or \
+                            (comparison == 1 and new_priority > priority)\
+                            or (comparison == -1 and new_priority < priority):
+                        test_element.remove(element)
+                        if len(test_element) == 1:
+                            self.__elements[priority] = test_element.dequeue()
+
+                        if new_priority not in self.__indices:
+                            self.__indices.add(new_priority)
+                            self.__elements[new_priority] = element
+                        else:
+                            if type(self.__elements[new_priority]) == Queue:
+                                self.__elements[new_priority].enqueue(element)
+                            else:
+                                duplicates = Queue(self.type())
+                                duplicates.enqueue(self.__elements[new_priority])
+                                duplicates.enqueue(element)
+                                self.__elements[new_priority] = duplicates
+                    replaced = True
+                    break
+            else:
+                if test_element == element:
+                    if (comparison is None and priority != new_priority) or \
+                            (comparison == 1 and new_priority > priority) \
+                            or (comparison == -1 and new_priority < priority):
+                        self.__elements.pop(priority)
+                        if new_priority not in self.__indices:
+                            self.__indices.replace(priority, new_priority)
+                            self.__elements[new_priority] = element
+                        else:
+                            self.__indices.remove(priority)
+                            if type(self.__elements[new_priority]) == Queue:
+                                self.__elements[new_priority].enqueue(element)
+                            else:
+                                duplicates = Queue(self.type())
+                                duplicates.enqueue(self.__elements[new_priority])
+                                duplicates.enqueue(element)
+                                self.__elements[new_priority] = duplicates
+                    replaced = True
+                    break
+
+        if not replaced:
+            raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
 
 
 # Abstract Data Type Graph

@@ -51,7 +51,7 @@ class DuplicatePriorityQueueTest(unittest.TestCase):
 
     def test_type(self):
         with self.assertRaises(TypeError):
-            priority_queue = DuplicatePriorityQueue(elements_type=5.4)
+            DuplicatePriorityQueue(elements_type=5.4)
 
         priority_queue = DuplicatePriorityQueue()
         self.assertEqual(priority_queue.type(), None, "Wrong type at initialization")
@@ -257,3 +257,68 @@ class DuplicatePriorityQueueTest(unittest.TestCase):
 
         self.assertEqual(len(priority_queue), 20)
 
+    def test_replace_priority(self):
+        priority_queue = DuplicatePriorityQueue(int, True)
+        with self.assertRaises(TypeError):
+            priority_queue.replace_priority("element", 10.5)
+        with self.assertRaises(KeyError):
+            priority_queue.replace_priority(10, 5)
+        with self.assertRaises(TypeError):
+            priority_queue.replace_priority(5, 5.5)
+
+        priority_queue.enqueue(0, 10)
+        priority_queue.enqueue(1, 1)
+        priority_queue.enqueue(2, 2)
+        priority_queue.enqueue(3, 5)
+
+        with self.assertRaises(ValueError):
+            priority_queue.replace_priority(3, 5, "comparison")
+
+        self.assertEqual(priority_queue.peek(), 1)
+        self.assertEqual(priority_queue.get(0), None)
+        self.assertEqual(priority_queue.get(10), 0)
+        priority_queue.replace_priority(0, 0, comparison=-1)
+        self.assertEqual(priority_queue.get(10), None, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.get(0), 0, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.peek(), 0, "Wrong replace_priority implementation")
+
+        priority_queue.replace_priority(3, -1)
+        priority_queue.replace_priority(3, -5, comparison=1)
+        self.assertEqual(priority_queue.get(5), None, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.get(-1), 3, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.peek(), 3, "Wrong replace_priority implementation")
+
+        self.assertEqual(priority_queue.get(20), None)
+        priority_queue.replace_priority(2, 20)
+        self.assertEqual(priority_queue.get(20), 2)
+
+        priority_queue = DuplicatePriorityQueue()
+        priority_queue.enqueue("str", 5)
+        priority_queue.enqueue(5.5, 0)
+        priority_queue.replace_priority("str", 10, comparison=1)
+        priority_queue.replace_priority("str", 12, comparison=-1)
+        self.assertEqual(priority_queue.get(5), None)
+        self.assertEqual(priority_queue.get(10), "str")
+        self.assertEqual(priority_queue.peek(), "str")
+
+        priority_queue.replace_priority(5.5, 10)
+        self.assertEqual(len(priority_queue), 2, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.get(10), "str", "Wrong replace_priority implementation")
+
+        priority_queue = DuplicatePriorityQueue(reverse=True)
+        for i in range(1, 6):
+            priority_queue.enqueue(i, i * 10)
+        self.assertEqual(len(priority_queue), 5)
+        priority_queue.replace_priority(2, 10)
+        self.assertEqual(len(priority_queue), 5, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.dequeue(), 1, "Wrong replace_priority implementation")
+        self.assertEqual(priority_queue.peek(), 2, "Wrong replace_priority implementation")
+
+        for i in range(3, 6):
+            priority_queue.replace_priority(i, 10)
+        priority_queue.enqueue(0, 0)
+        self.assertEqual(len(priority_queue), 5, "Wrong replace_priority implementation")
+        self.assertEqual(list(iter(priority_queue)), [0, 2, 3, 4, 5], "Wrong replace_priority implementation")
+
+if __name__ == "__main__":
+    unittest.main()
