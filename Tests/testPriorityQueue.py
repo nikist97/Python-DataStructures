@@ -269,5 +269,35 @@ class PriorityQueueTest(unittest.TestCase):
         self.assertEqual(len(priority_queue), 4, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.dequeue(), 2, "Wrong replace_priority implementation")
 
+    def test_remove(self):
+        priority_queue = PriorityQueue()
+        with self.assertRaises(KeyError):
+            priority_queue.remove_element(5)
+
+        priority_queue.enqueue("word", 1)
+        priority_queue.enqueue(1, 5)
+        priority_queue.enqueue(3.14, 10)
+        priority_queue.remove_element(3.14)
+        self.assertFalse(priority_queue.contains_element(3.14), "Wrong remove implementation")
+        self.assertEqual(priority_queue.peek(), 1, "Wrong remove implementation")
+        with self.assertRaises(KeyError):
+            priority_queue.remove_element(3.14)
+        self.assertEqual(priority_queue.size(), 2, "Wrong remove implementation")
+
+        priority_queue = PriorityQueue(int, reverse=True)
+        with self.assertRaises(TypeError):
+            priority_queue.remove_element(5.5)
+
+        for i in range(10):
+            priority_queue.enqueue(i, i**2)
+        self.assertEqual(len(priority_queue), 10)
+        self.assertTrue(priority_queue.contains_element(5))
+        priority_queue.remove_element(5)
+        self.assertEqual(len(priority_queue), 9, "Wrong remove implementation")
+        self.assertFalse(priority_queue.contains_element(5), "Wrong remove implementation")
+
+        priority_queue.remove_element(0)
+        self.assertEqual(priority_queue.dequeue(), 1, "Wrong remove implementation")
+
 if __name__ == "__main__":
     unittest.main()

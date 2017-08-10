@@ -320,5 +320,49 @@ class DuplicatePriorityQueueTest(unittest.TestCase):
         self.assertEqual(len(priority_queue), 5, "Wrong replace_priority implementation")
         self.assertEqual(list(iter(priority_queue)), [0, 2, 3, 4, 5], "Wrong replace_priority implementation")
 
+    def test_remove(self):
+        priority_queue = DuplicatePriorityQueue()
+        with self.assertRaises(KeyError):
+            priority_queue.remove_element(5)
+
+        priority_queue.enqueue("word", 1)
+        priority_queue.enqueue(1, 5)
+        priority_queue.enqueue(3.14, 10)
+        priority_queue.remove_element(3.14)
+        self.assertFalse(priority_queue.contains_element(3.14), "Wrong remove implementation")
+        self.assertEqual(priority_queue.peek(), 1, "Wrong remove implementation")
+        with self.assertRaises(KeyError):
+            priority_queue.remove_element(3.14)
+        self.assertEqual(priority_queue.size(), 2, "Wrong remove implementation")
+
+        priority_queue = DuplicatePriorityQueue(int, reverse=True)
+        with self.assertRaises(TypeError):
+            priority_queue.remove_element(5.5)
+
+        for i in range(10):
+            priority_queue.enqueue(i, i**2)
+            priority_queue.enqueue(i + 100, i**2)
+        self.assertEqual(len(priority_queue), 20)
+        self.assertTrue(priority_queue.contains_element(5))
+        priority_queue.remove_element(5)
+        self.assertEqual(len(priority_queue), 19, "Wrong remove implementation")
+        self.assertFalse(priority_queue.contains_element(5), "Wrong remove implementation")
+
+        priority_queue.remove_element(0)
+        self.assertEqual(priority_queue.dequeue(), 100, "Wrong remove implementation")
+
+        self.assertTrue(9 in priority_queue)
+        priority_queue.remove_element(3)
+        self.assertTrue(9 in priority_queue)
+        self.assertEqual(priority_queue.get(9), 103, "Wrong remove implementation")
+        priority_queue.remove_element(103)
+        self.assertFalse(9 in priority_queue, "Wrong remove implementation")
+        self.assertEqual(len(priority_queue), 15, "Wrong remove implementation")
+
+        self.assertEqual(priority_queue.dequeue(), 1)
+        priority_queue.remove_element(101)
+        self.assertEqual(priority_queue.get(1), None, "Wrong remove implementation")
+        self.assertEqual(len(priority_queue), 13)
+
 if __name__ == "__main__":
     unittest.main()

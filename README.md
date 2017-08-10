@@ -424,6 +424,10 @@ priority_queue.replace_priority(element, priority, comparison=comparison_type)
 # if comparison is -1, the priorities will be replaced if the new priority is less than the old priority
 # if comparison is None (default), the priorities will always be replaced
 # raises ValueError if comparison is not -1, 1 or None
+
+priority_queue.remove_element(element) # finds and removes the element from the queue
+# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
+# raises KeyError if the queue doesn't contain the element
 ```
 
 <br> <br>
@@ -509,7 +513,7 @@ queue.is_empty() # will return True
 
 queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
 # raises TypeError if type(priority) is not int
-# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
+# raises TypeError if queue.type() is not None and is different than the type of the given element
 # raises KeyError if the element is not contained in the queue
 # in this implementation duplicated priorities are allowed, hence no elements will be ignored even if there is already
 # an element assigned to the new priority
@@ -523,6 +527,10 @@ queue.replace_priority(element, priority, comparison=comparison_type)
 # if comparison is -1, the priorities will be replaced if the new priority is less than the old priority
 # if comparison is None (default), the priorities will always be replaced
 # raises ValueError if comparison is not -1, 1 or None
+
+queue.remove_element(element) # finds and removes the element from the queue
+# raises TypeError if queue.type() is not None and is different than the type of the given element
+# raises KeyError if the queue doesn't contain the element
 ```
 
 <br> <br>

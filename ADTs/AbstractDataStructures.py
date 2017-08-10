@@ -1079,7 +1079,7 @@ class MaxBinaryHeap(BinaryHeap):
                 break
 
         if not removed:
-            raise KeyError("The element you are trying to removed is not contained in the heap.")
+            raise KeyError("The element you are trying to remove is not contained in the heap.")
 
 
 # Abstract Data Type PriorityQueue
@@ -1240,6 +1240,23 @@ class PriorityQueue(object):
 
         if not replaced:
             raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+
+    # the remove method, which finds an element and deletes it from the priority queue
+    def remove_element(self, element):
+        if self.__elements_type is not None and type(element) != self.__elements_type:
+            raise TypeError("Type of the parameter is not " + str(self.__elements_type))
+
+        removed = False
+        for priority in self.__elements:
+            test_element = self.__elements[priority]
+            if element == test_element:
+                self.__indices.remove(priority)
+                self.__elements.pop(priority)
+                removed = True
+                break
+
+        if not removed:
+            raise KeyError("The queue doesn't contain the element you are trying to delete.")
 
 
 # DuplicatePriorityQueue - a priority queue which allows duplicates for priority
@@ -1425,6 +1442,38 @@ class DuplicatePriorityQueue(PriorityQueue):
 
         if not replaced:
             raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+
+    # the remove method, which finds an element and deletes it from the priority queue
+    def remove_element(self, element):
+        if self.type() is not None and type(element) != self.type():
+            raise TypeError("Type of the parameter is not " + str(self.type()))
+
+        removed = False
+        for priority in self.__elements:
+            test_element = self.__elements[priority]
+            if type(test_element) == Queue:
+                try:
+                    test_element.remove(element)
+                    if len(test_element) == 0:
+                        self.__elements.pop(priority)
+                        self.__indices.remove(priority)
+                    elif len(test_element) == 1:
+                        self.__elements[priority] = test_element.dequeue()
+                    self.__size -= 1
+                    removed = True
+                    break
+                except KeyError:
+                    pass
+            else:
+                if element == test_element:
+                    self.__indices.remove(priority)
+                    self.__elements.pop(priority)
+                    self.__size -= 1
+                    removed = True
+                    break
+
+        if not removed:
+            raise KeyError("The queue doesn't contain the element you are trying to delete.")
 
 
 # Abstract Data Type Graph
