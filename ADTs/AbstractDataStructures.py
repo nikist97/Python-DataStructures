@@ -1235,6 +1235,7 @@ class PriorityQueue(object):
             raise ValueError("The comparison argument must be None for no comparison, -1 - for less than comparison"
                              "and 1 for greater than comparison")
 
+        element_found = False
         replaced = False
         for priority in self.__elements:
             if self.__elements[priority] == element:
@@ -1246,11 +1247,14 @@ class PriorityQueue(object):
                     else:
                         self.__indices.remove(priority)
                     self.__elements[new_priority] = element
-                replaced = True
+                    replaced = True
+                element_found = True
                 break
 
-        if not replaced:
+        if not element_found:
             raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+
+        return replaced
 
     # the remove method, which finds an element and deletes it from the priority queue
     def remove_element(self, element):
@@ -1405,6 +1409,7 @@ class DuplicatePriorityQueue(PriorityQueue):
             raise ValueError("The comparison argument must be None for no comparison, -1 - for less than comparison"
                              "and 1 for greater than comparison")
 
+        element_found = False
         replaced = False
         for priority in self.__elements:
             test_element = self.__elements[priority]
@@ -1428,7 +1433,9 @@ class DuplicatePriorityQueue(PriorityQueue):
                                 duplicates.enqueue(self.__elements[new_priority])
                                 duplicates.enqueue(element)
                                 self.__elements[new_priority] = duplicates
-                    replaced = True
+
+                        replaced = True
+                    element_found = True
                     break
             else:
                 if test_element == element:
@@ -1448,11 +1455,14 @@ class DuplicatePriorityQueue(PriorityQueue):
                                 duplicates.enqueue(self.__elements[new_priority])
                                 duplicates.enqueue(element)
                                 self.__elements[new_priority] = duplicates
-                    replaced = True
+                        replaced = True
+                    element_found = True
                     break
 
-        if not replaced:
+        if not element_found:
             raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+
+        return replaced
 
     # the remove method, which finds an element and deletes it from the priority queue
     def remove_element(self, element):

@@ -224,7 +224,7 @@ class PriorityQueueTest(unittest.TestCase):
         priority_queue.enqueue(1, 1)
         priority_queue.enqueue(2, 2)
         priority_queue.enqueue(3, 5)
-        priority_queue.replace_priority(1, 0, comparison=1)
+        self.assertFalse(priority_queue.replace_priority(1, 0, comparison=1), "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(0), None, "Wrong comparison replacement")
         self.assertEqual(priority_queue.get(1), 1, "Wrong comparison replacement")
 
@@ -234,30 +234,30 @@ class PriorityQueueTest(unittest.TestCase):
         self.assertEqual(priority_queue.peek(), 1)
         self.assertEqual(priority_queue.get(0), None)
         self.assertEqual(priority_queue.get(10), 0)
-        priority_queue.replace_priority(0, 0, comparison=-1)
+        self.assertTrue(priority_queue.replace_priority(0, 0, comparison=-1), "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(10), None, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(0), 0, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.peek(), 0, "Wrong replace_priority implementation")
 
-        priority_queue.replace_priority(3, -1, comparison=-1)
-        priority_queue.replace_priority(3, -5, comparison=1)
+        self.assertTrue(priority_queue.replace_priority(3, -1, comparison=-1), "Wrong replace_priority implementation")
+        self.assertFalse(priority_queue.replace_priority(3, -5, comparison=1), "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(5), None, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(-1), 3, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.peek(), 3, "Wrong replace_priority implementation")
 
         self.assertEqual(priority_queue.get(20), None)
-        priority_queue.replace_priority(2, 20)
+        self.assertTrue(priority_queue.replace_priority(2, 20), "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(20), 2)
 
         priority_queue = PriorityQueue()
         priority_queue.enqueue("str", 5)
         priority_queue.enqueue(5.5, 0)
-        priority_queue.replace_priority("str", 10)
+        self.assertTrue(priority_queue.replace_priority("str", 10), "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(5), None)
         self.assertEqual(priority_queue.get(10), "str")
         self.assertEqual(priority_queue.peek(), "str")
 
-        priority_queue.replace_priority(5.5, 10, comparison=1)
+        self.assertTrue(priority_queue.replace_priority(5.5, 10, comparison=1), "Wrong replace_priority implementation")
         self.assertEqual(len(priority_queue), 1, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.get(10), 5.5, "Wrong replace_priority implementation")
 
@@ -265,7 +265,7 @@ class PriorityQueueTest(unittest.TestCase):
         for i in range(1, 6):
             priority_queue.enqueue(i, i*10)
         self.assertEqual(len(priority_queue), 5)
-        priority_queue.replace_priority(2, 10)
+        self.assertTrue(priority_queue.replace_priority(2, 10), "Wrong replace_priority implementation")
         self.assertEqual(len(priority_queue), 4, "Wrong replace_priority implementation")
         self.assertEqual(priority_queue.dequeue(), 2, "Wrong replace_priority implementation")
 

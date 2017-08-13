@@ -409,6 +409,7 @@ for item in priority_queue:
 priority_queue.is_empty() # will return True
 
 priority_queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
+# returns a boolean representing whether the element's priority has been replaced
 # raises TypeError if type(priority) is not int
 # raises TypeError if priority_queue.type() is not None and is different than the type of the given element
 # raises KeyError if the element is not contained in the queue
@@ -418,6 +419,7 @@ priority_queue.replace_priority(element, priority) # replaces the given element'
 # you can also pass a third argument to the replace_priority method - comparison
 comparison_type = 1
 priority_queue.replace_priority(element, priority, comparison=comparison_type)
+# returns a boolean representing whether the element's priority has been replaced
 # by doing so the priority of the element will only be replaced if a certain type of comparison between 
 # the two priorities holds
 # if comparison is 1, the priorities will be replaced if the new priority is greater than the old priority
