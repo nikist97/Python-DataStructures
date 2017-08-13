@@ -80,8 +80,11 @@ def main(initial):
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('N-Puzzle')
 
+    import time
+    print("start")
+    start = time.time()
     generator = iter(n_puzzle(initial))
-
+    print(time.time() - start)
     running = True
     clock = pygame.time.Clock()
     board = Board(int(size[0] / 3), black, red)
@@ -109,5 +112,5 @@ def main(initial):
 
 
 if __name__ == "__main__":
-    initial_state = (4, 6, 7, 3, 0, 5, 8, 2, 1)
+    initial_state = (4, 3, 2, 6, 1, 7, 8, 5, 0)
     main(initial_state)
