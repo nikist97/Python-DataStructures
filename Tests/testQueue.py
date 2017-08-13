@@ -47,12 +47,24 @@ class QueueTest(unittest.TestCase):
         queue.enqueue(1)
         queue.enqueue(2.5)
         self.assertEqual(str(queue), "[1, 2.5]", "Wrong str representation")
+        queue.peek()
+        queue.enqueue("str")
+        self.assertEqual(str(queue), "[1, 2.5, 'str']", "Wrong str representation")
+
+        for i in range(10):
+            queue.enqueue(i)
+        queue.dequeue()
+        self.assertEqual(str(queue), str([2.5, 'str'] + list(range(10))))
 
         queue = Queue(int)
         self.assertEqual(str(queue), "[]", "Wrong str representation")
         for i in range(5):
             queue.enqueue(i)
+        queue.peek()
         self.assertEqual(str(queue), "[0, 1, 2, 3, 4]", "Wrong str representation")
+        for i in range(10):
+            queue.enqueue(i)
+        self.assertEqual(str(queue), str(list(range(5)) + list(range(10))))
 
     def test_empty(self):
         queue = Queue()

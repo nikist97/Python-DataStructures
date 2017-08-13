@@ -119,12 +119,14 @@ class Queue(object):
         if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
-        self.__elements = []
+        self.__in_elements = Stack(elements_type)
+        self.__out_elements = Stack(elements_type)
         self.__elements_type = elements_type
 
     # the string representation for the queue returns the elements of the queue
     def __str__(self):
-        return str(self.__elements)
+        # noinspection PyProtectedMember
+        return str(self.__out_elements._Stack__elements[:: -1] + self.__in_elements._Stack__elements)
 
     # the len(queue) method
     def __len__(self):
@@ -148,17 +150,17 @@ class Queue(object):
     # the contains method which checks if an item is in the queue
     def contains(self, item):
         if self.__elements_type is None or type(item) == self.__elements_type:
-            return item in self.__elements
+            return item in self.__out_elements or item in self.__in_elements
         else:
             raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
     # the is_empty method, which checks if the size of the queue is 0
     def is_empty(self):
-        return len(self.__elements) == 0
+        return self.size() == 0
 
     # the size method, which returns the size of the queue
     def size(self):
-        return len(self.__elements)
+        return len(self.__out_elements) + len(self.__in_elements)
 
     # the type method, which returns the type of the queue elements
     def type(self):
@@ -168,23 +170,29 @@ class Queue(object):
     # different than the parameter item's type
     def enqueue(self, item):
         if self.__elements_type is None or type(item) == self.__elements_type:
-            self.__elements.append(item)
+            self.__in_elements.push(item)
         else:
             raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
 
     # the dequeue method, which removes the item that got first in the queue
     # it raises a ValueError if there is no element to dequeue(if size of the queue is 0)
     def dequeue(self):
-        if len(self.__elements) > 0:
-            return self.__elements.pop(0)
+        if self.size() > 0:
+            if self.__out_elements.is_empty():
+                while not self.__in_elements.is_empty():
+                    self.__out_elements.push(self.__in_elements.pop())
+            return self.__out_elements.pop()
         else:
             raise ValueError("There are no elements in the queue")
 
     # the peek method, which returns the first element that got in the queue, but doesn't remove it from the queue;
     # it returns None if there is no element to peek at
     def peek(self):
-        if len(self.__elements) > 0:
-            return self.__elements[0]
+        if self.size() > 0:
+            if self.__out_elements.is_empty():
+                while not self.__in_elements.is_empty():
+                    self.__out_elements.push(self.__in_elements.pop())
+            return self.__out_elements.peek()
         else:
             return None
 
@@ -192,9 +200,12 @@ class Queue(object):
     def remove(self, element):
         if self.__elements_type is None or type(element) == self.__elements_type:
             try:
-                self.__elements.remove(element)
-            except ValueError:
-                raise KeyError("The element you are trying to remove is not contained in the queue")
+                self.__in_elements.remove(element)
+            except KeyError:
+                try:
+                    self.__out_elements.remove(element)
+                except KeyError:
+                    raise KeyError("The element you are trying to remove is not contained in the queue")
         else:
             raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
 
