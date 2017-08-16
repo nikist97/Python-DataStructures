@@ -113,6 +113,13 @@ def main(initial):
 # the algorithm uses a manhattan distance as a heuristic function, however, this could be slow for n > 8
 # a possible optimization for bigger grids will be to use a pattern database lookup heuristic
 if __name__ == "__main__":
-    initial_state = (4, 0, 2, 7, 6, 1, 8, 5, 3)  # 3x3 grid example
-    # initial_state = (2, 3, 6, 4, 1, 5, 11, 7, 13, 9, 8, 0, 14, 15, 10, 12)  # 4x4 grid example
+    # 3x3 grid example
+    initial_state = (4, 0, 2, 7, 6, 1, 8, 5, 3)
+
+    # 4x4 grid example
+    # initial_state = (2, 3, 6, 4, 1, 5, 11, 7, 13, 9, 8, 0, 14, 15, 10, 12)
+
+    # 5x5 grid example
+    # initial_state = (0, 2, 3, 4, 5, 1, 6, 8, 9, 10, 11, 7, 12, 14, 15, 16, 17, 13, 18, 20, 21, 22, 23, 19, 24)
+
     main(initial_state)

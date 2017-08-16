@@ -10,7 +10,8 @@ _Navigate to algorithms:_ [Insertion Sort](#is), [Selection Sort](#ss), [Bubble 
  [Minimax](#minimax), [Minimax with Alpha-Beta Pruning](#minimax)
 <br><br>
 _Navigate to applications:_ [Expression Evaluator](#ee), [Tic-Tac-Toe game against minimax](#tic-tac-toe), 
-[N-Queen solver visualization](#nqueen-visualization), [N-Queen solver animation](#nqueen-animation)
+[N-Queen solver visualization](#nqueen-visualization), [N-Queen solver animation](#nqueen-animation), 
+[N-Puzzle solver animation](#npuzzle-animation)
 
 ### Abstract Data Structures in Python
 
@@ -1334,4 +1335,21 @@ Examples:<br>
 
 # another thing to keep in mind is that the speed of the animation may be increased or decreased by changing the delay
 # in the pygame.time.delay method (line 117 - nQueenAnimation.py)
+```
+
+**_N-Puzzle Animation<a name="npuzzle-animation"></a>_** <br>
+**This is located in nPuzzleAnimation.py** <br><br>
+
+The nPuzzleAnimation.py file contains a simple pygame animation, which shows the process of searching for an end state using
+the IDA* search algorithm for the n-puzzle problem.<br>
+
+Examples:<br>
+```python
+# just run the nPuzzleAnimation.py file and the animation will start
+
+# e.g. in command prompt type: python nPuzzleAnimation.py
+
+# in order to change the initial state for the n-puzzle change line 117 of the nPuzzleAnimation.py file
+# in order to change the the speed of the animation, change the delay in the pygame.time.delay method 
+# (line 101 - nPuzzleAnimation.py)
 ```
