@@ -80,11 +80,7 @@ def main(initial):
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('N-Puzzle')
 
-    import time
-    print("start")
-    start = time.time()
     generator = iter(n_puzzle(initial))
-    print(time.time() - start)
     running = True
     clock = pygame.time.Clock()
     board = Board(int(size[0] / 3), black, red)
@@ -99,11 +95,11 @@ def main(initial):
         try:
             path = next(generator)
             board.update_board(path)
+            pygame.time.delay(750)
         except StopIteration:
             pass
 
         board.draw(screen)
-        pygame.time.delay(750)
 
         pygame.display.flip()
         clock.tick()
@@ -112,5 +108,5 @@ def main(initial):
 
 
 if __name__ == "__main__":
-    initial_state = (4, 3, 2, 6, 1, 7, 8, 5, 0)
+    initial_state = (0, 4, 6, 2, 7, 1, 8, 5, 3)
     main(initial_state)

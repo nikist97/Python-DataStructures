@@ -104,11 +104,11 @@ def main(n):
         try:
             path = next(generator)
             board.update_board(path)
+            pygame.time.delay(400)
         except StopIteration:
             pass
 
         board.draw(screen)
-        pygame.time.delay(400)
 
         pygame.display.flip()
         clock.tick()
