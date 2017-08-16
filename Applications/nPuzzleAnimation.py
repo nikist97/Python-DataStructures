@@ -30,10 +30,10 @@ from Algorithms.nPuzzle import n_puzzle
 class Board(object):
 
     # constructor for the board
-    def __init__(self, square_width, color, number_color):
+    def __init__(self, square_width, grids_num, color, number_color):
         self.color = color
         self.number_color = number_color
-        self.grids_num = 3
+        self.grids_num = int(grids_num)
 
         # the board used for n-puzzle algorithm
         self.board = []
@@ -53,7 +53,7 @@ class Board(object):
 
     # the update method updates the board relative to the current state
     def update_board(self, state):
-        self.board = [list(state[0:3]), list(state[3:6]), list(state[6:9])]
+        self.board = [list(state[i:i+self.grids_num]) for i in range(0, self.grids_num**2, self.grids_num)]
 
     # the draw method draws the n-puzzle board
     def draw(self, screen):
@@ -64,8 +64,9 @@ class Board(object):
                                               self.square_width, self.square_width)), 1)
                 if self.board[i][j] != 0:
                     label = self.font.render(str(self.board[i][j]), 1, self.number_color)
-                    screen.blit(label, (j*self.square_width + int(self.square_width/2), i*self.square_width +
-                                        int(self.square_width/2)))
+                    rect = label.get_rect()
+                    screen.blit(label, (j*self.square_width + int(self.square_width/2) - int(rect.width/2),
+                                        i*self.square_width + int(self.square_width/2) - int(rect.height/2)))
 
 
 white = (255, 255, 255)
@@ -80,10 +81,12 @@ def main(initial):
     screen = pygame.display.set_mode(size)
     pygame.display.set_caption('N-Puzzle')
 
+    n = len(initial)
+    grid_width = n**0.5
     generator = iter(n_puzzle(initial))
     running = True
     clock = pygame.time.Clock()
-    board = Board(int(size[0] / 3), black, red)
+    board = Board(int(size[0] / grid_width), grid_width, black, red)
 
     while running:
         screen.fill(white)
@@ -107,6 +110,9 @@ def main(initial):
     pygame.quit()
 
 
+# the algorithm uses a manhattan distance as a heuristic function, however, this could be slow for n > 8
+# a possible optimization for bigger grids will be to use a pattern database lookup heuristic
 if __name__ == "__main__":
-    initial_state = (0, 4, 6, 2, 7, 1, 8, 5, 3)
+    initial_state = (4, 0, 2, 7, 6, 1, 8, 5, 3)  # 3x3 grid example
+    # initial_state = (2, 3, 6, 4, 1, 5, 11, 7, 13, 9, 8, 0, 14, 15, 10, 12)  # 4x4 grid example
     main(initial_state)
