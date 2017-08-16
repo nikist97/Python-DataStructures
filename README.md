@@ -6,8 +6,8 @@ _Navigate to data structures:_ [Stack](#stack), [Queue](#queue), [Binary Search 
 [Max Binary Heap](#maxbh), [Priority Queue](#pq), [Duplicate Priority Queue](#dpq), [Graph](#graph)
 <br><br>
 _Navigate to algorithms:_ [Insertion Sort](#is), [Selection Sort](#ss), [Bubble Sort](#bs), [Merge Sort](#ms), 
-[Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [Minimax](#minimax),
-[Minimax with Alpha-Beta Pruning](#minimax)
+[Quick Sort](#qs), [Breadth First Search](#bfs), [Depth First Search](#dfs), [N-Queen solver](#nqueen), [N-Puzzle solver](#npuzzle),
+ [Minimax](#minimax), [Minimax with Alpha-Beta Pruning](#minimax)
 <br><br>
 _Navigate to applications:_ [Expression Evaluator](#ee), [Tic-Tac-Toe game against minimax](#tic-tac-toe), 
 [N-Queen solver visualization](#nqueen-visualization), [N-Queen solver animation](#nqueen-animation)
@@ -681,8 +681,8 @@ for node in graph:
 
 ### Algorithms
 
-**_Implementation for sorting algorithms, searching algorithms, n-queen solver algorithm and minimax algorithm 
-for playing tic-tac-toe in Python_** <br>
+**_Implementation for sorting algorithms, searching algorithms, n-queen solver algorithm, n_puzzle solver algorithm
+ and minimax algorithm for playing tic-tac-toe in Python_** <br>
 
 **_Sorting Algorithms in Python - Insertion Sort, Selection Sort, Bubble Sort,
 Merge Sort, Quick Sort_** <br>
@@ -1157,7 +1157,7 @@ nodes = list(depth_first_search_generator(graph, start_node="float"))
 <br>
 
 **_Backtracking algorithm for the famous N-queen<a name="nqueen"></a> problem_** <br>
-**This is located in the N-queen.py module** <br>
+**This is located in the nQueen.py module** <br>
 
 Examples:<br>
 ```python
@@ -1171,6 +1171,7 @@ n_queen(4) # returns [1, 3, 0, 2]
 covered_paths = []
 n_queen(6, covered_paths)
 # after execution covered_paths will be a list of lists, and every list in it would be a state the algorithm has covered
+# in order to find the right state
 
 # you can also use the n_queen_generator, which generates each path the algorithm checks one by one and if a StopIteration
 # error is raised the last returned path must be the actual solution
@@ -1182,6 +1183,21 @@ while True:
     except StopIteration as err:
         break
 print(solution) # prints the solution to the n_queen problem - [0, 2, 4, 6, 1, 3, 5]
+```
+
+**_An algorithm for the famous N-puzzle<a name="npuzzle"></a> problem_** <br>
+**This is located in the nPuzzle.py module** <br>
+
+Examples<br>
+```python
+from Algorithms.nPuzzle import n_puzzle
+
+# the algorithm returns a list with all the states of the path it covers in order to reach the end state
+# a state here is represented by an ordinary tuple filled with the numbers from 0 to n, where 0 represents a blank tile
+initial_state = (4, 0, 2, 7, 6, 1, 8, 5, 3) # initial state for 8-Puzzle, n = 8
+n_puzzle(initial_state) # returns the list with all the states(tuples) the algorithm covers before reaching end state
+# uses IDA* search algorithm to find the end state
+# the size of the initial state must be 9 for 8-Puzzle, 16 for 15-Puzzle, etc..
 ```
 
 <br>

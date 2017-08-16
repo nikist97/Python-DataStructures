@@ -178,7 +178,7 @@ def n_puzzle(initial_state):
         raise ValueError("There are no solutions for the initial state")
 
     limit = heuristic_func(initial_state)
-    path = Stack()
+    path = Stack(tuple)
     path.push(initial_state)
 
     while True:
