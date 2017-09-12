@@ -19,87 +19,157 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 
 
-# Abstract Data Type stack, Last In First Out (LIFO)
 class Stack(object):
+    """
+    Implementation for the abstract data structure called Stack - follows the principle Last In First Out
+    """
 
-    # constructor for stack, optional argument elements_type (it's set to None if not provided)
-    # if elements_type is None, the stack can contain elements of many types simultaneously
-    # otherwise, it can contain only elements from the type specified in the constructor
     def __init__(self, elements_type=None):
+        """
+        a constructor for a stack
+        :param elements_type: optional argument, which represents the type of data in the stack (int, str, float, etc.)
+             default value is None, which means that the stack can contain elements of all types,
+             otherwise, it can contain only elements of the specified type
+        """
+
+        # checking that the elements_type argument is a valid type if passed
         if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
+        # the elements in the stack are stored in a python list
         self.__elements = []
         self.__elements_type = elements_type
 
-    # the string representation for the stack returns the elements of the stack
     def __str__(self):
+        """
+        the string representation for the stack returns the string representation of the list of
+        elements in the stack
+        """
+
         return str(self.__elements)
 
-    # the len(stack) method
     def __len__(self):
+        """
+        overriding this method lets us use the len(stack) syntax, where stack is an object of type Stack
+        :return: calls the size() method of the stack to get the number of elements in the stack
+        """
+
         return self.size()
 
-    # iterator method
     def __iter__(self):
+        """
+        overriding this method allows the use of an iterator for a Stack object
+        :return: returns a reference to the object itself
+        """
+
         return self
 
-    # next method for iterator
     def __next__(self):
+        """
+        overriding this method impements the next() method of the iterator so that the Stack object is iterable
+        :return: calls the pop() method to return the appropriate element and remove it from the stack
+        :raises StopIteration: if the stack is empty
+        """
+
         if self.is_empty():
             raise StopIteration
         else:
             return self.pop()
 
-    # the 'item in stack' method
     def __contains__(self, item):
+        """
+        overriding this method allows the use of the 'item in stack' syntax, where 'item' is some value, while stack
+        is an object of type Stack
+        :param item: the value to search for in the stack
+        :return: calls the contains() method to check if the stack contains this value
+        """
+
         return self.contains(item)
 
-    # the contains method, which checks if an item is in the stack
     def contains(self, item):
+        """
+        this method checks if a value is contained in the stack
+        :param item: the value to search for in the stack
+        :return: True if the value is contained in the list with elements of the stack and False otherwise
+        :raises TypeError: if the type of the Stack object is specified and is different from the type of the 'item'
+            argument used when calling this method
+        """
+
         if self.__elements_type is None or type(item) == self.__elements_type:
             return item in self.__elements
         else:
             raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
-    # the is_empty method, which checks if the size of the stack is 0
     def is_empty(self):
-        return len(self.__elements) == 0
+        """
+        this method checks if the stack is empty
+        :return: True if the number of elements in the stack is 0 and False otherwise
+        """
 
-    # the size method, which returns the size of the stack
+        return self.size() == 0
+
     def size(self):
+        """
+        this method gets the number of elements in the stack
+        :return: the number of elements in the list containing the elements of the stack
+        """
+
         return len(self.__elements)
 
-    # the type method, which returns the type of the stack elements
     def type(self):
+        """
+        this method gets the type of elements in the stack
+        :return: the type of elements in the stack or None if there are elements of multiple types in the stack
+        """
+
         return self.__elements_type
 
-    # the push method, which pushes an item into the stack, raises a TypeError if elementType is not None,
-    # but different from the parameter item's type
     def push(self, item):
+        """
+        this method pushes an element on top of the stack
+        :param item: the element to push in the stack
+        :raises TypeError: if the type of the Stack object is specified and is different from the type of the 'item'
+            argument used when calling this method
+        """
+
         if self.__elements_type is None or type(item) == self.__elements_type:
             self.__elements.append(item)
         else:
             raise TypeError("The element you are trying to push is not of type " + str(self.__elements_type))
 
-    # the pop method, which takes out the last element that got into the stack;
-    # it raises a ValueError if there is no element to pop (if size of the stack is 0)
     def pop(self):
+        """
+        this method pops the top element out of the stack (the last pushed element in the stack)
+        :return: the top element in the stack
+        :raises ValueError: if there are no elements in the stack
+        """
+
         if len(self.__elements) > 0:
             return self.__elements.pop()
         else:
             raise ValueError("There are no elements in the stack")
 
-    # the peek method, which returns the last element that got into the stack, but doesn't remove it from the stack;
-    # it returns None if there is no element to peek at
     def peek(self):
+        """
+        this method peeks the top element of the stack, same as the pop() method,
+        but without removing the element from the stack
+        :return: the last pushed element in the stack or None if there are no elements in the stack
+        """
+
         if len(self.__elements) > 0:
             return self.__elements[len(self.__elements) - 1]
         else:
             return None
 
-    # the remove method, which removes an element from stack
     def remove(self, element):
+        """
+        this method removes an element from the stack
+        :param element: the element to remove from the stack
+        :raises TypeError: if the type of the Stack object is specified and is different from the type of the 'element'
+            argument used when calling this method
+        :raises KeyError: if the element to remove is not contained in the stack
+        """
+
         if self.__elements_type is None or type(element) == self.__elements_type:
             try:
                 self.__elements.remove(element)
@@ -109,75 +179,135 @@ class Stack(object):
             raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
 
 
-# Abstract Data Type Queue, First In First Out (FIFO)
 class Queue(object):
+    """
+    Implementation for the abstract data structure called Queue - follows the principle First In First Out
+    """
 
-    # constructor for queue, optional argument elements_type (it's set to None if not provided)
-    # if elements_type is None, the queue can contain elements of many types simultaneously
-    # otherwise, it can contain only elements from the type specified in the constructor
     def __init__(self, elements_type=None):
+        """
+        a constructor for a Queue
+        :param elements_type: optional argument, which represents the type of elements in the queue
+            default value is None, which means that the queue can contain elements of all types,
+            otherwise, the queue can only contain elements of the specified type
+        :raises TypeError: if the 'elements_type' argument is specified and is not a valid type
+        """
+
+        # checking that the elements_type argument is a valid type if passed
         if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
+        # the elements in the queue are spread among two stacks in order to ensure better amortized time complexity cost
+        # for the dequeue() method
         self.__in_elements = Stack(elements_type)
         self.__out_elements = Stack(elements_type)
         self.__elements_type = elements_type
 
-    # the string representation for the queue returns the elements of the queue
     def __str__(self):
+        """
+        the string representation of a queue object
+        :return: the elements in teh stack in the order they must be dequeued
+        """
+
         # noinspection PyProtectedMember
         return str(self.__out_elements._Stack__elements[:: -1] + self.__in_elements._Stack__elements)
 
-    # the len(queue) method
     def __len__(self):
+        """
+        overriding this method allows the use of the len(queue) syntax, where queue is an object of type Queue
+        :return: calls the size() method to get the number of elements in the queue
+        """
+
         return self.size()
 
-    # iterator implementation
     def __iter__(self):
+        """
+        overriding this method allows the use of an iterator for the queue
+        :return: reference to the queue object itself
+        """
+
         return self
 
-    # the next method for the iterator
     def __next__(self):
+        """
+        overriding this method implements the next method for the iterator
+        :return: calls the dequeue() method to get the appropriate value to return and remove it from the queue
+        :raises StopIteration: if there are no elements in the queue
+        """
+
         if self.is_empty():
             raise StopIteration
         else:
             return self.dequeue()
 
-    # the 'item in queue' method
     def __contains__(self, item):
+        """
+        overriding this method allows the use of the 'item in queue' syntax, where the queue object is of type Queue
+        :param item: the item to search for in the queue
+        :return: calls the contains() method to check if the item is contained in the queue
+        """
+
         return self.contains(item)
 
-    # the contains method which checks if an item is in the queue
     def contains(self, item):
+        """
+        this method checks if an item is contained in the queue
+        :param item: the item to search for in the queue
+        :return: True if the item is contained in the queue and False otherwise
+        :raises TypeError: if the queue has a type of elements specified that is different from the type of the 'item'
+        """
+
         if self.__elements_type is None or type(item) == self.__elements_type:
             return item in self.__out_elements or item in self.__in_elements
         else:
             raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
-    # the is_empty method, which checks if the size of the queue is 0
     def is_empty(self):
+        """
+        this method checks if the queue is empty
+        :return: True if the number of elements in the queue is 0 and False otherwise
+        """
+
         return self.size() == 0
 
-    # the size method, which returns the size of the queue
     def size(self):
+        """
+        this method gets the number of elements in the queue
+        :return: the number of elements in the queue
+        """
+
         return len(self.__out_elements) + len(self.__in_elements)
 
-    # the type method, which returns the type of the queue elements
     def type(self):
+        """
+        this method gets the type of elements in the queue
+        :return: the type of elements in the queue or None if the queue can contain all types of elements
+        """
+
         return self.__elements_type
 
-    # the enqueue method, which inserts an item into the queue, raises a TypeError if elementsType is not None and is
-    # different than the parameter item's type
     def enqueue(self, item):
+        """
+        this method enqueues an element in the queue
+        :param item: the element to enqueue
+        :raises TypeError: if the type of elements in the queue is specified and is different from the type
+            of the 'item' argument used when calling this method
+        """
+
         if self.__elements_type is None or type(item) == self.__elements_type:
             self.__in_elements.push(item)
         else:
             raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
 
-    # the dequeue method, which removes the item that got first in the queue
-    # it raises a ValueError if there is no element to dequeue(if size of the queue is 0)
     def dequeue(self):
+        """
+        this method removes the item that got first in the queue
+        :raises ValueError: if there are no elements in the queue
+        """
+
         if self.size() > 0:
+            # if the stack for handling the dequeue operation is empty, fill it up with the elements in the stack
+            # for handling the enqueue operation
             if self.__out_elements.is_empty():
                 while not self.__in_elements.is_empty():
                     self.__out_elements.push(self.__in_elements.pop())
@@ -185,10 +315,15 @@ class Queue(object):
         else:
             raise ValueError("There are no elements in the queue")
 
-    # the peek method, which returns the first element that got in the queue, but doesn't remove it from the queue;
-    # it returns None if there is no element to peek at
     def peek(self):
+        """
+        this method peeks the item that got first in the queue (without removing it)
+        :return: the peeked item or None if there are no elements in the queue
+        """
+
         if self.size() > 0:
+            # if the stack for handling the dequeue operation is empty, fill it up with the elements in the stack
+            # for handling the enqueue operation
             if self.__out_elements.is_empty():
                 while not self.__in_elements.is_empty():
                     self.__out_elements.push(self.__in_elements.pop())
@@ -196,8 +331,15 @@ class Queue(object):
         else:
             return None
 
-    # the remove method, which removes an element from the queue
     def remove(self, element):
+        """
+        this method removes an element from the queue
+        :param element: the element to remove from the queue
+        :raises TypeError: if the type of elements in the queue is specified and is different from the type
+            of the 'element' argument used when calling this method
+        :raises KeyError: if the element to remove is not contained in the queue
+        """
+
         if self.__elements_type is None or type(element) == self.__elements_type:
             try:
                 self.__in_elements.remove(element)
