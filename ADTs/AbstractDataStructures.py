@@ -352,19 +352,29 @@ class Queue(object):
             raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
 
 
-# Abstract Data Type Binary Search Tree
 class BinarySearchTree(object):
+    """
+    implementation for the Abstract Data Structure called Binary Search Tree
+    """
 
-    # the constructor for the binary tree, it has a root as an optional argument, if the root is specified the tree
-    # is initialised with a root, else it is initialized with no root, the elements in the tree must be from the type
-    # specified in the constructor, the default type that is used is int
     def __init__(self, root=None, elements_type=int):
+        """
+        constructor for a binary search tree
+        :param root: optional argument, which represents the value of the root node of the binary search tree,
+            default value is None, tree initialised with no root
+        :param elements_type: optional argument, the type of elements in the binary search tree,
+            default value is int, the argument must be a valid type, only elements of this type are allowed in the tree
+        :raises TypeError: if the 'elements_type' argument is not a valid type (int, str, float, etc.)
+        :raises TypeError: if a root is specified and its type is different from the type of the binary search tree
+        """
+
         # variables used for the iterator of the binary tree
         self.__successor = None
         self.__iterator_limit = None
         self.__iterator_finished = None
         self.__current_item = None
 
+        # check for a valid type
         if type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
@@ -380,35 +390,64 @@ class BinarySearchTree(object):
         else:
             raise TypeError("The binary tree can contain only elements of type " + str(elements_type) + ".")
 
-    # string representation of the binary search tree
     def __str__(self):
+        """
+        the string representation of the binary search tree
+        :return: returns a string, which contains information about the tree, such as the root value
+        """
+
         if self.__root is not None:
             return "Binary search tree with root: " + str(self.__root.get_value())
         else:
             return "Binary search tree with root: None"
 
-    # overriding the __contains__ method
     def __contains__(self, item):
+        """
+        overriding this method allows the use of the 'item in tree' syntax where tree is an object of type
+        BinarySearchTree
+        :param item: the item to search for in the tree
+        :return: calls the contains() method to check if the tree contains the item
+        """
+
         return self.contains(item)
 
-    # overriding the __len__ method
     def __len__(self):
+        """
+        overriding this method allows the use of the 'len(tree)' syntax where tree is an object of type
+        BinarySearchTree
+        :return: calls the get_number_of_elements() method to get the number of elements in the tree
+        """
+
         return self.get_number_of_elements()
 
-    # is_empty method checks if number of elements is 0
     def is_empty(self):
+        """
+        this method checks if the tree has no elements
+        :return: True if the number of elements in the tree is 0 and False otherwise
+        """
+
         return self.get_number_of_elements() == 0
 
-    # overriding the __iter__ method, so that we can go through the elements of the tree
     def __iter__(self):
+        """
+        overriding this method allows the implementation of an iterator for the tree
+        :return: a reference to the tree itself
+        """
+
+        # setting the instance variables used for the iteration
         self.__current_item = self.__get_minimum_node()
         self.__successor = self.__current_item
         self.__iterator_limit = self.__get_maximum_node()
         self.__iterator_finished = False
         return self
 
-    # overriding the __next__ method, so that we can use the iterator of the binary tree
     def __next__(self):
+        """
+        overriding this method to implement the next() method for the iterator
+        :return: the next item to iterate
+        :raises StopIteration: if the iteration is over
+        """
+
         if self.__iterator_finished:
             raise StopIteration
 
@@ -442,50 +481,84 @@ class BinarySearchTree(object):
 
                 return self.__current_item.get_value()
 
-    # the add method, which adds a Node with the value given as an argument to the binary search tree
     def add(self, value):
+        """
+        this method adds a new element to the tree
+        :param value: the value of the new node to add
+        :raises TypeError: if the type of the argument is different than the type of elements in the binary search tree
+        """
+
         if type(value) == self.__elements_type:
+            # if there is no root, create one
             if self.__root is None or self.__root.get_value() is None:
                 self.__root = Node(value)
                 self.__number_of_items = 1
             else:
+                # if there is a root created, call the add method to the Node root object
                 if self.__root.add(Node(value)):
                     self.__number_of_items += 1
         else:
             raise TypeError("The binary tree can contain only elements of type " + str(self.__elements_type) + ".")
 
-    # the contains method, which finds if an element exists in the binary tree
     def contains(self, value):
+        """
+        this method checks if an element with a certain value exists in the tree
+        :param value: the value to search for in the tree
+        :return: True if the tree contains an element with this value and False otherwise
+        :raises TypeError: if the type of the argument is different than the type of elements in the binary search tree
+        """
+
         if type(value) == self.__elements_type:
             return self.__root.contains(value)
         else:
             raise TypeError("The binary tree can contain only elements of type " + str(self.__elements_type) + ".")
 
-    # the delete method, which deletes an element from the tree
     def delete(self, value):
+        """
+        this method deletes an element with a certain value from the tree
+        :param value: the value to delete
+        :raises TypeError: if the type of the argument is different than the type of elements in the binary search tree
+        """
+
         if type(value) == self.__elements_type:
             self.__root.delete(value)
             self.__number_of_items -= 1
         else:
             raise TypeError("The binary tree can contain only elements of type " + str(self.__elements_type) + ".")
 
-    # a getter method for the root of the tree
     def get_root(self):
+        """
+        this method gets the value of the root of the tree
+        :return: the value of the root of the tree and None if there is no root
+        """
+
         if self.__root is None:
             return None
         else:
             return self.__root.get_value()
 
-    # a getter method for the number of elements in the tree
     def get_number_of_elements(self):
+        """
+        this method gets the number of elements in the tree
+        :return: the number of items
+        """
+
         return self.__number_of_items
 
-    # a getter method for the type of the elements in the binary search tree
     def type(self):
+        """
+        get the type of elements in the tree
+        :return: the type of elements in the tree (int, str, float, etc.)
+        """
+
         return self.__elements_type
 
-    # a getter method for the minimum element in the tree
     def get_minimum(self):
+        """
+        a getter method for the element with the minimum value in the tree
+        :return: the most left node's value or None if there is no root in the tree
+        """
+
         current_node = self.__root
 
         if current_node is None:
@@ -496,9 +569,12 @@ class BinarySearchTree(object):
             current_node = current_node.get_left()
         return current_node.get_value()
 
-    # a getter method for the minimum element in the tree, this one returns the Node element rather than just the value,
-    # used for the iterator
     def __get_minimum_node(self):
+        """
+        a 'private' method intended to be used by the iterator of the tree
+        :return: the most left node object in the tree (returns the Node object itself not its value)
+        """
+
         current_node = self.__root
 
         if current_node is None:
@@ -509,8 +585,12 @@ class BinarySearchTree(object):
             current_node = current_node.get_left()
         return current_node
 
-    # a getter method for the maximum element in the tree
     def get_maximum(self):
+        """
+        a getter method for the element with the maximum value in the tree
+        :return: the right most node's value or None if there is no root in the tree
+        """
+
         current_node = self.__root
 
         if current_node is None:
@@ -521,9 +601,12 @@ class BinarySearchTree(object):
             current_node = current_node.get_right()
         return current_node.get_value()
 
-    # a getter method for the maximum element in the tree, this one returns the Node element rather than just the value,
-    # used for the iterator
     def __get_maximum_node(self):
+        """
+        a 'private' method intended to be used by the iterator of the tree
+        :return: the most right node object in the tree (returns the Node object itself not its value)
+        """
+
         current_node = self.__root
 
         # if the root is None, return None
@@ -536,57 +619,98 @@ class BinarySearchTree(object):
         return current_node
 
 
-# the Node class, which represents a Node in the binary search tree
 class Node(object):
+    """
+    a utility class, which represents a Node in the binary search tree
+    """
 
-    # the constructor for the Node class
     def __init__(self, value):
-        # a node has a value, a left and right child, a parent
+        """
+        a constructor for the Node class, a node object has a value, a parent node, left and right child nodes
+        :param value: the value of the node
+        """
+
         self.__value = value
         self.__left = None
         self.__right = None
         self.__parent = None
 
-    # a getter method for the value of the Node
     def get_value(self):
+        """
+        a getter method for the value of the node
+        :return: the value of the node
+        """
+
         return self.__value
 
-    # a getter method for the left child
     def get_left(self):
+        """
+        a getter method for the left child
+        :return: the left child node of this node
+        """
+
         return self.__left
 
-    # a setter method for the left child
     def set_left(self, node=None):
+        """
+        a setter method for the left child of this node
+        :param node: (optional) the new node object to set to be the left child, default value is None (no left child)
+        :raises TypeError: if the type of the argument is not Node
+        """
+
         if node is None or type(node) == Node:
             self.__left = node
         else:
             raise TypeError("The child of a node must be a node.")
 
-    # a getter method for the right child
     def get_right(self):
+        """
+        a getter method for the right child
+        :return: the right child node of this node
+        """
+
         return self.__right
 
-    # a setter method for the right child
     def set_right(self, node=None):
+        """
+        a setter method for the right child of this node
+        :param node: (optional) the new node object to set to be the right child, default value is None (no right child)
+        :raises TypeError: if the type of the argument is not Node
+        """
+
         if node is None or type(node) == Node:
             self.__right = node
         else:
             raise TypeError("The child of a node must be a node.")
 
-    # a getter method for the parent of the node
     def get_parent(self):
+        """
+        a getter method for the parent
+        :return: the parent node of this node
+        """
+
         return self.__parent
 
-    # a setter method for the parent of the node
     def set_parent(self, node=None):
+        """
+        a setter method for the parent of this node
+        :param node: (optional) the new node object to set to be the parent, default value is None (no parent)
+        :raises TypeError: if the type of the argument is not Node
+        """
+
         if node is None or type(node) == Node:
             self.__parent = node
         else:
             raise TypeError("The parent of a node must be a node.")
 
-    # the add method, which adds a node to the current node as a child,
-    # the method returns a boolean representing whether the tree has added an element or not
     def add(self, node):
+        """
+        this method adds a node to the current node as a child by determining the right place of the node
+        :param node: the node to add
+        :return: True if the element has been added and False otherwise
+        :raises TypeError: if the type of the argument is not Node
+        """
+
         if type(node) == Node:
             # if the node's value is less than the current node's value, go to the left subtree
             if node.get_value() < self.get_value():
@@ -610,8 +734,13 @@ class Node(object):
         else:
             raise TypeError("The node can add only a node as its child.")
 
-    # the delete method of the Node class, which deletes a node
     def delete(self, value):
+        """
+        this method deletes a node with a certain value considering only child nodes
+        :param value: the value of the node to delete
+        :raises KeyError: if there is no node with the given value
+        """
+
         if self.get_value() == value:
             # if we are deleting a node with no children, just delete the node
             if self.__left is None and self.__right is None:
@@ -694,8 +823,13 @@ class Node(object):
         else:
             raise KeyError("You are trying to delete an element which doesn't exist in the tree.")
 
-    # the contains method, which searches for the value given as an argument
     def contains(self, value):
+        """
+        this method searches for a node with the given as argument value
+        :param value: the value to search for
+        :return: True if a node with the given value is found and False otherwise
+        """
+
         if self.get_value() == value:
             return True
 
@@ -713,8 +847,13 @@ class Node(object):
         else:
             return False
 
-    # the add_left method, which adds a left child to the node and adjust the parent of the node argument
     def __add_left(self, node):
+        """
+        'private' method, used to add a node object as left child, intended to be used only in the scope of this class
+        :param node: the node object to add
+        :raises TypeError: if the type of the argument is not Node
+        """
+
         if type(node) == Node:
             self.__left = node
             self.__left.set_parent(self)
@@ -722,6 +861,12 @@ class Node(object):
             raise TypeError("You can only add a Node as a left child.")
 
     def __add_right(self, node):
+        """
+        'private' method, used to add a node object as right child, intended to be used only in the scope of this class
+        :param node: the node object to add
+        :raises TypeError: if the type of the argument is not Node
+        """
+
         if type(node) == Node:
             self.__right = node
             self.__right.set_parent(self)
