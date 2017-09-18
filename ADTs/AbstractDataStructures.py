@@ -874,62 +874,110 @@ class Node(object):
             raise TypeError("You can only add a Node as a right child.")
 
 
-# Abstract Data Type BinaryHeap, abstract class - can't be instantiated, use MinBinaryHeap or MaxBinaryHeap
 class BinaryHeap(ABC):
+    """
+    implementation for the Abstract Data Structure called Binary Heap, the class extends the ABC class, which makes it
+    an abstract class, which cannot be instantiated directly, instead one should use MinBinaryHeap and MaxBinaryHeap
+    """
 
-    # constructor for binary heap, optional argument elements_type (it's set to int if not provided)
-    # the elements in the binary heap must be from the type specified in the constructor,
-    # the default type that is used is int
     def __init__(self, elements_type=int):
+        """
+        a constructor for the BinaryHeap class
+        :param elements_type: optional argument, default value is int, only elements of this type can be added
+            to the heap
+        :raises TypeError: if the 'elements_type' argument is specified and is not a valid type
+        """
+
         if type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
-        self.__elements = []
+        self.__elements = []  # the elements in the heap are stored in a python list
         self.__elements_type = elements_type
 
-    # the len(heap) method
     def __len__(self):
+        """
+        overriding this method allows the use of the 'len(heap)' syntax
+        :return: calls the size() method to get the number of elements in the heap
+        """
+
         return self.size()
 
-    # the str(heap) method
     def __str__(self):
+        """
+        this is the string representation of the heap
+        :return: the string representation of the list of elements in the heap
+        """
+
         return str(self.__elements)
 
-    # the 'item in priority queue' method
     def __contains__(self, item):
+        """
+        overriding this method allows the use of the 'item in heap' syntax
+        :param item: the item to search for in the heap
+        :return: calls the contains() method to check if the given item is contained in the heap
+        """
+
         return self.contains(item)
 
     @abstractmethod
-    # overriding the __iter__ method, so that we can go through the elements of the heap
     def __iter__(self):
+        """
+        defining this as an abstract method requires all child classes to give implementation for an iterator
+        """
+
         pass
 
     @abstractmethod
-    # overriding the __next__ method, so that we can use the iterator
     def __next__(self):
+        """
+        defining this as an abstract method requires all child classes to give implementation for the next method
+        """
+
         pass
 
-    # the is_empty method, which checks if the size of the heap is 0
     def is_empty(self):
-        return len(self.__elements) == 0
+        """
+        this method checks if the size of the heap is 0
+        :return: True if there are no elements in the heap and False otherwise
+        """
 
-    # the size method, which returns the size of the heap
+        return self.size() == 0
+
     def size(self):
+        """
+        this method gets the size of the heap
+        :return: the number of elements in the heap
+        """
+
         return len(self.__elements)
 
-    # the type method, which returns the type of the heap elements
     def type(self):
+        """
+        this method gets the type of elements allowed to be added in the heap
+        :return: the type of elements in the heap
+        """
+
         return self.__elements_type
 
-    # the contains method, which checks if an element is in the heap
     def contains(self, item):
+        """
+        this method checks if an element is contained in the heap
+        :param item: the item to search for
+        :return: True if the heap contains this item and False otherwise
+        """
+
         if type(item) == self.__elements_type:
             return item in self.__elements
         else:
             raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
-    # the add method, which adds an element to the heap
     def add(self, element):
+        """
+        this method adds an element in the heap
+        :param element: the element to add
+        :raises TypeError: if the argument's type is different from the type of elements in the heap
+        """
+
         if type(element) == self.__elements_type:
             self.__elements.append(element)
 
@@ -937,45 +985,69 @@ class BinaryHeap(ABC):
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
-    # the percolate_up method which adjusts the heap after an addition operation,
-    # it gets the last element in the list and finds its place in the heap
     @abstractmethod
     def __percolate_up(self):
+        """
+        declaring this method as an abstract method requires all child classes to provide implementation
+        """
+
         pass
 
     @abstractmethod
-    # the percolate_down method, which adjusts the heap after a remove_min operation,
-    # it starts with the first element in the list and finds its place in the heap
     def __percolate_down(self):
+        """
+        declaring this method as an abstract method requires all child classes to provide implementation
+        """
+
         pass
 
     @abstractmethod
-    # the get_sorted_elements method, which returns the sorted elements of the heap
     def get_sorted_elements(self):
+        """
+        declaring this method as an abstract method requires all child classes to provide implementation
+        """
+
         pass
 
     @abstractmethod
-    # the replace_root method, runs faster than remove_min/remove_max followed by add
     def replace_root(self, element):
+        """
+        declaring this method as an abstract method requires all child classes to provide implementation
+        """
+
         pass
 
     @abstractmethod
-    # the replace method, which finds an element and replaces it with the new element
     def replace(self, old_element, new_element):
+        """
+        declaring this method as an abstract method requires all child classes to provide implementation
+        """
+
         pass
 
     @abstractmethod
-    # the remove method, which finds an element and removes it from the heap
     def remove(self, element):
+        """
+        declaring this method as an abstract method requires all child classes to provide implementation
+        """
+
         pass
 
 
-# Abstract Data Type MinBinaryHeap - represents a BinaryHeap with a root its minimum element
 # noinspection PyAbstractClass,PyPep8Naming
 class MinBinaryHeap(BinaryHeap):
+    """
+    Abstract Data Structure - represents a binary heap, with its minimum element being the root of the tree
+    """
 
-    # constructor for MinBinaryHeap, same arguments as abstract BinaryHeap class
     def __init__(self, elements_type=int):
+        """
+        constructor for MinBinaryHeap,
+        calls the parent class constructor and sets new references to the heap's elements list and type
+        :param elements_type: the type of elements allowed in the heap
+        :raises TypeError: if elements_type is not a valid type
+        """
+
         if type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
@@ -986,22 +1058,35 @@ class MinBinaryHeap(BinaryHeap):
         self.__elements = self._BinaryHeap__elements
         self.__elements_type = self._BinaryHeap__elements_type
 
-    # iterator goes through the sorted elements starting from the min entry
     def __iter__(self):
+        """
+        overriding this method allows the use of an iterator for the binary heap
+        :return: reference to the heap object itself
+        """
         return self
 
-    # overriding the next method in order to use the iterator
     def __next__(self):
+        """
+        overriding this method so that the iterator knows which element to return
+        :return: the min element in the heap and removes it
+        :raises StopIteration: if the heap is empty
+        """
+
         if not self.is_empty():
             return self.remove_min()
         else:
             raise StopIteration
 
-    # the percolate_up method which adjusts the heap after an addition operation,
-    # it gets the last element in the list and finds its place in the heap
     def _BinaryHeap__percolate_up(self):
+        """
+        this method is overridden from the abstract class, the implementation adjusts the heap in the correct order,
+        meant to use after the add operation
+        """
+
+        # get the last element in the list
         child = len(self.__elements) - 1
 
+        # find its correct place in the heap
         while child > 0:
             parent = int((child - 1)/2)
             if self.__elements[child] >= self.__elements[parent]:
@@ -1012,12 +1097,17 @@ class MinBinaryHeap(BinaryHeap):
             self.__elements[parent] = temp
             child = parent
 
-    # the percolate_down method, which adjusts the heap after a remove_min operation,
-    #  it gets the first element in the list and finds its place in the heap
     def _BinaryHeap__percolate_down(self):
+        """
+        this method is overridden from the abstract class, the implementation adjusts the heap in the correct order,
+        meant to use after the a remove_min operation
+        """
+
+        # get the first element in the heap
         parent = 0
         child = 2*parent + 1
 
+        # find its correct place in the heap
         while child < len(self.__elements):
             if child + 1 < len(self.__elements):
                 if self.__elements[child] > self.__elements[child+1]:
@@ -1033,17 +1123,24 @@ class MinBinaryHeap(BinaryHeap):
             parent = child
             child = 2*parent + 1
 
-    # the peek_min method, which returns the minimum element in the heap, but doesn't remove it,
-    # returns None if no elements in the heap
     def peek_min(self):
+        """
+        this method gets the minimum element in the heap without removing it
+        :return: minimum element or None if there are no elements in the heap
+        """
+
         if len(self.__elements) > 0:
             return self.__elements[0]
         else:
             return None
 
-    # the remove_min method, which removes and returns the minimum element in the heap,
-    # raises a ValueError if there are no elements in the heap
     def remove_min(self):
+        """
+        this method removes the minimum element from the heap
+        :return: the minimum element in the heap
+        :raises ValueError: if there are no elements in the heap
+        """
+
         if len(self.__elements) > 0:
             min_element = self.__elements[0]
 
@@ -1055,8 +1152,13 @@ class MinBinaryHeap(BinaryHeap):
         else:
             raise ValueError("There are no elements in the heap")
 
-    # returns the sorted elements in the heap starting from the minimum entry
     def get_sorted_elements(self):
+        """
+        the difference between this method and the iterator is that after this function is finished the heap's
+        elements are preserved
+        :returns: a list with the sorted elements in the heap starting from the minimum entry
+        """
+
         temp_elements = [k for k in self.__elements]
         sorted_elements = []
 
@@ -1069,8 +1171,16 @@ class MinBinaryHeap(BinaryHeap):
 
         return sorted_elements
 
-    # removes and returns the smallest item in the heap and adds the new item, faster than remove_min followed by add
     def replace_root(self, element):
+        """
+        removes and returns the smallest element in the heap and adds the new element, this method will
+        perform better than using remove_min() and add() for this purpose
+        :param element: the new element to replace the root
+        :return: the smallest element in the heap
+        :raises ValueError: if there are no elements in the heap
+        :raises TypeError: if the type of the argument is different than the type of elements in the heap
+        """
+
         if type(element) == self.__elements_type:
             if len(self.__elements) > 0:
                 temp = self.__elements[0]
@@ -1082,8 +1192,15 @@ class MinBinaryHeap(BinaryHeap):
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
-    # the replace method, which finds the old element and replaces it with the new element
     def replace(self, old_element, new_element):
+        """
+        this method replaces an element in the heap with a new element and adjusts the order
+        :param old_element: the element to replace
+        :param new_element: the new element
+        :raises TypeError: if the type of any of the arguments is not the same as the type of elements in the heap
+        :raises KeyError: if the old element is not contained in the heap
+        """
+
         if type(old_element) != self.__elements_type:
             raise TypeError("The first argument is not of type " + str(self.__elements_type))
 
@@ -1130,6 +1247,13 @@ class MinBinaryHeap(BinaryHeap):
             raise KeyError("The element you are trying to replace is not contained in the heap.")
 
     def remove(self, element):
+        """
+        this method removes an element in the heap
+        :param element: the element to remove
+        :raises TypeError: if the type of the argument is not the same as the type of the elements in the heap
+        :raises KeyError: if the element to remove is not contained in the heap
+        """
+
         if type(element) != self.__elements_type:
             raise TypeError("The argument is not of type " + str(self.__elements_type))
 
@@ -1175,12 +1299,20 @@ class MinBinaryHeap(BinaryHeap):
             raise KeyError("The element you are trying to remove is not contained in the heap.")
 
 
-# Abstract Data Type MaxBinaryHeap - represents a BinaryHeap with a root its maximum element
 # noinspection PyAbstractClass,PyPep8Naming
 class MaxBinaryHeap(BinaryHeap):
+    """
+    Abstract Data Structure - represents a binary heap, with its maximum element being the root of the tree
+    """
 
-    # constructor for MaxBinaryHeap, same arguments as abstract BinaryHeap class
     def __init__(self, elements_type=int):
+        """
+        constructor for MaxBinaryHeap,
+        calls the parent class constructor and sets new references to the heap's elements list and type
+        :param elements_type: the type of elements allowed in the heap
+        :raises TypeError: if elements_type is not a valid type
+        """
+
         if type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
@@ -1191,22 +1323,36 @@ class MaxBinaryHeap(BinaryHeap):
         self.__elements = self._BinaryHeap__elements
         self.__elements_type = self._BinaryHeap__elements_type
 
-    # iterator goes through the sorted elements starting from the max entry
     def __iter__(self):
+        """
+        overriding this method allows the use of an iterator for the binary heap
+        :return: reference to the heap object itself
+        """
+
         return iter(self.get_sorted_elements())
 
-    # overriding the next method in order to use the iterator
     def __next__(self):
+        """
+        overriding this method so that the iterator knows which element to return
+        :return: the max element in the heap and removes it
+        :raises StopIteration: if the heap is empty
+        """
+
         if not self.is_empty():
             return self.remove_max()
         else:
             raise StopIteration
 
-    # the percolate_up method which adjusts the heap after an addition operation,
-    # it gets the last element in the list and finds its place in the heap
     def _BinaryHeap__percolate_up(self):
+        """
+        this method is overridden from the abstract class, the implementation adjusts the heap in the correct order,
+        meant to use after the add operation
+        """
+
+        # get the last element in the heap
         child = len(self.__elements) - 1
 
+        # find its place in the heap
         while child > 0:
             parent = int((child - 1)/2)
             if self.__elements[child] <= self.__elements[parent]:
@@ -1217,12 +1363,17 @@ class MaxBinaryHeap(BinaryHeap):
             self.__elements[parent] = temp
             child = parent
 
-    # the percolate_down method, which adjusts the heap after a remove_max operation,
-    #  it gets the first element in the list and finds its place in the heap
     def _BinaryHeap__percolate_down(self):
+        """
+        this method is overridden from the abstract class, the implementation adjusts the heap in the correct order,
+        meant to use after the a remove_max operation
+        """
+
+        # get the first element in the heap
         parent = 0
         child = 2*parent + 1
 
+        # find its place in the heap
         while child < len(self.__elements):
             if child + 1 < len(self.__elements):
                 if self.__elements[child] < self.__elements[child+1]:
@@ -1238,17 +1389,24 @@ class MaxBinaryHeap(BinaryHeap):
             parent = child
             child = 2*parent + 1
 
-    # the peek_max method, which returns the maximum element in the heap, but doesn't remove it,
-    # returns None if no elements in the heap
     def peek_max(self):
+        """
+        this method gets the maximum element in the heap without removing it
+        :return: maximum element or None if there are no elements in the heap
+        """
+
         if len(self.__elements) > 0:
             return self.__elements[0]
         else:
             return None
 
-    # the remove_max method, which removes and returns the maximum element in the heap,
-    # raises a ValueError if there are no elements in the heap
     def remove_max(self):
+        """
+        this method removes the maximum element from the heap
+        :return: the maximum element in the heap
+        :raises ValueError: if there are no elements in the heap
+        """
+
         if len(self.__elements) > 0:
             max_element = self.__elements[0]
 
@@ -1260,8 +1418,13 @@ class MaxBinaryHeap(BinaryHeap):
         else:
             raise ValueError("There are no elements in the heap")
 
-    # returns the sorted elements in the heap starting from the maximum entry
     def get_sorted_elements(self):
+        """
+        the difference between this method and the iterator is that after this function is finished the heap's
+        elements are preserved
+        :returns: a list with the sorted elements in the heap starting from the maximum entry
+        """
+
         temp_elements = [k for k in self.__elements]
         sorted_elements = []
 
@@ -1274,8 +1437,16 @@ class MaxBinaryHeap(BinaryHeap):
 
         return sorted_elements
 
-    # removes and returns the maximum item in the heap and adds the new item, faster than remove_max followed by add
     def replace_root(self, element):
+        """
+        removes and returns the largest element in the heap and adds the new element, this method will
+        perform better than using remove_max() and add() for this purpose
+        :param element: the new element to replace the root
+        :return: the largest element in the heap
+        :raises ValueError: if there are no elements in the heap
+        :raises TypeError: if the type of the argument is different than the type of elements in the heap
+        """
+
         if type(element) == self.__elements_type:
             if len(self.__elements) > 0:
                 temp = self.__elements[0]
@@ -1287,8 +1458,15 @@ class MaxBinaryHeap(BinaryHeap):
         else:
             raise TypeError("The element you are trying to add is not of type " + str(self.__elements_type))
 
-    # the replace method, which finds the old element and replaces it with the new element
     def replace(self, old_element, new_element):
+        """
+        this method replaces an element in the heap with a new element and adjusts the order
+        :param old_element: the element to replace
+        :param new_element: the new element
+        :raises TypeError: if the type of any of the arguments is not the same as the type of elements in the heap
+        :raises KeyError: if the old element is not contained in the heap
+        """
+
         if type(old_element) != self.__elements_type:
             raise TypeError("The first argument is not of type " + str(self.__elements_type))
 
@@ -1335,6 +1513,13 @@ class MaxBinaryHeap(BinaryHeap):
             raise KeyError("The element you are trying to replace is not contained in the heap.")
 
     def remove(self, element):
+        """
+        this method removes an element in the heap
+        :param element: the element to remove
+        :raises TypeError: if the type of the argument is not the same as the type of the elements in the heap
+        :raises KeyError: if the element to remove is not contained in the heap
+        """
+
         if type(element) != self.__elements_type:
             raise TypeError("The argument is not of type " + str(self.__elements_type))
 
