@@ -2121,13 +2121,28 @@ class DuplicatePriorityQueue(PriorityQueue):
             raise KeyError("The queue doesn't contain the element you are trying to delete.")
 
 
-# Abstract Data Type Graph
 class Graph(object):
+    """
+    Abstract Data Structure - represents a graph, which can be directed, oriented and weighted
+    """
 
-    # a constructor for the graph
     def __init__(self, elements_type=None, directed=False, oriented=False, weighted=False):
+        """
+        a constructor for the graph
+        :param elements_type: the type of elements that can be added in the graph, if set to None all types allowed
+        :param directed: boolean if the graph is directed
+        :param oriented: boolean if the graph is oriented
+        :param weighted: boolean if the graph is weighted
+        :raises TypeError: if elements_type is not a valid type
+        :raises TypeError: if type of directed, oriented or weighted is not boolean
+        :raises ValueError: if the graph is set to be oriented but not directed
+        """
+
         if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
+
+        if type(directed) != bool or type(oriented) != bool or type(weighted) != bool:
+            raise TypeError("Type of the directed, oriented, and weighted arguments must be boolean")
 
         self.__elements_type = elements_type
 
@@ -2140,62 +2155,119 @@ class Graph(object):
         self.__nodes_set = set()
         self.__nodes_list = []
         self.__edges = []
+
+        # initialize the edges with a number of None elements
         for i in range(5):
             none_list = []
             for j in range(5):
                 none_list.append(None)
             self.__edges.append(none_list)
 
-    # len(graph) method
     def __len__(self):
+        """
+        overriding this method allows the len(graph) syntax
+        :return: the number of elements in the graph
+        """
+
         return self.size()
 
-    # string representation for the graph
     def __str__(self):
+        """
+        the string representation of the graph
+        :return: a formatted string with basic information about the graph
+        """
+
         return "Graph: directed - " + str(self.__directed) + ", oriented - " + str(self.__oriented) + \
                ", weighted - " + str(self.__weighted)
 
-    # iterator for the graph
     def __iter__(self):
+        """
+        overriding this method allows the use of an iterator
+        :return: the iterator of the list of nodes in the graph
+        """
+
         return iter(self.__nodes_list)
 
-    # the 'element in graph' method
     def __contains__(self, item):
+        """
+        overriding this method allows the use of the 'element in graph' syntax
+        :param item: the node to search for
+        :return: True if the node is contained in the graph and False otherwise
+        """
+
         return self.contains(item)
 
-    # returns the number of nodes in the graph
     def size(self):
+        """
+        this method gets the size of the graph
+        :return: the number of nodes in the graph
+        """
+
         return len(self.__nodes_set)
 
-    # is_empty method checks if the size of the graph is 0
     def is_empty(self):
+        """
+        this method checks if the graph is empty
+        :return: True if there are no nodes in the graph and False otherwise
+        """
+
         return self.size() == 0
 
-    # a method to return the type of elements in the graph
     def type(self):
+        """
+        a getter method for the type of elements in the graph
+        :return: the type of nodes in the graph or None if all types allowed
+        """
+
         return self.__elements_type
 
-    # a method to return whether the graph is weighted
     def is_weighted(self):
+        """
+        checks if the graph is weighted
+        :return: True if the graph is weighted and False otherwise
+        """
+
         return self.__weighted
 
-    # a method to return whether the graph is oriented
     def is_oriented(self):
+        """
+        checks if the graph is oriented
+        :return: True if the graph is oriented and False otherwise
+        """
+
         return self.__oriented
 
-    # a method to return whether the graph is directed
     def is_directed(self):
+        """
+        checks if the graph is directed
+        :return: True if the graph is directed and False otherwise
+        """
+
         return self.__directed
 
-    # returns whether the graph contains the element
     def contains(self, item):
+        """
+        this method checks if a node exists in the graph
+        :param item: the node to search for
+        :return: True if the node is contained in the graph and False otherwise
+        :raises TypeError: if the type of item is not the same as the type of elements in the graph
+        """
+
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to find is not of type " + str(self.__elements_type))
 
         return item in self.__nodes_set
 
-    # checks if an edge from first_item to the second_item exists, returns the weight of the edge
     def contains_edge(self, first_item, second_item):
+        """
+        this method checks if an edge from the first_item to the second_item exists
+        :param first_item: the starting node
+        :param second_item: the target node
+        :return: True if an edge exists and False otherwise
+        :raises TypeError: if the arguments' type is not the same as the type of elements in the graph
+        :raises KeyError: if one or both of the arguments are not contained in the graph
+        """
+
         if self.__elements_type is not None and type(first_item) != self.__elements_type:
             raise TypeError("The first argument is not of type " + str(self.__elements_type))
 
@@ -2210,8 +2282,18 @@ class Graph(object):
 
         return self.__edges[self.__nodes_list.index(first_item)][self.__nodes_list.index(second_item)] is not None
 
-    # get the weight of an edge of a weighted graph
     def get_edge_weight(self, first_item, second_item):
+        """
+        a getter method for the weight of an edge between two nodes
+        :param first_item: the start node
+        :param second_item: the target node
+        :return: the weight of the edge
+        :raises TypeError: if the type of the arguments is not the same as the type of the nodes in the graph
+        :raises KeyError: if the graph doesn't contain the argument nodes
+        :raises ValueError: if the graph is not weighted
+        :raises ValueError: if the edge doesn't exist
+        """
+
         if self.__elements_type is not None and type(first_item) != self.__elements_type:
             raise TypeError("The first argument is not of type " + str(self.__elements_type))
 
@@ -2235,18 +2317,31 @@ class Graph(object):
         else:
             return self.__edges[index_1][index_2]
 
-    # a getter method for the vertices of the graph, returns a copy of the list, so that the original list containing
-    # the nodes of the graph is not manually altered by the user
     def nodes(self):
+        """
+        a getter method for the nodes of the graph
+        :return: a deep copy of the list with nodes objects so that the original list containing the nodes of the graph
+            is not manually altered by the user
+        """
+
         return deepcopy(self.__nodes_list)
 
-    # a getter method for the edges of the graph, returns a copy of the list, so that the original list containing
-    # the edges of the graph is not manually altered by the user
     def edges(self):
+        """
+        a getter method for the edges of the graph
+        :return: a deep copy of the list with edges so that the original list containing the edges in the graph is not
+            manually altered
+        """
+
         return deepcopy(self.__edges)
 
-    # returns the connected nodes to the given item
     def edges_of(self, item):
+        """
+        this method gets all ages for a single node
+        :param item: the start node
+        :return: a list of nodes linked to the argument node with an edge
+        """
+
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The argument is not of type " + str(self.__elements_type))
 
@@ -2261,8 +2356,14 @@ class Graph(object):
 
         return connected_nodes
 
-    # the add method which adds a node to the graph
     def add_node(self, item):
+        """
+        this method adds a node in the graph
+        :param item: the value of the node
+        :raises TypeError: if the value's type is not the same as the other nodes in the graph
+        :raises AttributeError: if the item to add is None
+        """
+
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to add is not of type " + str(self.__elements_type))
 
@@ -2286,8 +2387,14 @@ class Graph(object):
 
                 self.__edges = new_edges
 
-    # the remove method which removes a node from the graph
     def remove_node(self, item):
+        """
+        this method removes a node from the graph
+        :param item: the value of the node to remove
+        :raises TypeError: if the type of the node is not the same as the type of the other nodes in the graph
+        :raises KeyError: if the node is not contained in the graph
+        """
+
         if self.__elements_type is not None and type(item) != self.__elements_type:
             raise TypeError("The item you are trying to remove is not of type " + str(self.__elements_type))
 
@@ -2306,8 +2413,19 @@ class Graph(object):
         else:
             raise KeyError("The graph doesn't contain the node you are trying to delete")
 
-    # the add_edge method which adds an edge between the two nodes
     def add_edge(self, first_item, second_item, edge_weight=None):
+        """
+        this method adds an edge between two nodes in the graph
+        :param first_item: the start node
+        :param second_item: the target node
+        :param edge_weight: (optional argument) the weight of the edge if appropriate
+        :raises TypeError: if the start or the target node's type is not the same as the type of the other nodes
+        :raises TypeError: if the edge weight is set and is not of type float or int
+        :raises KeyError: if the graph doesn't contain any of the nodes
+        :raises ValueError: if the graph is weighted and weight is not given by argument
+        :raises KeyError: if the graph is oriented and an edge with the oposite direction already exists
+        """
+
         if self.__elements_type is not None and type(first_item) != self.__elements_type:
             raise TypeError("The item from which you are trying to add an edge is not of type "
                             + str(self.__elements_type))
@@ -2357,8 +2475,16 @@ class Graph(object):
                 self.__edges[first_index][second_index] = 1
                 self.__edges[second_index][first_index] = 1
 
-    # the remove_edge method which removes an edge between the two nodes
     def remove_edge(self, first_item, second_item):
+        """
+        this method removes an edge in the graph
+        :param first_item: the start node
+        :param second_item: the target node
+        :raises TypeError: if the type of the nodes is not the same as the type of the other nodes in the graph
+        :raises KeyError: if the graph doesn't contain any of the nodes
+        :raises KeyError: if there is no edge between the given nodes
+        """
+
         if self.__elements_type is not None and type(first_item) != self.__elements_type:
             raise TypeError("The item from which you are trying to remove an edge is not of type "
                             + str(self.__elements_type))
@@ -2385,8 +2511,17 @@ class Graph(object):
             self.__edges[first_index][second_index] = None
             self.__edges[second_index][first_index] = None
 
-    # a method, which replaces an old node with the new_node by not removing the old node's edges
     def replace_node(self, old_node, new_node):
+        """
+        replaces an old node with a new node by not removing the old node's edges, instead they are now linked to the
+        new node
+        :param old_node: the old node
+        :param new_node: the new node
+        :raises TypeError: if the type of the nodes is not the same as the other nodes in the graph
+        :raises KeyError: if the graph doesn't contain the old node
+        :raises KeyError: if the graph already contains the new node
+        """
+
         if self.__elements_type is not None and type(old_node) != self.__elements_type:
             raise TypeError("The first argument is not of type " + str(self.__elements_type))
 
