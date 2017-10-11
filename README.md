@@ -2,6 +2,17 @@
 
 **_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
+### Installation:
+Please use 'pip install data-structures-and-algorithms'. Keep in mind that the Applications folder is not included in the 
+PyPi repository, because it only contains examples of using the data structures and the algorithms.
+
+### Issues:
+Please register any issues you find in the github repository so that they can be fixed as soon as possible.
+
+### Requirements:
+There are no dependencies on external libraries. However, a Python 3.x version is required.
+
+### Docs:
 _Navigate to data structures:_ [Stack](#stack), [Queue](#queue), [Binary Search Tree](#bst), [Min Binary Heap](#minbh), 
 [Max Binary Heap](#maxbh), [Priority Queue](#pq), [Duplicate Priority Queue](#dpq), [Graph](#graph)
 <br><br>
