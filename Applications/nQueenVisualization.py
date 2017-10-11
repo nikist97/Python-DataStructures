@@ -14,8 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import pygame
 import sys
+
+try:
+    import pygame
+except ImportError:
+    print("You need to install pygame in order to run the applications. Use 'pip install pygame'.")
+    sys.exit("Pygame is not installed")
 
 import os
 from os.path import dirname

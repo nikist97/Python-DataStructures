@@ -15,10 +15,15 @@ limitations under the License.
 """
 
 
-import pygame
+import sys
+
+try:
+    import pygame
+except ImportError:
+    print("You need to install pygame in order to run the applications. Use 'pip install pygame'.")
+    sys.exit("Pygame is not installed")
 
 import os
-import sys
 from os.path import dirname
 path = dirname(dirname(os.path.abspath(__file__)))
 if path not in sys.path:
