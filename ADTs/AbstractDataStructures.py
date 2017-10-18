@@ -17,6 +17,7 @@ limitations under the License.
 
 from abc import ABC, abstractmethod
 from copy import deepcopy
+from collections import deque
 
 
 class Stack(object):
@@ -36,14 +37,13 @@ class Stack(object):
         if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
-        # the elements in the stack are stored in a python list
-        self.__elements = []
+        # the elements in the stack are stored in a python deque object
+        self.__elements = deque()
         self.__elements_type = elements_type
 
     def __str__(self):
         """
-        the string representation for the stack returns the string representation of the list of
-        elements in the stack
+        the string representation for the stack returns the string representation of the deque object
         """
 
         return str(self.__elements)
@@ -157,7 +157,7 @@ class Stack(object):
         """
 
         if len(self.__elements) > 0:
-            return self.__elements[len(self.__elements) - 1]
+            return self.__elements[-1]
         else:
             return None
 
@@ -197,10 +197,7 @@ class Queue(object):
         if elements_type is not None and type(elements_type) != type:
             raise TypeError(str(elements_type) + " is not a valid type")
 
-        # the elements in the queue are spread among two stacks in order to ensure better amortized time complexity cost
-        # for the dequeue() method
-        self.__in_elements = Stack(elements_type)
-        self.__out_elements = Stack(elements_type)
+        self.__elements = deque()  # elements in the queue are stored in a deque object
         self.__elements_type = elements_type
 
     def __str__(self):
@@ -209,8 +206,7 @@ class Queue(object):
         :return: the elements in teh stack in the order they must be dequeued
         """
 
-        # noinspection PyProtectedMember
-        return str(self.__out_elements._Stack__elements[:: -1] + self.__in_elements._Stack__elements)
+        return str(self.__elements)
 
     def __len__(self):
         """
@@ -258,7 +254,7 @@ class Queue(object):
         """
 
         if self.__elements_type is None or type(item) == self.__elements_type:
-            return item in self.__out_elements or item in self.__in_elements
+            return item in self.__elements
         else:
             raise TypeError("The parameter is not of type " + str(self.__elements_type))
 
@@ -276,7 +272,7 @@ class Queue(object):
         :return: the number of elements in the queue
         """
 
-        return len(self.__out_elements) + len(self.__in_elements)
+        return len(self.__elements)
 
     def type(self):
         """
@@ -295,7 +291,7 @@ class Queue(object):
         """
 
         if self.__elements_type is None or type(item) == self.__elements_type:
-            self.__in_elements.push(item)
+            self.__elements.append(item)
         else:
             raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
 
@@ -306,12 +302,7 @@ class Queue(object):
         """
 
         if self.size() > 0:
-            # if the stack for handling the dequeue operation is empty, fill it up with the elements in the stack
-            # for handling the enqueue operation
-            if self.__out_elements.is_empty():
-                while not self.__in_elements.is_empty():
-                    self.__out_elements.push(self.__in_elements.pop())
-            return self.__out_elements.pop()
+            return self.__elements.popleft()
         else:
             raise ValueError("There are no elements in the queue")
 
@@ -322,12 +313,7 @@ class Queue(object):
         """
 
         if self.size() > 0:
-            # if the stack for handling the dequeue operation is empty, fill it up with the elements in the stack
-            # for handling the enqueue operation
-            if self.__out_elements.is_empty():
-                while not self.__in_elements.is_empty():
-                    self.__out_elements.push(self.__in_elements.pop())
-            return self.__out_elements.peek()
+            return self.__elements[0]
         else:
             return None
 
@@ -342,12 +328,9 @@ class Queue(object):
 
         if self.__elements_type is None or type(element) == self.__elements_type:
             try:
-                self.__in_elements.remove(element)
-            except KeyError:
-                try:
-                    self.__out_elements.remove(element)
-                except KeyError:
-                    raise KeyError("The element you are trying to remove is not contained in the queue")
+                self.__elements.remove(element)
+            except ValueError:
+                raise KeyError("The element you are trying to remove is not contained in the queue")
         else:
             raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
 

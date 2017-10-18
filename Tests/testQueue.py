@@ -42,29 +42,29 @@ class QueueTest(unittest.TestCase):
 
     def test_str(self):
         queue = Queue()
-        self.assertEqual(str(queue), "[]", "Wrong str representation")
+        self.assertEqual(str(queue), "deque([])", "Wrong str representation")
 
         queue.enqueue(1)
         queue.enqueue(2.5)
-        self.assertEqual(str(queue), "[1, 2.5]", "Wrong str representation")
+        self.assertEqual(str(queue), "deque([1, 2.5])", "Wrong str representation")
         queue.peek()
         queue.enqueue("str")
-        self.assertEqual(str(queue), "[1, 2.5, 'str']", "Wrong str representation")
+        self.assertEqual(str(queue), "deque([1, 2.5, 'str'])", "Wrong str representation")
 
         for i in range(10):
             queue.enqueue(i)
         queue.dequeue()
-        self.assertEqual(str(queue), str([2.5, 'str'] + list(range(10))))
+        self.assertEqual(str(queue), "deque(" + str([2.5, 'str'] + list(range(10))) + ")")
 
         queue = Queue(int)
-        self.assertEqual(str(queue), "[]", "Wrong str representation")
+        self.assertEqual(str(queue), "deque([])", "Wrong str representation")
         for i in range(5):
             queue.enqueue(i)
         queue.peek()
-        self.assertEqual(str(queue), "[0, 1, 2, 3, 4]", "Wrong str representation")
+        self.assertEqual(str(queue), "deque([0, 1, 2, 3, 4])", "Wrong str representation")
         for i in range(10):
             queue.enqueue(i)
-        self.assertEqual(str(queue), str(list(range(5)) + list(range(10))))
+        self.assertEqual(str(queue), "deque(" + str(list(range(5)) + list(range(10))) + ")")
 
     def test_empty(self):
         queue = Queue()
@@ -205,10 +205,10 @@ class QueueTest(unittest.TestCase):
             queue.enqueue(i)
         queue.remove(0)
         queue.remove(1)
-        self.assertEqual(str(queue), str(list(range(2, 10))), "Wrong remove implementation")
+        self.assertEqual(str(queue), "deque(" + str(list(range(2, 10))) + ")", "Wrong remove implementation")
         queue.remove(5)
         queue.remove(9)
-        self.assertEqual(str(queue), "[2, 3, 4, 6, 7, 8]", "Wrong remove implementation")
+        self.assertEqual(str(queue), "deque([2, 3, 4, 6, 7, 8])", "Wrong remove implementation")
         self.assertEqual(queue.dequeue(), 2, "Wrong remove implementation")
 
 if __name__ == '__main__':

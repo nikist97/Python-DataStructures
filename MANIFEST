@@ -9,3 +9,4 @@ Algorithms\__init__.py
 Algorithms\minimax.py
 Algorithms\nPuzzle.py
 Algorithms\nQueen.py
+include LICENSE.txt

@@ -127,27 +127,27 @@ class StackTest(unittest.TestCase):
 
     def test_str(self):
         stack = Stack(int)
-        self.assertEqual(str(stack), "[]", "String representation of stack doesn't work with empty stacks")
+        self.assertEqual(str(stack), "deque([])", "String representation of stack doesn't work with empty stacks")
 
         stack.push(0)
-        self.assertEqual(str(stack), "[0]", "String representation of stack doesn't work with singleton stacks")
+        self.assertEqual(str(stack), "deque([0])", "String representation of stack doesn't work with singleton stacks")
 
         for i in [5, 20, 11, 34, 2]:
             stack.push(i)
 
-        self.assertEqual(str(stack), "[0, 5, 20, 11, 34, 2]",
+        self.assertEqual(str(stack), "deque([0, 5, 20, 11, 34, 2])",
                          "String representation of stack doesn't work with many elements")
 
         stack.peek()
         stack.pop()
         stack.pop()
-        self.assertEqual(str(stack), "[0, 5, 20, 11]",
+        self.assertEqual(str(stack), "deque([0, 5, 20, 11])",
                          "String representation of stack doesn't work after pop and peek operations")
 
         stack = Stack()
         stack.push(2.5)
         stack.push(0)
-        self.assertEqual(str(stack), "[2.5, 0]")
+        self.assertEqual(str(stack), "deque([2.5, 0])")
 
     def test_iterator(self):
         stack = Stack(int)
@@ -206,10 +206,10 @@ class StackTest(unittest.TestCase):
             stack.push(i)
         stack.remove(0)
         stack.remove(1)
-        self.assertEqual(str(stack), str(list(range(2, 10))), "Wrong remove implementation")
+        self.assertEqual(str(stack), "deque(" + str(list(range(2, 10))) + ")", "Wrong remove implementation")
         stack.remove(5)
         stack.remove(9)
-        self.assertEqual(str(stack), "[2, 3, 4, 6, 7, 8]", "Wrong remove implementation")
+        self.assertEqual(str(stack), "deque([2, 3, 4, 6, 7, 8])", "Wrong remove implementation")
         self.assertEqual(stack.pop(), 8, "Wrong remove implementation")
 
 if __name__ == '__main__':
