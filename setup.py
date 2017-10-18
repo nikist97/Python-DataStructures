@@ -7,7 +7,7 @@ setup(
     author='Nikolay Stanchev',
     author_email='nikist97.ns@gmail.com',
     url='https://github.com/nikist97/Python-DataStructuresAndAlgorithms',
-    download_url='https://github.com/nikist97/Python-DataStructuresAndAlgorithms/archive/0.2.tar.gz',
+    download_url='https://github.com/nikist97/Python-DataStructuresAndAlgorithms/archive/0.2.1.tar.gz',
     keywords=['data structures', 'algorithms', 'pythonic', 'python', 'abstract', 'generic'],
     license="Apache 2.0",
     classifiers=[
