@@ -3,10 +3,10 @@ setup.cfg
 setup.py
 ADTs\AbstractDataStructures.py
 ADTs\__init__.py
+Algorithms\MathAlgorithms.py
 Algorithms\SearchAlgorithms.py
 Algorithms\SortingAlgorithms.py
 Algorithms\__init__.py
 Algorithms\minimax.py
 Algorithms\nPuzzle.py
 Algorithms\nQueen.py
-include LICENSE.txt
