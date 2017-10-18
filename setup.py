@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
     name='data-structures-and-algorithms',
     packages=['ADTs', 'Algorithms'],
-    version='0.2',
+    version='0.2.1',
     description='A library, which provides implementations for many data structures and algorithms',
     author='Nikolay Stanchev',
     author_email='nikist97.ns@gmail.com',

@@ -31,5 +31,5 @@ def fibonacci_generator(limit=None):
         if b <= limit:
             yield b
         else:
-            break
+            raise StopIteration
         a, b = b, a+b
