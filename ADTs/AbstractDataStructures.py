@@ -353,7 +353,6 @@ class BinarySearchTree(object):
 
         # variables used for the iterator of the binary tree
         self.__successor = None
-        self.__iterator_limit = None
         self.__iterator_finished = None
         self.__current_item = None
 
@@ -420,7 +419,6 @@ class BinarySearchTree(object):
         # setting the instance variables used for the iteration
         self.__current_item = self.__get_minimum_node()
         self.__successor = self.__current_item
-        self.__iterator_limit = self.__get_maximum_node()
         self.__iterator_finished = False
         return self
 
@@ -442,12 +440,6 @@ class BinarySearchTree(object):
             if self.__current_item is None:
                 raise StopIteration
 
-            # if the current item has reached the iterator limit, which is the maximum element of the binary tree
-            # return the current item's value and adjust the state of the iterator
-            if self.__current_item.get_value() == self.__iterator_limit.get_value():
-                self.__iterator_finished = True
-                return self.__current_item.get_value()
-
             # else find the successor of the current item and return the current item's value
             else:
                 # if the current item has a right child, go right and then go left as much as possible
@@ -458,9 +450,14 @@ class BinarySearchTree(object):
 
                 # else if there is no right child, go up left as much as possible and then go right
                 else:
-                    while self.__successor.get_parent().get_right() == self.__successor:
+                    while self.__successor.get_parent() is not None and \
+                                    self.__successor.get_parent().get_right() == self.__successor:
                         self.__successor = self.__successor.get_parent()
-                    self.__successor = self.__successor.get_parent()
+
+                    if self.__successor is not None:
+                        self.__successor = self.__successor.get_parent()
+                    else:
+                        self.__iterator_finished = True
 
                 return self.__current_item.get_value()
 
