@@ -19,6 +19,7 @@ limitations under the License.
 import unittest
 
 from ADTs.AbstractDataStructures import Stack
+from ADTs.StackErrors import *
 
 
 class StackTest(unittest.TestCase):
@@ -70,7 +71,7 @@ class StackTest(unittest.TestCase):
 
     def test_pop(self):
         stack = Stack()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyStackError):
             stack.pop()
         stack.push([1, 2, 3])
         self.assertEqual(stack.pop()[1], 2, "Stack pops wrong element")
@@ -78,7 +79,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(stack.pop(), "pushed string", "Stack pops wrong element")
 
         stack = Stack(bool)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyStackError):
             stack.pop()
         stack.push(True)
         stack.push(False)
@@ -93,7 +94,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(len(stack), 2, "Wrong stack push implementation")
 
         stack = Stack(bool)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.push("word")
 
         for i in range(10):
@@ -107,13 +108,13 @@ class StackTest(unittest.TestCase):
         stack = Stack()
         self.assertEqual(stack.type(), None)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             Stack(elements_type=3)
 
         stack = Stack(elements_type=list)
         self.assertEqual(stack.type(), list)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.push("hey")
 
         stack = Stack(elements_type=str)
@@ -122,7 +123,7 @@ class StackTest(unittest.TestCase):
         test_string = stack.pop() + " " + stack.pop()
         self.assertEqual(test_string, "hello world", "Stack with strings doesn't pop correctly")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.push(123)
 
     def test_str(self):
@@ -179,15 +180,15 @@ class StackTest(unittest.TestCase):
         self.assertTrue(2.3 in stack, "Stack contains method doesn't work")
         self.assertTrue(stack.contains(1.55), "Stack contains method doesn't work")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             boolean = 4 in stack
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.contains("word")
 
     def test_remove(self):
         stack = Stack()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(StackElementError):
             stack.remove(5)
 
         stack.push(5)
@@ -200,7 +201,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(stack.peek(), "str", "Wrong remove implementation")
 
         stack = Stack(int)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.remove("string")
         for i in range(10):
             stack.push(i)

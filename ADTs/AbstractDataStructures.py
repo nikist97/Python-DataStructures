@@ -17,25 +17,30 @@ limitations under the License.
 
 from abc import ABC, abstractmethod
 from copy import deepcopy
+from ADTs.StackErrors import *
 from collections import deque
 
 
 class Stack(object):
     """
-    Implementation for the abstract data structure called Stack - follows the principle Last In First Out
+    Implementation for the abstract data structure called Stack - follows the principle Last In First Out.
+    The current implementation is just a wrapper around the python deque object with proper naming conventions and type
+    checking.
     """
 
     def __init__(self, elements_type=None):
         """
         a constructor for a stack
+
         :param elements_type: optional argument, which represents the type of data in the stack (int, str, float, etc.)
              default value is None, which means that the stack can contain elements of all types,
              otherwise, it can contain only elements of the specified type
+        :raises StackTypeError: in case the 'elements_type' argument is not a valid type
         """
 
         # checking that the elements_type argument is a valid type if passed
         if elements_type is not None and type(elements_type) != type:
-            raise TypeError(str(elements_type) + " is not a valid type")
+            raise StackTypeError("{0} is not a valid type for a stack.".format(elements_type))
 
         # the elements in the stack are stored in a python deque object
         self.__elements = deque()
@@ -50,7 +55,8 @@ class Stack(object):
 
     def __len__(self):
         """
-        overriding this method lets us use the len(stack) syntax, where stack is an object of type Stack
+        overriding this method so that the len(stack) syntax can be used, where stack is an object of type Stack
+
         :return: calls the size() method of the stack to get the number of elements in the stack
         """
 
@@ -59,6 +65,7 @@ class Stack(object):
     def __iter__(self):
         """
         overriding this method allows the use of an iterator for a Stack object
+
         :return: returns a reference to the object itself
         """
 
@@ -66,7 +73,8 @@ class Stack(object):
 
     def __next__(self):
         """
-        overriding this method impements the next() method of the iterator so that the Stack object is iterable
+        overriding this method implements the next() method of the iterator so that the Stack object is iterable
+
         :return: calls the pop() method to return the appropriate element and remove it from the stack
         :raises StopIteration: if the stack is empty
         """
@@ -80,6 +88,7 @@ class Stack(object):
         """
         overriding this method allows the use of the 'item in stack' syntax, where 'item' is some value, while stack
         is an object of type Stack
+
         :param item: the value to search for in the stack
         :return: calls the contains() method to check if the stack contains this value
         """
@@ -89,20 +98,22 @@ class Stack(object):
     def contains(self, item):
         """
         this method checks if a value is contained in the stack
+
         :param item: the value to search for in the stack
         :return: True if the value is contained in the list with elements of the stack and False otherwise
-        :raises TypeError: if the type of the Stack object is specified and is different from the type of the 'item'
+        :raises StackTypeError: if the type of the Stack object is specified and is different from the type of the 'item'
             argument used when calling this method
         """
 
         if self.__elements_type is None or type(item) == self.__elements_type:
             return item in self.__elements
         else:
-            raise TypeError("The parameter is not of type " + str(self.__elements_type))
+            raise StackTypeError("The parameter {0} is not of type {1}.".format(item, self.__elements_type))
 
     def is_empty(self):
         """
         this method checks if the stack is empty
+
         :return: True if the number of elements in the stack is 0 and False otherwise
         """
 
@@ -111,7 +122,8 @@ class Stack(object):
     def size(self):
         """
         this method gets the number of elements in the stack
-        :return: the number of elements in the list containing the elements of the stack
+
+        :return: the number of elements in the deque object, which contains the elements of the stack
         """
 
         return len(self.__elements)
@@ -119,6 +131,7 @@ class Stack(object):
     def type(self):
         """
         this method gets the type of elements in the stack
+
         :return: the type of elements in the stack or None if there are elements of multiple types in the stack
         """
 
@@ -127,32 +140,35 @@ class Stack(object):
     def push(self, item):
         """
         this method pushes an element on top of the stack
+
         :param item: the element to push in the stack
-        :raises TypeError: if the type of the Stack object is specified and is different from the type of the 'item'
-            argument used when calling this method
+        :raises StackTypeError: if the type of the Stack object is specified and is different from the type of the
+            'item' argument used when calling this method
         """
 
         if self.__elements_type is None or type(item) == self.__elements_type:
             self.__elements.append(item)
         else:
-            raise TypeError("The element you are trying to push is not of type " + str(self.__elements_type))
+            raise StackTypeError("The element {0} that you are trying to push is not of type {1}".format(item, self.__elements_type))
 
     def pop(self):
         """
         this method pops the top element out of the stack (the last pushed element in the stack)
+
         :return: the top element in the stack
-        :raises ValueError: if there are no elements in the stack
+        :raises EmptyStackError: if there are no elements in the stack
         """
 
         if len(self.__elements) > 0:
             return self.__elements.pop()
         else:
-            raise ValueError("There are no elements in the stack")
+            raise EmptyStackError("There are no elements in the stack")
 
     def peek(self):
         """
         this method peeks the top element of the stack, same as the pop() method,
         but without removing the element from the stack
+
         :return: the last pushed element in the stack or None if there are no elements in the stack
         """
 
@@ -164,19 +180,20 @@ class Stack(object):
     def remove(self, element):
         """
         this method removes an element from the stack
+
         :param element: the element to remove from the stack
-        :raises TypeError: if the type of the Stack object is specified and is different from the type of the 'element'
+        :raises StackTypeError: if the type of the Stack object is specified and is different from the type of the 'element'
             argument used when calling this method
-        :raises KeyError: if the element to remove is not contained in the stack
+        :raises StackElementError: if the element to remove is not contained in the stack
         """
 
         if self.__elements_type is None or type(element) == self.__elements_type:
             try:
                 self.__elements.remove(element)
             except ValueError:
-                raise KeyError("The element you are trying to remove is not contained in the stack")
+                raise StackElementError("The element you are trying to remove is not contained in the stack")
         else:
-            raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
+            raise StackTypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
 
 
 class Queue(object):
