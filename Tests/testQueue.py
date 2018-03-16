@@ -19,6 +19,7 @@ limitations under the License.
 import unittest
 
 from ADTs.AbstractDataStructures import Queue
+from ADTs.QueueErrors import *
 
 
 class QueueTest(unittest.TestCase):
@@ -106,7 +107,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(len(queue), 1, "Wrong enqueue implementation")
 
         queue = Queue(str)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.enqueue(5)
         self.assertEqual(len(queue), 0)
         self.assertTrue(queue.is_empty())
@@ -119,7 +120,7 @@ class QueueTest(unittest.TestCase):
 
     def test_dequeue(self):
         queue = Queue()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyQueueError):
             queue.dequeue()
 
         queue.enqueue(4)
@@ -127,7 +128,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(queue.dequeue(), 4, "Wrong queue implementation")
 
         queue = Queue(tuple)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyQueueError):
             queue.dequeue()
 
         queue.enqueue((2,))
@@ -138,13 +139,13 @@ class QueueTest(unittest.TestCase):
         queue = Queue()
         self.assertEqual(queue.type(), None)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue = Queue(elements_type="type")
 
         queue = Queue(elements_type=list)
         self.assertEqual(queue.type(), list)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.enqueue("hey")
 
         queue = Queue(elements_type=str)
@@ -153,7 +154,7 @@ class QueueTest(unittest.TestCase):
         test_string = queue.dequeue() + " " + queue.dequeue()
         self.assertEqual(test_string, "hello world", "Queue with strings doesn't dequeue correctly")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.enqueue(123)
 
     def test_contains(self):
@@ -186,7 +187,7 @@ class QueueTest(unittest.TestCase):
 
     def test_remove(self):
         queue = Queue()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(QueueElementError):
             queue.remove(5)
 
         queue.enqueue(5)
@@ -199,7 +200,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(queue.peek(), "str", "Wrong remove implementation")
 
         queue = Queue(int)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.remove("string")
         for i in range(10):
             queue.enqueue(i)

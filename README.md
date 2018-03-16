@@ -80,7 +80,7 @@ stack.remove(element) # removes the element from the stack
 <br> <br>
 
 - **_Queue<a name="queue"></a> (First-In-First-Out)_** <br>
-The Queue's implementation is generic: you can specify the type of elements in the queue in the constructor.
+The Queue's implementation wraps around the python deque object, but is also generic: you can specify the type of elements in the queue in the constructor.
 If not specified, it is set to None and elements of any type can be added to the queue. The
 implementation includes all the common operations of a queue: enqueue, dequeue, peek, size, etc.<br>
 
@@ -94,11 +94,11 @@ queue.size() # returns the number of elements in the queue
 len(queue) # same as queue.size()
 queue.is_empty() # return True if queue is empty and False otherwise
 
-str(queue) # return the string representation of the list of elements of the queue
+str(queue) # returns the string representation of the python deque object containing the elements of the queue
 
 item = "test_item"
 queue.contains(item) # returns True if the item is in the queue and False otherwise
-# contains raises a TypeError if the type of the queue is not None and is different 
+# contains raises a QueueTypeError if the type of the queue is not None and is different 
 # than the type of the parameter
 boolean = item in queue 
 # same as boolean = queue.contains(item)
@@ -109,22 +109,22 @@ queue.peek() # returns the first element that was added to the queue, but doesn'
 # peek returns None if there are no elements in the queue
 
 queue.dequeue() # same as peek(), but removes the first element that was added to the queue
-# dequeue raises a ValueError if there are no elements in the queue
+# dequeue raises a EmptyQueueError if there are no elements in the queue
 
 element = "test_element"
 queue.enqueue(element) # enqueues the element to the back of the queue
-# enqueue raises a TypeError if the queue has a specified type for elements
+# enqueue raises a QueueTypeError if the queue has a specified type for elements
 # and the argument is not of that type
 
-# the implemenetation includes an iterator
+# the implementation includes an iterator
 for element in queue:
     print(element)
 # keep in mind that the iterator uses queue.dequeue() to get the next element, hence
 # after the iteration is over the queue would be empty
 
 queue.remove(element) # removes the element from the queue
-# raises a TypeError if the queue has a specified type for elements and the argument is not of that type
-# raises a KeyError if the queue doesn't contain the element specified as argument
+# raises a QueueTypeError if the queue has a specified type for elements and the argument is not of that type
+# raises a QueueElementError if the queue doesn't contain the element specified as argument
 ```
 
 

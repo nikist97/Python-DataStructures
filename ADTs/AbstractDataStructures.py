@@ -18,6 +18,7 @@ limitations under the License.
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from ADTs.StackErrors import *
+from ADTs.QueueErrors import *
 from collections import deque
 
 
@@ -191,28 +192,31 @@ class Stack(object):
             try:
                 self.__elements.remove(element)
             except ValueError:
-                raise StackElementError("The element you are trying to remove is not contained in the stack")
+                raise StackElementError("The element {0} that you are trying to remove is not contained in the stack.".format(element))
         else:
-            raise StackTypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
+            raise StackTypeError("The element {0} that you are trying to remove is not of type {1}".format(element, self.__elements_type))
 
 
 class Queue(object):
     """
-    Implementation for the abstract data structure called Queue - follows the principle First In First Out
+    Implementation for the abstract data structure called Queue - follows the principle First In First Out.
+    The current implementation is just a wrapper around the python deque object with proper naming conventions and type
+    checking.
     """
 
     def __init__(self, elements_type=None):
         """
         a constructor for a Queue
+
         :param elements_type: optional argument, which represents the type of elements in the queue
             default value is None, which means that the queue can contain elements of all types,
             otherwise, the queue can only contain elements of the specified type
-        :raises TypeError: if the 'elements_type' argument is specified and is not a valid type
+        :raises QueueTypeError: if the 'elements_type' argument is specified and is not a valid type
         """
 
         # checking that the elements_type argument is a valid type if passed
         if elements_type is not None and type(elements_type) != type:
-            raise TypeError(str(elements_type) + " is not a valid type")
+            raise QueueTypeError("{0} is not a valid type.".format(elements_type))
 
         self.__elements = deque()  # elements in the queue are stored in a deque object
         self.__elements_type = elements_type
@@ -220,7 +224,8 @@ class Queue(object):
     def __str__(self):
         """
         the string representation of a queue object
-        :return: the elements in teh stack in the order they must be dequeued
+
+        :return: the string representation of the python deque object with the elements in the queue
         """
 
         return str(self.__elements)
@@ -228,6 +233,7 @@ class Queue(object):
     def __len__(self):
         """
         overriding this method allows the use of the len(queue) syntax, where queue is an object of type Queue
+
         :return: calls the size() method to get the number of elements in the queue
         """
 
@@ -236,6 +242,7 @@ class Queue(object):
     def __iter__(self):
         """
         overriding this method allows the use of an iterator for the queue
+
         :return: reference to the queue object itself
         """
 
@@ -244,6 +251,7 @@ class Queue(object):
     def __next__(self):
         """
         overriding this method implements the next method for the iterator
+
         :return: calls the dequeue() method to get the appropriate value to return and remove it from the queue
         :raises StopIteration: if there are no elements in the queue
         """
@@ -256,6 +264,7 @@ class Queue(object):
     def __contains__(self, item):
         """
         overriding this method allows the use of the 'item in queue' syntax, where the queue object is of type Queue
+
         :param item: the item to search for in the queue
         :return: calls the contains() method to check if the item is contained in the queue
         """
@@ -265,19 +274,21 @@ class Queue(object):
     def contains(self, item):
         """
         this method checks if an item is contained in the queue
+
         :param item: the item to search for in the queue
         :return: True if the item is contained in the queue and False otherwise
-        :raises TypeError: if the queue has a type of elements specified that is different from the type of the 'item'
+        :raises QueueTypeError: if the queue has a type of elements specified that is different from the type of the 'item'
         """
 
         if self.__elements_type is None or type(item) == self.__elements_type:
             return item in self.__elements
         else:
-            raise TypeError("The parameter is not of type " + str(self.__elements_type))
+            raise QueueTypeError("The parameter {0} is not of type {1}.".format(item, self.__elements_type))
 
     def is_empty(self):
         """
         this method checks if the queue is empty
+
         :return: True if the number of elements in the queue is 0 and False otherwise
         """
 
@@ -286,6 +297,7 @@ class Queue(object):
     def size(self):
         """
         this method gets the number of elements in the queue
+
         :return: the number of elements in the queue
         """
 
@@ -294,6 +306,7 @@ class Queue(object):
     def type(self):
         """
         this method gets the type of elements in the queue
+
         :return: the type of elements in the queue or None if the queue can contain all types of elements
         """
 
@@ -302,30 +315,33 @@ class Queue(object):
     def enqueue(self, item):
         """
         this method enqueues an element in the queue
+
         :param item: the element to enqueue
-        :raises TypeError: if the type of elements in the queue is specified and is different from the type
+        :raises QueueTypeError: if the type of elements in the queue is specified and is different from the type
             of the 'item' argument used when calling this method
         """
 
         if self.__elements_type is None or type(item) == self.__elements_type:
             self.__elements.append(item)
         else:
-            raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
+            raise QueueTypeError("The element {0} that you are trying to enqueue is not of type {1}".format(item, self.__elements_type))
 
     def dequeue(self):
         """
         this method removes the item that got first in the queue
-        :raises ValueError: if there are no elements in the queue
+
+        :raises EmptyQueueError: if there are no elements in the queue
         """
 
         if self.size() > 0:
             return self.__elements.popleft()
         else:
-            raise ValueError("There are no elements in the queue")
+            raise EmptyQueueError("There are no elements in the queue")
 
     def peek(self):
         """
         this method peeks the item that got first in the queue (without removing it)
+
         :return: the peeked item or None if there are no elements in the queue
         """
 
@@ -337,19 +353,20 @@ class Queue(object):
     def remove(self, element):
         """
         this method removes an element from the queue
+
         :param element: the element to remove from the queue
-        :raises TypeError: if the type of elements in the queue is specified and is different from the type
+        :raises QueueTypeError: if the type of elements in the queue is specified and is different from the type
             of the 'element' argument used when calling this method
-        :raises KeyError: if the element to remove is not contained in the queue
+        :raises QueueElementError: if the element to remove is not contained in the queue
         """
 
         if self.__elements_type is None or type(element) == self.__elements_type:
             try:
                 self.__elements.remove(element)
             except ValueError:
-                raise KeyError("The element you are trying to remove is not contained in the queue")
+                raise QueueElementError("The element {0} that you are trying to remove is not contained in the queue.".format(element))
         else:
-            raise TypeError("The element you are trying to remove is not of type " + str(self.__elements_type))
+            raise QueueTypeError("The element {0} that you are trying to remove is not of type {1}.".format(element, self.__elements_type))
 
 
 class BinarySearchTree(object):
