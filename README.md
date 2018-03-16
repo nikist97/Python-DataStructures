@@ -31,8 +31,8 @@ Graph in Python_** <br>
 **All of these are located in the AbstractDataStructures.py module** <br><br>
 
 - **_Stack<a name="stack"></a> (First-In-Last-Out)_** <br>
-The Stack's implementation is generic: you can specify the type of elements in the stack in the constructor.
-If not specified, it is set to None and elements of any type can be added to the stack. The
+The Stack's implementation wraps around the python deque object, but is also generic: you can specify the type of elements 
+in the stack in the constructor. If not specified, it is set to None and elements of any type can be added to the stack. The
 implementation includes all the common operations of a stack: peek, push, pop, size, etc.<br>
 
 _API_ :
@@ -46,12 +46,11 @@ stack.size() # returns the number of elements in the stack
 len(stack) # same as stack.size()
 stack.is_empty() # returns True if stack is empty and False otherwise
 
-str(stack) # returns the string representation of the list of elements of the stack
+str(stack) # returns the string representation of the python deque object containing the elements of the stack
 
 item = "test_item"
 stack.contains(item) # returns True if the item is in the stack and False otherwise
-# contains raises a TypeError if the type of the stack is not None and is different 
-# than the type of the parameter
+# contains raises a StackTypeError if the type of the stack is not None and is different than the type of the parameter
 boolean = item in stack 
 # same as boolean = stack.contains(item)
 
@@ -61,22 +60,21 @@ stack.peek() # returns the last element that was added to the stack, but doesn't
 # peek returns None if there are no elements in the stack
 
 stack.pop() # same as peek(), but removes the last element that was added to the stack
-# pop raises a ValueError if there are no elements in the stack
+# pop raises an EmptyStackError if there are no elements in the stack
 
 element = "test_item"
 stack.push(element) # pushes the element to the top of the stack
-# push raises a TypeError if the stack has a specified type for elements
-# and the argument is not of that type
+# push raises a StackTypeError if the stack has a specified type for elements and the argument is not of that type
 
-# the implemenetation includes an iterator
+# the implementation includes an iterator
 for element in stack:
     print(element)
 # keep in mind that the iterator uses stack.pop() to get the next element, hence
 # after the iteration is over the stack would be empty
 
 stack.remove(element) # removes the element from the stack
-# raises a TypeError if the stack has a specified type for elements and the argument is not of that type
-# raises a KeyError if the stack doesn't contain the element specified as argument
+# raises a StackTypeError if the stack has a specified type for elements and the argument is not of that type
+# raises a StackElementError if the stack doesn't contain the element specified as argument
 ```
 
 <br> <br>
