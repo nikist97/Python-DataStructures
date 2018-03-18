@@ -20,6 +20,7 @@ import unittest
 import random
 
 from ADTs.AbstractDataStructures import MinBinaryHeap
+from ADTs.BinaryHeapErrors import *
 
 
 class MinBinaryHeapTests(unittest.TestCase):
@@ -58,20 +59,20 @@ class MinBinaryHeapTests(unittest.TestCase):
         self.assertEqual(heap.size(), 5, "Size method is not correct")
 
     def test_type(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             MinBinaryHeap(elements_type=5.4)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             MinBinaryHeap(elements_type=None)
 
         heap = MinBinaryHeap()
         self.assertEqual(heap.type(), int, "type method is not correct")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.add("string")
 
         heap.add(23)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.replace_root("word")
 
         for i in range(5):
@@ -83,17 +84,17 @@ class MinBinaryHeapTests(unittest.TestCase):
         heap = MinBinaryHeap(str)
         self.assertEqual(heap.type(), str, "type method is not correct")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.add(1.23123)
 
         heap.add("string")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.replace_root(12)
 
     def test_remove_min(self):
         heap = MinBinaryHeap()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyBinaryHeapError):
             heap.remove_min()
         self.assertEqual(heap.peek_min(), None, "peek_min not working")
 
@@ -117,7 +118,7 @@ class MinBinaryHeapTests(unittest.TestCase):
     def test_add(self):
         heap = MinBinaryHeap(str)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.add(1.2)
 
         letters = ["g", "b", "f"]
@@ -137,13 +138,13 @@ class MinBinaryHeapTests(unittest.TestCase):
     def test_replace_root(self):
         heap = MinBinaryHeap(float)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyBinaryHeapError):
             heap.replace_root(5.4)
 
         for float_num in [6.343, 1.231, 2.342, 3.75, 5.6]:
             heap.add(float_num)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.replace_root(5)
 
         self.assertEqual(heap.peek_min(), 1.231)
@@ -197,7 +198,7 @@ class MinBinaryHeapTests(unittest.TestCase):
 
         while True:
             try:
-                self.assertEqual(heap_iter.__next__(), list_iter.__next__(), "iterator not implemented correctly")
+                self.assertEqual(next(heap_iter), next(list_iter), "iterator not implemented correctly")
             except StopIteration:
                 break
 
@@ -213,15 +214,18 @@ class MinBinaryHeapTests(unittest.TestCase):
 
     def test_replace(self):
         heap = MinBinaryHeap()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(EmptyBinaryHeapError):
             heap.replace(2, 10)
 
         heap.add(2)
+        with self.assertRaises(BinaryHeapElementError):
+            heap.replace(3, 10)
+
         self.assertEqual(heap.peek_min(), 2)
         heap.replace(2, 100)
         self.assertEqual(heap.peek_min(), 100, "Wrong replace implementation")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.replace("string", 10)
 
         heap.add(34)
@@ -262,12 +266,15 @@ class MinBinaryHeapTests(unittest.TestCase):
 
     def test_remove(self):
         heap = MinBinaryHeap(float)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(EmptyBinaryHeapError):
             heap.remove(5.5)
 
         heap.add(5.5)
+        with self.assertRaises(BinaryHeapElementError):
+            heap.replace(6.5, 8.5)
+
         self.assertFalse(heap.is_empty())
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinaryHeapTypeError):
             heap.remove(15)
         heap.remove(5.5)
         self.assertTrue(heap.is_empty())
@@ -300,6 +307,7 @@ class MinBinaryHeapTests(unittest.TestCase):
 
         heap.remove(11.5)
         self.assertEqual(str(heap), "[1.1, 2.1, 10.9, 10.6, 15.0, 11.0, 11.7]", "Wrong heap implementation")
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -149,10 +149,10 @@ tree = BinarySearchTree(elements_type = str) # type is set to str, hence only st
 # creates an empty tree with no root
 
 tree = BinarySearchTree(root = 10) # type is set to default - int, hence only integers can be added
-# creates a tree with the argument value as a root, raises a TypeError if argument for root is not int
+# creates a tree with the argument value as a root, raises a BinarySearchTreeTypeError if argument for root is not int
 
 tree = BinarySearchTree(root = "man", elements_type = str) # type is set to str, hence only strings
-# can be added, creates a tree with the argument value as a root, raises a TypeError if argument is
+# can be added, creates a tree with the argument value as a root, raises a BinarySearchTreeTypeError if argument is
 # not of the type specified in the constructor
 
 tree.get_number_of_elements() # returns the number of elements in the tree
@@ -231,20 +231,20 @@ min_heap.type() # returns the type of elements in the heap
 
 element = "test_element"
 min_heap.add(element) # adds the element to the min binary heap on the place it should be located
-# add raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+# add raises a BinaryHeapTypeError if the type of the argument is not the same as the type of the elements in the heap
 
 min_heap.peek_min() # returns the minimum element (the root), but doesn't remove it from the heap
 # returns None if heap is empty
 
 min_heap.remove_min() # returns the minimum element (the root) and removes it from the heap
 # the method replaces the root with the second minimum element in the heap
-# it raises a ValueError if the heap is empty
+# it raises a EmptyBinaryHeapError if the heap is empty
 
 # returns the minimum element (the root) and removes it from the heap, by replacing it with the element argument
 min_heap.replace_root(element) 
 # same as min_heap.remove_min() followed by min_heap.add(element), but replace_root() is faster
-# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
-# raises a ValueError if the heap is empty
+# raises a BinaryHeapTypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a EmptyBinaryHeapError if the heap is empty
 
 min_heap.get_sorted_elements() # returns a list with the sorted elements from the heap, the heap remains unchanged
 # the order is ascending; returns an empty list if the heap is empty
@@ -260,7 +260,7 @@ for element in min_heap:
 heap_iter = iter(min_heap)
 while True:
     try:
-        print(heap_iter.__next__())
+        print(next(heap_iter))
     except StopIteration:
         break
 min_heap.size() # will return 0 after iteration is finished, as explained above
@@ -268,13 +268,15 @@ min_heap.size() # will return 0 after iteration is finished, as explained above
 old_element, new_element = 10, 100
 min_heap.replace(old_element, new_element) # replaces the old element with the new element and readjusts the heap after
 # the replacement
-# raises a TypeError if the type of the first or the second argument is not the same as the type of the 
+# raises a BinaryHeapTypeError if the type of the first or the second argument is not the same as the type of the 
 # elements in the heap
-# raises a KeyError if the old_element argument is not contained in the heap
+# raises a BinaryHeapElementError if the old_element argument is not contained in the heap
+# raises a EmptyBinaryHeapError if the heap is empty
 
 min_heap.remove(element)  # removes the element and readjusts the heap after deletion
-# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
-# raises a KeyError if the element argument is not contained in the heap
+# raises a BinaryHeapTypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a BinaryHeapElementError if the element argument is not contained in the heap
+# raises a EmptyBinaryHeapError if the heap is empty
 ```
 
 <br>
@@ -299,20 +301,20 @@ max_heap.type() # returns the type of elements in the heap
 
 element = "test_element"
 max_heap.add(element) # adds the element to the max binary heap on the place it should be located
-# add raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
+# add raises a BinaryHeapTypeError if the type of the argument is not the same as the type of the elements in the heap
 
 max_heap.peek_max() # returns the maximum element (the root), but doesn't remove it from the heap
 # returns None if heap is empty
 
 max_heap.remove_max() # returns the maximum element (the root) and removes it from the heap
 # the method replaces the root with the second maximum element in the heap
-# it raises a ValueError if the heap is empty
+# it raises a EmptyBinaryHeapError if the heap is empty
 
 # returns the maximum element (the root) and removes it from the heap, by replacing it with the element argument
 max_heap.replace_root(element) 
 # same as max_heap.remove_max() followed by max_heap.add(element), but replace_root() is faster
-# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
-# raises a ValueError if the heap is empty
+# raises a BinaryHeapTypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a EmptyBinaryHeapError if the heap is empty
 
 max_heap.get_sorted_elements() # returns a list with the sorted elements from the heap, the heap remains unchanged
 # the order is descending; returns an empty list if the heap is empty
@@ -328,7 +330,7 @@ for element in max_heap:
 heap_iter = iter(max_heap)
 while True:
     try:
-        print(heap_iter.__next__())
+        print(next(heap_iter))
     except StopIteration:
         break
 max_heap.size() # will return 0 after iteration is finished, as explained above
@@ -336,13 +338,15 @@ max_heap.size() # will return 0 after iteration is finished, as explained above
 old_element, new_element = 10, 100
 max_heap.replace(old_element, new_element) # replaces the old element with the new element and readjusts the heap after
 # the replacement
-# raises a TypeError if the type of the first or the second argument is not the same as the type of the 
+# raises a BinaryHeapTypeError if the type of the first or the second argument is not the same as the type of the 
 # elements in the heap
-# raises a KeyError if the old_element argument is not contained in the heap
+# raises a BinaryHeapElementError if the old_element argument is not contained in the heap
+# raises a EmptyBinaryHeapError if the heap is empty
 
 max_heap.remove(element)  # removes the element and readjusts the heap after deletion
-# raises a TypeError if the type of the argument is not the same as the type of the elements in the heap
-# raises a KeyError if the element argument is not contained in the heap
+# raises a BinaryHeapTypeError if the type of the argument is not the same as the type of the elements in the heap
+# raises a BinaryHeapElementError if the element argument is not contained in the heap
+# raises a EmptyBinaryHeapError if the heap is empty
 ```
 
 
