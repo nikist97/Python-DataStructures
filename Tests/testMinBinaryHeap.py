@@ -214,7 +214,7 @@ class MinBinaryHeapTests(unittest.TestCase):
 
     def test_replace(self):
         heap = MinBinaryHeap()
-        with self.assertRaises(EmptyBinaryHeapError):
+        with self.assertRaises(BinaryHeapElementError):
             heap.replace(2, 10)
 
         heap.add(2)
@@ -266,7 +266,7 @@ class MinBinaryHeapTests(unittest.TestCase):
 
     def test_remove(self):
         heap = MinBinaryHeap(float)
-        with self.assertRaises(EmptyBinaryHeapError):
+        with self.assertRaises(BinaryHeapElementError):
             heap.remove(5.5)
 
         heap.add(5.5)

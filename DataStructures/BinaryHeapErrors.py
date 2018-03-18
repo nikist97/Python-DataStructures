@@ -11,7 +11,7 @@ class EmptyBinaryHeapError(ValueError):
 class BinaryHeapElementError(KeyError):
     """
     A custom type of error, when an operation is performed, which requires an element from the binary heap, but this element
-    is not found in the it.
+    is not found in it.
     """
 
     def __init__(self, msg):

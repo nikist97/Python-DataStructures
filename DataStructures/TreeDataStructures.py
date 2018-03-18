@@ -171,7 +171,7 @@ class BinarySearchTree(object):
         """
 
         if self.is_empty():
-            raise EmptyBinarySearchTreeError("You cannot delete an element from an empty binary search tree.")
+            raise BinarySearchTreeElementError("You are trying to delete an element which doesn't exist in the tree.")
 
         if type(value) == self.__elements_type:
             if self.__root.delete(value):
@@ -860,7 +860,6 @@ class MinBinaryHeap(BinaryHeap):
 
         :param old_element: the element to replace
         :param new_element: the new element
-        :raises EmptyBinaryHeapError: if there are no elements in the heap
         :raises BinaryHeapTypeError: if the type of any of the arguments is not the same as the type of elements in the heap
         :raises BinaryHeapElementError: if the old element is not contained in the heap
         """
@@ -870,9 +869,6 @@ class MinBinaryHeap(BinaryHeap):
 
         if type(new_element) != self.__elements_type:
             raise BinaryHeapTypeError("The new element to add in the heap is not of type {0}".format(self.__elements_type))
-
-        if self.is_empty():
-            raise EmptyBinaryHeapError("There are no elements in the heap.")
 
         replaced = False
         for index in range(len(self.__elements)):
@@ -893,16 +889,12 @@ class MinBinaryHeap(BinaryHeap):
         this method removes an element in the heap
 
         :param element: the element to remove
-        :raises EmptyBinaryHeapError: if there are no elements in the heap
         :raises BinaryHeapTypeError: if the type of the argument is not the same as the type of the elements in the heap
         :raises BinaryHeapElementError: if the element to remove is not contained in the heap
         """
 
         if type(element) != self.__elements_type:
             raise BinaryHeapTypeError("The element to remove from the heap is not of type {0}".format(self.__elements_type))
-
-        if self.is_empty():
-            raise EmptyBinaryHeapError("There are no elements in the heap.")
 
         removed = False
         for index in range(len(self.__elements)):
@@ -1092,7 +1084,6 @@ class MaxBinaryHeap(BinaryHeap):
 
         :param old_element: the element to replace
         :param new_element: the new element
-        :raises EmptyBinaryHeapError: if there are no elements in the heap
         :raises BinaryHeapTypeError: if the type of any of the arguments is not the same as the type of elements in the heap
         :raises BinaryHeapElementError: if the old element is not contained in the heap
         """
@@ -1102,9 +1093,6 @@ class MaxBinaryHeap(BinaryHeap):
 
         if type(new_element) != self.__elements_type:
             raise BinaryHeapTypeError("The new element to add in the heap is not of type {0}".format(self.__elements_type))
-
-        if self.is_empty():
-            raise EmptyBinaryHeapError("There are no elements in the heap.")
 
         replaced = False
         for index in range(len(self.__elements)):
@@ -1125,16 +1113,12 @@ class MaxBinaryHeap(BinaryHeap):
         this method removes an element in the heap
 
         :param element: the element to remove
-        :raises EmptyBinaryHeapError: if there are no elements in the heap
         :raises BinaryHeapTypeError: if the type of the argument is not the same as the type of the elements in the heap
         :raises BinaryHeapElementError: if the element to remove is not contained in the heap
         """
 
         if type(element) != self.__elements_type:
             raise BinaryHeapTypeError("The element to remove from the heap is not of type {0}".format(self.__elements_type))
-
-        if self.is_empty():
-            raise EmptyBinaryHeapError("There are no elements in the heap")
 
         removed = False
         for index in range(len(self.__elements)):

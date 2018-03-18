@@ -74,7 +74,7 @@ class BinarySearchTreeTest(unittest.TestCase):
 
     def test_delete(self):
         binary = BinarySearchTree()
-        with self.assertRaises(EmptyBinarySearchTreeError):
+        with self.assertRaises(BinarySearchTreeElementError):
             binary.delete(1)
 
         binary = BinarySearchTree(50)

@@ -18,6 +18,7 @@ limitations under the License.
 import unittest
 
 from DataStructures.AbstractDataStructures import PriorityQueue
+from DataStructures.PriorityQueueErrors import *
 
 
 class PriorityQueueTest(unittest.TestCase):
@@ -49,7 +50,7 @@ class PriorityQueueTest(unittest.TestCase):
         self.assertEqual(len(priority_queue), 1, "Wrong len implementation")
 
     def test_type(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             PriorityQueue(elements_type=5.4)
 
         priority_queue = PriorityQueue()
@@ -59,16 +60,16 @@ class PriorityQueueTest(unittest.TestCase):
         priority_queue = PriorityQueue(str, True)
         self.assertEqual(priority_queue.type(), str, "Wrong type at initialization")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.enqueue(2, 3)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.enqueue("2", "3")
 
-        with self.assertRaises(TypeError):
-            priority_queue.contains(5.43)
+        with self.assertRaises(PriorityQueueTypeError):
+            priority_queue.contains_priority(5.43)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.get("7")
 
     def test_reverse(self):
@@ -114,9 +115,9 @@ class PriorityQueueTest(unittest.TestCase):
 
     def test_contains(self):
         priority_queue = PriorityQueue()
-        self.assertFalse(5 in priority_queue, "Contains fails with empty queue")
-        with self.assertRaises(TypeError):
-            priority_queue.contains("7")
+        self.assertFalse(priority_queue.contains_priority(5), "Contains fails with empty queue")
+        with self.assertRaises(PriorityQueueTypeError):
+            priority_queue.contains_priority("7")
 
         self.assertFalse(priority_queue.contains_element("7"), "Contains_element fails")
 
@@ -125,17 +126,18 @@ class PriorityQueueTest(unittest.TestCase):
             priority_queue.enqueue(i**2, i)
 
         for j in range(10):
-            self.assertTrue(j in priority_queue, "Wrong contains implementation")
+            self.assertTrue(priority_queue.contains_priority(j), "Wrong contains implementation")
             self.assertTrue(priority_queue.contains_element(j**2), "Contains_element fails")
+            self.assertTrue(j ** 2 in priority_queue, "Contains_element fails")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.contains_element("word")
 
     def test_enqueue(self):
         priority_queue = PriorityQueue(float, False)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.enqueue(5, 5)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.enqueue(5.25, "5")
 
         d = {5: 10.5, 1: 2.7, 3: 4.90, 11: 3.14}
@@ -150,7 +152,7 @@ class PriorityQueueTest(unittest.TestCase):
 
     def test_dequeue(self):
         priority_queue = PriorityQueue(str, True)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyPriorityQueueError):
             priority_queue.dequeue()
         priority_queue.enqueue("word", 2)
         priority_queue.enqueue("python", 10)
@@ -159,7 +161,7 @@ class PriorityQueueTest(unittest.TestCase):
         self.assertEqual(len(priority_queue), 2)
 
         priority_queue = PriorityQueue(int, False)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyPriorityQueueError):
             priority_queue.dequeue()
         priority_queue.enqueue(15, 2)
         priority_queue.enqueue(423, 10)
@@ -213,11 +215,11 @@ class PriorityQueueTest(unittest.TestCase):
 
     def test_replace_priority(self):
         priority_queue = PriorityQueue(int, True)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.replace_priority("element", 10.5)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(PriorityQueueElementError):
             priority_queue.replace_priority(10, 5)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.replace_priority(5, 5.5)
 
         priority_queue.enqueue(0, 10)
@@ -271,7 +273,7 @@ class PriorityQueueTest(unittest.TestCase):
 
     def test_remove(self):
         priority_queue = PriorityQueue()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(PriorityQueueElementError):
             priority_queue.remove_element(5)
 
         priority_queue.enqueue("word", 1)
@@ -280,12 +282,12 @@ class PriorityQueueTest(unittest.TestCase):
         priority_queue.remove_element(3.14)
         self.assertFalse(priority_queue.contains_element(3.14), "Wrong remove implementation")
         self.assertEqual(priority_queue.peek(), 1, "Wrong remove implementation")
-        with self.assertRaises(KeyError):
+        with self.assertRaises(PriorityQueueElementError):
             priority_queue.remove_element(3.14)
         self.assertEqual(priority_queue.size(), 2, "Wrong remove implementation")
 
         priority_queue = PriorityQueue(int, reverse=True)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(PriorityQueueTypeError):
             priority_queue.remove_element(5.5)
 
         for i in range(10):
@@ -298,6 +300,7 @@ class PriorityQueueTest(unittest.TestCase):
 
         priority_queue.remove_element(0)
         self.assertEqual(priority_queue.dequeue(), 1, "Wrong remove implementation")
+
 
 if __name__ == "__main__":
     unittest.main()

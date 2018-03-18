@@ -18,6 +18,7 @@ limitations under the License.
 from copy import deepcopy
 from DataStructures.StackErrors import *
 from DataStructures.QueueErrors import *
+from DataStructures.PriorityQueueErrors import *
 from DataStructures.TreeDataStructures import MaxBinaryHeap, MinBinaryHeap
 from collections import deque
 
@@ -53,6 +54,13 @@ class Stack(object):
         """
 
         return str(self.__elements)
+
+    def __repr__(self):
+        """
+        the repr representation for the stack returns the repr representation of the deque object
+        """
+
+        return repr(self.__elements)
 
     def __len__(self):
         """
@@ -223,12 +231,17 @@ class Queue(object):
 
     def __str__(self):
         """
-        the string representation of a queue object
-
-        :return: the string representation of the python deque object with the elements in the queue
+        the str representation for the stack returns the str representation of the deque object
         """
 
         return str(self.__elements)
+
+    def __repr__(self):
+        """
+        the repr representation for the stack returns the repr representation of the deque object
+        """
+
+        return repr(self.__elements)
 
     def __len__(self):
         """
@@ -372,23 +385,28 @@ class Queue(object):
 class PriorityQueue(object):
     """
     Abstract Data Structure - represents a queue with priorities for elements
+
+    NOTE: this implementation provides a one-to-one mapping of elements to priorities (bijective mapping), that is one element is linked to only one priority
+        and one priority is linked to only one element. Therefore, when adding an element in the queue, if there is already an element with the same priority, then the old element
+        would be overwritten.
     """
 
     def __init__(self, elements_type=None, reverse=False):
         """
         constructor for the priority queue
-        :param elements_type: denotes the type of elements that can be added to the queue, defualt is None, which allows
+
+        :param elements_type: denotes the type of elements that can be added to the queue, default is None, which allows
             all types of elements
         :param reverse: a boolean, which represents what kind of priority queue to use - if set to False(default) then
-            the dequeue() function returns the element with the greatest priority, if set to True - it returns the
-            element with the least priority
+            the dequeue() function returns the element with the greatest priority, if set to True - it returns the element with the least priority
+        :raises PriorityQueueTypeError: if a valid type is not given as argument or a boolean is not used for the reverse argument
         """
 
         if elements_type is not None and type(elements_type) != type:
-            raise TypeError(str(elements_type) + " is not a valid type")
+            raise PriorityQueueTypeError("{0} is not a valid type for initialising the priority queue".format(elements_type))
 
         if type(reverse) != bool:
-            raise TypeError(str(reverse) + " is not a valid boolean variable")
+            raise PriorityQueueTypeError("{0} is not a valid boolean argument for initialising the priority queue.".format(reverse))
 
         if not reverse:
             self.__indices = MaxBinaryHeap(int)
@@ -401,30 +419,44 @@ class PriorityQueue(object):
     def __str__(self):
         """
         a string representation of the priority queue
+
         :return: the str representation of the dictionary with elements in the queue
         """
 
         return str(self.__elements)
 
+    def __repr__(self):
+        """
+        a repr representation of the priority queue
+
+        :return: the repr representation of the dictionary with elements in the queue
+        """
+
+        return repr(self.__elements)
+
     def __len__(self):
         """
         overriding this method allows the 'len(priority_queue) syntax'
+
         :return: the number of elements in the queue
         """
+
         return self.size()
 
-    def __contains__(self, priority):
+    def __contains__(self, element):
         """
         overriding this method allows the 'element in priority_queue' syntax
-        :param priority: the priority to search for
+
+        :param element: the element to search for
         :return: True if there is an element linked to this priority and False otherwise
         """
 
-        return self.contains(priority)
+        return self.contains_element(element)
 
     def __iter__(self):
         """
         overriding this method allows the use of an iterator with the priority queue
+
         :return: reference to the queue itself
         """
 
@@ -433,6 +465,7 @@ class PriorityQueue(object):
     def __next__(self):
         """
         the next method used for the iterator
+
         :return: uses dequeue to return the next element
         :raises StopIteration: if the queue is empty
         """
@@ -444,7 +477,8 @@ class PriorityQueue(object):
 
     def is_empty(self):
         """
-        this method checks if the size of the queue is 0
+        this method checks if the size of the queue is
+
         :return: True if there are no elements in the queue and False otherwise
         """
 
@@ -453,6 +487,7 @@ class PriorityQueue(object):
     def size(self):
         """
         this method gets the size of the queue
+
         :return: the number of elements in the queue
         """
 
@@ -461,6 +496,7 @@ class PriorityQueue(object):
     def type(self):
         """
         a getter for the type of elements in the queue
+
         :return: the type of elements allowed in the queue
         """
 
@@ -469,6 +505,7 @@ class PriorityQueue(object):
     def is_reversed(self):
         """
         this method checks if the queue is reversed
+
         :return: True if the dequeue function returns the element in the least priority and False otherwise
         """
 
@@ -479,18 +516,19 @@ class PriorityQueue(object):
         this method inserts an element into the queue with a given priority,
         if the priority argument already exists in the queue, the element stored with this priority will be overwritten
         by the new element
+
         :param item: the item to insert
         :param priority: the priority of the item
-        :raises TypeError: if the priority argument is not an integer
-        :raises TypeError: if the element to enqueue is not of the same type as the other elements in the queue
-            asserting that the type of the queue is not None (all types allowed in this case)
+        :raises PriorityQueueTypeError: if the priority argument is not an integer
+        :raises PriorityQueueTypeError: if the element to enqueue is not of the same type as the other elements in the queue
+            unless the type of the queue is None (all types allowed in this case)
         """
 
         if type(priority) != int:
-            raise TypeError("The priority must be an integer")
+            raise PriorityQueueTypeError("The priority of an element must be an integer")
 
         if self.__elements_type is not None and type(item) != self.__elements_type:
-            raise TypeError("The element you are trying to enqueue is not of type " + str(self.__elements_type))
+            raise PriorityQueueTypeError("The element you are trying to enqueue is not of type {0}".format(self.__elements_type))
 
         if priority not in self.__elements:
             self.__indices.add(priority)
@@ -499,13 +537,14 @@ class PriorityQueue(object):
     def dequeue(self):
         """
         this method takes the element with the greatest or the lowest priority depending on the reverse argument in the
-        constructor, then returns it and removes it from the queue
+        constructor, then returns this element and removes it from the queue
+
         :return: the element to be dequeued
-        :raises ValueError: if the queue is empty
+        :raises EmptyPriorityQueueError: if the queue is empty
         """
 
         if self.is_empty():
-            raise ValueError("The priority queue doesn't contain any elements")
+            raise EmptyPriorityQueueError("The priority queue doesn't contain any elements")
 
         if type(self.__indices) == MinBinaryHeap:
             min_priority = self.__indices.remove_min()
@@ -521,6 +560,7 @@ class PriorityQueue(object):
     def peek(self):
         """
         this method is the same as dequeue() but doesn't remove the element from the priority queue
+
         :return: the element to be dequeued without removing it or None if the queue is empty
         """
 
@@ -535,61 +575,65 @@ class PriorityQueue(object):
     def get(self, priority):
         """
         this method gets the element with a specified priority
+
         :param priority: the given priority
         :return: the element linked to this priority or None if not existing
-        :raises TypeError: if the priority is not of type int
+        :raises PriorityQueueTypeError: if the priority is not of type int
         """
 
         if type(priority) != int:
-            raise TypeError("The priority parameter must be an integer.")
+            raise PriorityQueueTypeError("The priority parameter must be an integer.")
 
         return self.__elements.get(priority)
 
-    def contains(self, priority):
+    def contains_priority(self, priority):
         """
         this method checks if a given priority is assigned to an object
+
         :param priority: the priority to check
         :return: True if the queue contains this priority and False otherwise
-        :raises TypeError: if the priority is not of type int
+        :raises PriorityQueueTypeError: if the priority is not of type int
         """
 
         if type(priority) == int:
             return priority in self.__elements.keys()
         else:
-            raise TypeError("Priorities must be of type int")
+            raise PriorityQueueTypeError("Priorities must be of type int")
 
     def contains_element(self, element):
         """
         this method checks if a given element is contained in the queue
+
         :param element: the element to check
         :return: True if the element is in the queue and False otherwise
-        :raises TypeError: if the element's type is not the same as the type of elements in the queue
+        :raises PriorityQueueTypeError: if the element's type is not the same as the type of elements in the queue
         """
 
         if self.__elements_type is not None and type(element) != self.__elements_type:
-            raise TypeError("Type of the parameter is not " + str(self.__elements_type))
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.__elements_type))
 
         return element in self.__elements.values()
 
     def replace_priority(self, element, new_priority, comparison=None):
         """
         this method finds an element and replaces its priority with a new one
+
         :param element: the element, for which the priority must be replaced
         :param new_priority: the new priority
         :param comparison: represents whether a comparison between the two priorities must be made before replacing
             None - no comparison, 1 - greater than comparison (new > old)), -1 - less than comparison (new < old)
         :return: True if the element's priority has been replaced and False otherwise
-        :raises TypeError: if the type of the queue is not None and is different than the type of the element argument
-        :raises TypeError: if the type of the new priority is not int
+        :raises PriorityQueueTypeError: if the type of the queue is not None and is different than the type of the element argument
+        :raises PriorityQueueTypeError: if the type of the new priority is not int
         :raises ValueError if the type of the comparison argument is not any of these (None, -1, 1)
-        :raises KeyError: if the element is not contained in the queue
+        :raises PriorityQueueElementError: if the element is not contained in the queue
         """
 
         if self.__elements_type is not None and type(element) != self.__elements_type:
-            raise TypeError("Type of the first parameter is not " + str(self.__elements_type))
+            raise PriorityQueueTypeError("Type of the first parameter is not " + str(self.__elements_type))
 
         if type(new_priority) != int:
-            raise TypeError("The priority parameter must be an integer.")
+            raise PriorityQueueTypeError("The priority parameter must be an integer.")
 
         if comparison is not None and comparison != 1 and comparison != -1:
             raise ValueError("The comparison argument must be None for no comparison, -1 - for less than comparison"
@@ -612,19 +656,21 @@ class PriorityQueue(object):
                 break
 
         if not element_found:
-            raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+            raise PriorityQueueElementError("The queue doesn't contain the element for which you are trying to replace the priority.")
 
         return replaced
 
     def remove_element(self, element):
         """
         this method removes an element from the priority queue
+
         :param element: the element to remove
-        :raises KeyError: if the queue doesn't contain the element to delete
+        :raises PriorityQueueElementError: if the queue doesn't contain the element to delete
+        :raises PriorityQueueTypeError: if the type of the argument differs from the type of the elements in the queue
         """
 
         if self.__elements_type is not None and type(element) != self.__elements_type:
-            raise TypeError("Type of the parameter is not " + str(self.__elements_type))
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.__elements_type))
 
         removed = False
         for priority in self.__elements:
@@ -636,23 +682,25 @@ class PriorityQueue(object):
                 break
 
         if not removed:
-            raise KeyError("The queue doesn't contain the element you are trying to delete.")
+            raise PriorityQueueElementError("The queue doesn't contain the element you are trying to delete.")
 
 
 class DuplicatePriorityQueue(PriorityQueue):
     """
     Abstract Data Structure - represents a queue with priorities for elements, difference from PriorityQueue is that
-    this implementation allows elements with duplicated priorities
+    this implementation allows elements with duplicated priorities, that is the mapping between elements and priorities is injective
     """
 
     def __init__(self, elements_type=None, reverse=False):
         """
         overriding the constructor to get references to the elements and the priorities
+
         :param elements_type: the type of elements in the queue
         :param reverse: the reverse argument of the PriorityQueue
         """
 
         super().__init__(elements_type, reverse)
+
         self.__elements = self._PriorityQueue__elements
         self.__indices = self._PriorityQueue__indices
         self.__size = 0
@@ -667,19 +715,20 @@ class DuplicatePriorityQueue(PriorityQueue):
 
     def enqueue(self, item, priority):
         """
-        overriding the enqueue() method to allow dupicated priorities,
-        2 or more elements with the same priorities are stored in a queue
+        overriding the enqueue() method to allow duplicated priorities,
+        2 or more elements with the same priorities are stored in an ordinary queue
+
         :param item: the item to enqueue
         :param priority: the priority of the item
-        :raises TypeError: if the type of the priority is not int
-        :raises TypeError: if the element to enqueue is not of the same type as the other queue's elements
+        :raises PriorityQueueTypeError: if the type of the priority is not int
+        :raises PriorityQueueTypeError: if the element to enqueue is not of the same type as the other queue's elements
         """
 
         if type(priority) != int:
-            raise TypeError("The priority must be an integer")
+            raise PriorityQueueTypeError("The priority of an element must be an integer")
 
         if self.type() is not None and type(item) != self.type():
-            raise TypeError("The element you are trying to enqueue is not of type " + str(self.type()))
+            raise PriorityQueueTypeError("The element you are trying to enqueue is not of type {0}".format(self.type()))
 
         if priority not in self.__elements:
             self.__indices.add(priority)
@@ -698,11 +747,13 @@ class DuplicatePriorityQueue(PriorityQueue):
     def dequeue(self):
         """
         overriding the dequeue() method to handle duplicated priorities too
+
         :return: the dequeued element
-        :raises ValueError: if the queue is empty
+        :raises EmptyPriorityQueueError: if the queue is empty
         """
+
         if self.is_empty():
-            raise ValueError("The priority queue doesn't contain any elements")
+            raise EmptyPriorityQueueError("The priority queue doesn't contain any elements")
 
         if type(self.__indices) == MinBinaryHeap:
             min_priority = self.__indices.peek_min()
@@ -743,7 +794,8 @@ class DuplicatePriorityQueue(PriorityQueue):
     def peek(self):
         """
         overriding the peek method to handle duplicated priorities too
-        :return: the element to be dequeued but doesn't remove it or None if the queue is empty
+
+        :return: the element to be dequeued, but without removing it or None if the queue is empty
         """
 
         if self.is_empty():
@@ -763,13 +815,15 @@ class DuplicatePriorityQueue(PriorityQueue):
     def get(self, priority):
         """
         overriding the get method to handle duplicated priorities
+
         :param priority: the priority to search for
         :return: the element linked to the given priority
-        :raises TypeError: if the priority's type is not int
+        :raises PriorityQueueTypeError: if the priority's type is not int
         """
 
         if type(priority) != int:
-            raise TypeError("The priority parameter must be an integer.")
+            raise PriorityQueueTypeError("The priority parameter must be an integer.")
+
         element = self.__elements.get(priority)
         if type(element) != Queue:
             return element
@@ -779,13 +833,14 @@ class DuplicatePriorityQueue(PriorityQueue):
     def contains_element(self, element):
         """
         overriding the contains_element method to search for values with duplicated priorities too
+
         :param element: the element to search for
         :return: True if the element is contained in the queue and False otherwise
-        :raises TypeError: if the element's type is not the same as the type of queue's elements
+        :raises PriorityQueueTypeError: if the element's type is not the same as the type of queue's elements
         """
 
         if self.type() is not None and type(element) != self.type():
-            raise TypeError("Type of the parameter is not " + str(self.type()))
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type()))
 
         if not self.has_duplicates():
             return super().contains_element(element)
@@ -800,7 +855,8 @@ class DuplicatePriorityQueue(PriorityQueue):
     
     def has_duplicates(self):
         """
-        a method for fast check if there are items with duplicated priorities
+        a method for fast check if there are items with duplicated
+
         :return: True if there are two or more elements with the same priority and False otherwise
         """
 
@@ -809,23 +865,24 @@ class DuplicatePriorityQueue(PriorityQueue):
     def replace_priority(self, element, new_priority, comparison=None):
         """
         overriding the replace_priority method to work with duplicated priorities too
+
         :param element: the element, for which the priority must be replaced
         :param new_priority: the new priority
         :param comparison: represents whether a comparison between the two priorities must be made before replacing
             None - no comparison, 1 - greater than comparison (new > old)), -1 - less than comparison (new < old)
         :return: True if the element's priority has been replaced and False otherwise
-        :raises TypeError: if the type of the queue is not None and is different than the type of the element argument
-        :raises TypeError: if the type of the new priority is not int
+        :raises PriorityQueueTypeError: if the type of the queue is not None and is different than the type of the element argument
+        :raises PriorityQueueTypeError: if the type of the new priority is not int
         :raises ValueError if the type of the comparison argument is not any of these (None, -1, 1)
-        :raises KeyError: if the element is not contained in the queue
+        :raises PriorityQueueElementError: if the element is not contained in the queue
         :return:
         """
 
         if self.type() is not None and type(element) != self.type():
-            raise TypeError("Type of the first parameter is not " + str(self.type()))
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type()))
 
         if type(new_priority) != int:
-            raise TypeError("The priority parameter must be an integer.")
+            raise PriorityQueueTypeError("The priority parameter must be an integer.")
 
         if comparison is not None and comparison != 1 and comparison != -1:
             raise ValueError("The comparison argument must be None for no comparison, -1 - for less than comparison"
@@ -882,20 +939,21 @@ class DuplicatePriorityQueue(PriorityQueue):
                     break
 
         if not element_found:
-            raise KeyError("The queue doesn't contain the element for which you are trying to replace the priority.")
+            raise PriorityQueueElementError("The queue doesn't contain the element for which you are trying to replace the priority.")
 
         return replaced
 
     def remove_element(self, element):
         """
         overriding the remove() method to handle duplicated priorities too
+
         :param element: the element to remove
-        :raises TypeError: if the type of the argument is not the same as the type of the elements in the heap
-        :raises KeyError: if the element to remove is not contained in the heap
+        :raises PriorityQueueTypeError: if the type of the argument is not the same as the type of the elements in the heap
+        :raises PriorityQueueElementError: if the element to remove is not contained in the heap
         """
 
         if self.type() is not None and type(element) != self.type():
-            raise TypeError("Type of the parameter is not " + str(self.type()))
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type()))
 
         removed = False
         for priority in self.__elements:
@@ -922,7 +980,7 @@ class DuplicatePriorityQueue(PriorityQueue):
                     break
 
         if not removed:
-            raise KeyError("The queue doesn't contain the element you are trying to delete.")
+            raise PriorityQueueElementError("The queue doesn't contain the element you are trying to delete.")
 
 
 class Graph(object):
