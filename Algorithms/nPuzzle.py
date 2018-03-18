@@ -17,7 +17,7 @@ limitations under the License.
 
 # an algorithm to solve the famous N-Puzzle problem
 import math
-from ADTs.AbstractDataStructures import Stack
+from DataStructures.AbstractDataStructures import Stack
 
 
 # the up method, which returns the tuple state after making a move upwards

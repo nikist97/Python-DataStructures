@@ -16,7 +16,7 @@ limitations under the License.
 
 
 # Evaluating mathematical expressions using a stack, tokens must be separated by a space
-from ADTs.AbstractDataStructures import Stack
+from DataStructures.AbstractDataStructures import Stack
 
 
 # the priorities of the attributes

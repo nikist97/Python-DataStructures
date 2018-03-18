@@ -19,8 +19,8 @@ limitations under the License.
 import unittest
 import random
 
-from ADTs.AbstractDataStructures import MinBinaryHeap
-from ADTs.BinaryHeapErrors import *
+from DataStructures.AbstractDataStructures import MinBinaryHeap
+from DataStructures.BinaryHeapErrors import *
 
 
 class MinBinaryHeapTests(unittest.TestCase):

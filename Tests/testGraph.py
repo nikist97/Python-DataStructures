@@ -17,7 +17,7 @@ limitations under the License.
 # Simple unittests for the graph data structure
 import unittest
 
-from ADTs.AbstractDataStructures import Graph
+from DataStructures.AbstractDataStructures import Graph
 
 
 class GraphTest(unittest.TestCase):

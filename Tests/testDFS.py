@@ -18,7 +18,7 @@ limitations under the License.
 
 import unittest
 from Algorithms.SearchAlgorithms import depth_first_search, depth_first_search_list, depth_first_search_generator
-from ADTs.AbstractDataStructures import Graph
+from DataStructures.AbstractDataStructures import Graph
 
 
 class DFSTest(unittest.TestCase):

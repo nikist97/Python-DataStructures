@@ -18,8 +18,8 @@ limitations under the License.
 # Simple unittests for the ADT Stack
 import unittest
 
-from ADTs.AbstractDataStructures import Stack
-from ADTs.StackErrors import *
+from DataStructures.AbstractDataStructures import Stack
+from DataStructures.StackErrors import *
 
 
 class StackTest(unittest.TestCase):

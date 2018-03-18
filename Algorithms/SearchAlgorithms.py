@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from ADTs.AbstractDataStructures import Stack, Queue, Graph
+from DataStructures.AbstractDataStructures import Stack, Queue, Graph
 
 
 # Breadth-First-Search (BFS) algorithm for graph traversing

@@ -18,8 +18,8 @@ limitations under the License.
 # Simple unittests for the ADT BinarySearchTree
 import unittest
 
-from ADTs.TreeDataStructures import BinarySearchTree
-from ADTs.BinarySearchTreeErrors import *
+from DataStructures.TreeDataStructures import BinarySearchTree
+from DataStructures.BinarySearchTreeErrors import *
 
 
 class BinarySearchTreeTest(unittest.TestCase):

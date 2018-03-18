@@ -18,8 +18,8 @@ limitations under the License.
 # Simple unittests for the ADT Queue
 import unittest
 
-from ADTs.AbstractDataStructures import Queue
-from ADTs.QueueErrors import *
+from DataStructures.AbstractDataStructures import Queue
+from DataStructures.QueueErrors import *
 
 
 class QueueTest(unittest.TestCase):

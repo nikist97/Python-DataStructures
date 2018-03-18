@@ -18,7 +18,7 @@ limitations under the License.
 
 import unittest
 from Algorithms.SearchAlgorithms import breadth_first_search, breadth_first_search_list, breadth_first_search_generator
-from ADTs.AbstractDataStructures import Graph
+from DataStructures.AbstractDataStructures import Graph
 
 
 class BFSTest(unittest.TestCase):

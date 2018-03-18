@@ -1,5 +1,5 @@
-from ADTs.BinarySearchTreeErrors import *
-from ADTs.BinaryHeapErrors import *
+from DataStructures.BinarySearchTreeErrors import *
+from DataStructures.BinaryHeapErrors import *
 from abc import ABC, abstractmethod
 
 

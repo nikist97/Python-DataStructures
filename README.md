@@ -37,7 +37,7 @@ implementation includes all the common operations of a stack: peek, push, pop, s
 
 _API_ :
 ```python
-from ADTs.AbstractDataStructures import Stack # import the stack data structure
+from DataStructures.AbstractDataStructures import Stack # import the stack data structure
 
 stack = Stack() # type is set to None, items of any types can be added
 stack = Stack(elements_type = int) # type is set to int, hence only integers can be pushed
@@ -86,7 +86,7 @@ implementation includes all the common operations of a queue: enqueue, dequeue, 
 
 _API_ :
 ```python
-from ADTs.AbstractDataStructures import Queue # import the queue data structure
+from DataStructures.AbstractDataStructures import Queue # import the queue data structure
 queue = Queue() # type is set to None, items of any types can be added
 queue = Queue(elements_type = str) # type is set to str, hence only strings can be enqueued
 
@@ -140,7 +140,7 @@ elements in the tree must support the comparison operators !<br>
 
 _API_ :
 ```python
-from ADTs.TreeDataStructures import BinarySearchTree # import the BinarySearchTree data structure
+from DataStructures.TreeDataStructures import BinarySearchTree # import the BinarySearchTree data structure
 
 tree = BinarySearchTree() # type is set to default - int, hence only integers can be added,
 # creates an empty tree with no root
@@ -213,7 +213,7 @@ MaxBinaryHeap implements the common operations of a heap: add, replace_root, rem
 
 MinBinaryHeap<a name="minbh"></a> _API_ : 
 ```python
-from ADTs.AbstractDataStructures import MinBinaryHeap # import the min heap
+from DataStructures.AbstractDataStructures import MinBinaryHeap # import the min heap
 
 min_heap = MinBinaryHeap() # type is set to default - int, hence only integers can be added
 # creates an empty heap
@@ -283,7 +283,7 @@ min_heap.remove(element)  # removes the element and readjusts the heap after del
 
 MaxBinaryHeap<a name="maxbh"></a> _API_:
 ```python
-from ADTs.AbstractDataStructures import MaxBinaryHeap # import the max heap
+from DataStructures.AbstractDataStructures import MaxBinaryHeap # import the max heap
 
 max_heap = MaxBinaryHeap() # type is set to default - int, hence only integers can be added
 # creates an empty heap
@@ -361,7 +361,7 @@ all the common operations of a priority queue: enqueue, dequeue, peek, size, etc
 
 _API_ :
 ```python
-from ADTs.AbstractDataStructures import PriorityQueue # import the priority queue data structure
+from DataStructures.AbstractDataStructures import PriorityQueue # import the priority queue data structure
 
 priority_queue = PriorityQueue() # type is set to default None, hence objects of all types can be enqueued to the queue
 # the reverse argument is set to default False, hence dequeue returns the element with the highest priority
@@ -459,7 +459,7 @@ are two elements with the same priority, then they will be dequeued in the order
 
 _API_ :
 ```python
-from ADTs.AbstractDataStructures import DuplicatePriorityQueue # import the priority queue data structure
+from DataStructures.AbstractDataStructures import DuplicatePriorityQueue # import the priority queue data structure
 
 queue = DuplicatePriorityQueue() # type is set to default None, hence objects of all types can be enqueued to the queue
 # the reverse argument is set to default False, hence dequeue returns the element with the highest priority
@@ -585,7 +585,7 @@ respectively and the graph is not directed. That's why edges[0][2] = edges[2][0]
 
 _API_ :
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structure
+from DataStructures.AbstractDataStructures import Graph # import the graph data structure
 
 graph = Graph() # initialize a graph with None elements type, hence all types of elements can be added to the graph
 # the initialized graph is also nor directed, neither oriented, neither weighted
@@ -857,7 +857,7 @@ search traversal one by one.<br>
 
 Examples of <b>breadth_first_search</b> function:<br>
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from DataStructures.AbstractDataStructures import Graph # import the graph data structures
 from Algorithms.SearchAlgorithms import breadth_first_search # import the bfs function
 
 graph = Graph(int, directed=True) # initialize the graph
@@ -937,7 +937,7 @@ result = breadth_first_search(graph, search_func, 9, 100, test_list) # starting 
 
 Examples of <b>breadth_first_search_list</b> function:<br>
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from DataStructures.AbstractDataStructures import Graph # import the graph data structures
 from Algorithms.SearchAlgorithms import breadth_first_search_list # import the bfs function
 
 graph = Graph(elements_type=None, directed=True, oriented=True) # initialize the graph
@@ -969,7 +969,7 @@ nodes = breadth_first_search_list(graph, start_node="float")
 
 Examples of <b>breadth_first_search_generator</b> function:<br>
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from DataStructures.AbstractDataStructures import Graph # import the graph data structures
 from Algorithms.SearchAlgorithms import breadth_first_search_generator # import the bfs function
 
 graph = Graph(elements_type=None, directed=True, oriented=True) # initialize the graph
@@ -1023,7 +1023,7 @@ search traversal one by one.<br>
 
 Examples of <b>depth_first_search</b> function:<br>
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from DataStructures.AbstractDataStructures import Graph # import the graph data structures
 from Algorithms.SearchAlgorithms import depth_first_search # import the dfs function
 
 graph = Graph(int, directed=True) # initialize the graph
@@ -1103,7 +1103,7 @@ result = depth_first_search(graph, search_func, 9, 100, test_list) # starting fr
 
 Examples of <b>depth_first_search_list</b> function:<br>
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from DataStructures.AbstractDataStructures import Graph # import the graph data structures
 from Algorithms.SearchAlgorithms import depth_first_search_list # import the dfs function
 
 graph = Graph(elements_type=None, directed=True, oriented=True) # initialize the graph
@@ -1135,7 +1135,7 @@ nodes = depth_first_search_list(graph, start_node="float")
 
 Examples of <b>depth_first_search_generator</b> function:<br>
 ```python
-from ADTs.AbstractDataStructures import Graph # import the graph data structures
+from DataStructures.AbstractDataStructures import Graph # import the graph data structures
 from Algorithms.SearchAlgorithms import depth_first_search_generator # import the dfs function
 
 graph = Graph(elements_type=None, directed=True, oriented=True) # initialize the graph

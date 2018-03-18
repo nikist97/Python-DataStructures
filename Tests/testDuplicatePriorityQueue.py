@@ -17,7 +17,7 @@ limitations under the License.
 
 import unittest
 
-from ADTs.AbstractDataStructures import DuplicatePriorityQueue
+from DataStructures.AbstractDataStructures import DuplicatePriorityQueue
 
 
 class DuplicatePriorityQueueTest(unittest.TestCase):
