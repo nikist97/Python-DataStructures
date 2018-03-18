@@ -38,7 +38,7 @@ class BinarySearchTree(object):
             self.__root = Node(root)
             self.__number_of_items = 1
         else:
-            raise BinarySearchTreeTypeError("The binary search tree can contain only elements of type {0}".format(elements_type))
+            raise BinarySearchTreeTypeError("The root of the binary search tree can only be an element of type {0}".format(elements_type))
 
     def __str__(self):
         """
@@ -145,7 +145,7 @@ class BinarySearchTree(object):
                 if self.__root.add(Node(value)):
                     self.__number_of_items += 1
         else:
-            raise BinarySearchTreeTypeError("The binary tree can contain only elements of type {0}".format(self.__elements_type))
+            raise BinarySearchTreeTypeError("The binary tree can only contain elements of type {0}".format(self.__elements_type))
 
     def contains(self, value):
         """
@@ -159,7 +159,7 @@ class BinarySearchTree(object):
         if type(value) == self.__elements_type:
             return self.__root.contains(value)
         else:
-            raise BinarySearchTreeTypeError("The binary tree can contain only elements of type {0}".format(self.__elements_type))
+            raise BinarySearchTreeTypeError("The binary tree only contains elements of type {0}".format(self.__elements_type))
 
     def delete(self, value):
         """
@@ -179,7 +179,7 @@ class BinarySearchTree(object):
             else:
                 raise BinarySearchTreeElementError("You are trying to delete an element which doesn't exist in the tree.")
         else:
-            raise BinarySearchTreeTypeError("The binary tree can contain only elements of type " + str(self.__elements_type) + ".")
+            raise BinarySearchTreeTypeError("The binary tree only contains elements of type {0}".format(self.__elements_type))
 
     def get_root(self):
         """
@@ -626,7 +626,7 @@ class BinaryHeap(ABC):
         if type(item) == self.__elements_type:
             return item in self.__elements
         else:
-            raise BinaryHeapTypeError("The parameter is not of type " + str(self.__elements_type))
+            raise BinaryHeapTypeError("The binary heap contains only elements of type {0}".format(self.__elements_type))
 
     def add(self, element):
         """
@@ -641,7 +641,7 @@ class BinaryHeap(ABC):
 
             self.__percolate_up()
         else:
-            raise BinaryHeapTypeError("The element you are trying to add is not of type " + str(self.__elements_type))
+            raise BinaryHeapTypeError("The element you are trying to add in the heap is not of type {0}".format(self.__elements_type))
 
     @abstractmethod
     def __percolate_up(self, initial_index=-1):
@@ -810,7 +810,7 @@ class MinBinaryHeap(BinaryHeap):
 
             return min_element
         else:
-            raise EmptyBinaryHeapError("There are no elements in the heap")
+            raise EmptyBinaryHeapError("There are no elements in the heap.")
 
     def get_sorted_elements(self):
         """
@@ -850,9 +850,9 @@ class MinBinaryHeap(BinaryHeap):
                 self._BinaryHeap__percolate_down()
                 return temp
             else:
-                raise EmptyBinaryHeapError("There are no elements in the heap")
+                raise EmptyBinaryHeapError("There are no elements in the heap.")
         else:
-            raise BinaryHeapTypeError("The element you are trying to add is not of type {0}".format(self.__elements_type))
+            raise BinaryHeapTypeError("The element you are trying to add in the heap is not of type {0}".format(self.__elements_type))
 
     def replace(self, old_element, new_element):
         """
@@ -866,10 +866,10 @@ class MinBinaryHeap(BinaryHeap):
         """
 
         if type(old_element) != self.__elements_type:
-            raise BinaryHeapTypeError("The first argument is not of type {0}".format(self.__elements_type))
+            raise BinaryHeapTypeError("The old element you are trying to replace in the heap is not of type {0}".format(self.__elements_type))
 
         if type(new_element) != self.__elements_type:
-            raise BinaryHeapTypeError("The second argument is not of type {0}".format(self.__elements_type))
+            raise BinaryHeapTypeError("The new element to add in the heap is not of type {0}".format(self.__elements_type))
 
         if self.is_empty():
             raise EmptyBinaryHeapError("There are no elements in the heap.")
@@ -899,7 +899,7 @@ class MinBinaryHeap(BinaryHeap):
         """
 
         if type(element) != self.__elements_type:
-            raise BinaryHeapTypeError("The argument is not of type {0}".format(self.__elements_type))
+            raise BinaryHeapTypeError("The element to remove from the heap is not of type {0}".format(self.__elements_type))
 
         if self.is_empty():
             raise EmptyBinaryHeapError("There are no elements in the heap.")
@@ -1084,7 +1084,7 @@ class MaxBinaryHeap(BinaryHeap):
             else:
                 raise EmptyBinaryHeapError("There are no elements in the heap")
         else:
-            raise BinaryHeapTypeError("The element you are trying to add is not of type {0}".format(self.__elements_type))
+            raise BinaryHeapTypeError("The element you are trying to add in the heap is not of type {0}".format(self.__elements_type))
 
     def replace(self, old_element, new_element):
         """
@@ -1098,13 +1098,13 @@ class MaxBinaryHeap(BinaryHeap):
         """
 
         if type(old_element) != self.__elements_type:
-            raise BinaryHeapTypeError("The first argument is not of type " + str(self.__elements_type))
+            raise BinaryHeapTypeError("The old element you are trying to replace in the heap is not of type {0}".format(self.__elements_type))
 
         if type(new_element) != self.__elements_type:
-            raise BinaryHeapTypeError("The second argument is not of type " + str(self.__elements_type))
+            raise BinaryHeapTypeError("The new element to add in the heap is not of type {0}".format(self.__elements_type))
 
         if self.is_empty():
-            raise EmptyBinaryHeapError("There are no elements in the heap")
+            raise EmptyBinaryHeapError("There are no elements in the heap.")
 
         replaced = False
         for index in range(len(self.__elements)):
@@ -1131,7 +1131,7 @@ class MaxBinaryHeap(BinaryHeap):
         """
 
         if type(element) != self.__elements_type:
-            raise BinaryHeapTypeError("The argument is not of type " + str(self.__elements_type))
+            raise BinaryHeapTypeError("The element to remove from the heap is not of type {0}".format(self.__elements_type))
 
         if self.is_empty():
             raise EmptyBinaryHeapError("There are no elements in the heap")
