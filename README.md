@@ -135,11 +135,12 @@ The Binary Search Tree's implementation is generic: you can specify the type of 
 in the constructor. If not specified, it is set to int, hence only integers can be added to the binary search tree.
 You can also initiate the root of the tree by specifying it in the constructor. If not specified a binary search tree
 with no root is created and the first added element becomes the root. The implementation includes all the common
-operations of a binary search tree: contains, add, delete, get_maximum, get_minimum, etc.<br>
+operations of a binary search tree: contains, add, delete, get_maximum, get_minimum, etc. Keep in mind that the type of 
+elements in the tree must support the comparison operators !<br>
 
 _API_ :
 ```python
-from ADTs.AbstractDataStructures import BinarySearchTree # import the BinarySearchTree data structure
+from ADTs.TreeDataStructures import BinarySearchTree # import the BinarySearchTree data structure
 
 tree = BinarySearchTree() # type is set to default - int, hence only integers can be added,
 # creates an empty tree with no root
@@ -164,16 +165,17 @@ tree.type() # returns the type of the elements in the binary search tree
 
 element = "test_element"
 tree.contains(element) # returns true if the element exists in the binary search tree
-# contains raises a TypeError if the type of the argument is not the same as the type of the elements in the tree
+# contains raises a BinarySearchTreeTypeError if the type of the argument is not the same as the type of the elements in the tree
 
 boolean = element in tree # same as boolean = tree.contains(element)
 
 tree.add(element) # adds the element to the binary tree on the place it should be located
-# add raises a TypeError if the type of the argument is not the same as the type of the elements in the tree
+# add raises a BinarySearchTreeTypeError if the type of the argument is not the same as the type of the elements in the tree
 
 tree.delete(element) # deletes the element from the binary tree if the tree contains it
-# delete raises a TypeError if the type of the argument is not the same as the type of the elements in the tree
-# delete raises a KeyError if the element is not contained in the binary tree
+# delete raises a BinarySearchTreeTypeError if the type of the argument is not the same as the type of the elements in the tree
+# delete raises a BinarySearchTreeElementError if the element is not contained in the binary tree
+# delete raises an EmptyBinarySearchTreeError if there are no elements in the tree
 
 tree.get_minimum() # returns the minimum element in the binary search tree
 # returns None if number of elements is 0

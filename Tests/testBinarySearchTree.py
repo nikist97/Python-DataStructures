@@ -18,7 +18,8 @@ limitations under the License.
 # Simple unittests for the ADT BinarySearchTree
 import unittest
 
-from ADTs.AbstractDataStructures import BinarySearchTree
+from ADTs.TreeDataStructures import BinarySearchTree
+from ADTs.BinarySearchTreeErrors import *
 
 
 class BinarySearchTreeTest(unittest.TestCase):
@@ -40,14 +41,14 @@ class BinarySearchTreeTest(unittest.TestCase):
     def test_contains(self):
         binary = BinarySearchTree(26)
         binary.add(12)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.contains(12.50)
         binary.add(54)
         self.assertTrue(binary.contains(12), "BinaryTree contain method doesn't work.")
         binary.add(32)
         self.assertFalse(binary.contains(104), "BinaryTree contain method doesn't work.")
         binary.add(104)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.contains("string")
         binary.add(0)
         self.assertTrue(binary.contains(26), "BinaryTree contain method doesn't work.")
@@ -66,12 +67,16 @@ class BinarySearchTreeTest(unittest.TestCase):
         self.assertEqual(binary.get_number_of_elements(), 4, "Add method doesn't adjust the number of elements")
         self.assertTrue(binary.contains(54), "Add method doesn't add the elements properly")
         self.assertFalse(binary.contains(0), "Add method adds elements that are not supposed to be there.")
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.add("string")
         binary.add(23)
         self.assertEqual(binary.get_number_of_elements(), 4, "Add method adds elements which already exist.")
 
     def test_delete(self):
+        binary = BinarySearchTree()
+        with self.assertRaises(EmptyBinarySearchTreeError):
+            binary.delete(1)
+
         binary = BinarySearchTree(50)
         binary.delete(50)
         self.assertEqual(binary.get_number_of_elements(), 0, "Delete method cannot delete the root.")
@@ -84,7 +89,7 @@ class BinarySearchTreeTest(unittest.TestCase):
         self.assertEqual(binary.get_number_of_elements(), 3, "Delete method cannot delete properly.")
         binary.add(12)
         binary.add(9)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.delete("9")
         binary.add(34)
         binary.delete(1)
@@ -95,7 +100,7 @@ class BinarySearchTreeTest(unittest.TestCase):
         binary.delete(-4)
         self.assertEqual(binary.get_number_of_elements(), 6, "Delete method cannot delete a node with one child.")
         self.assertFalse(binary.contains(-4), "Delete method cannot a node with one child.")
-        with self.assertRaises(KeyError):
+        with self.assertRaises(BinarySearchTreeElementError):
             binary.delete(11232)
 
     def test_iterator(self):
@@ -116,16 +121,16 @@ class BinarySearchTreeTest(unittest.TestCase):
         self.assertEqual(count, 0, "Iterator doesn't work with empty tree")
 
     def test_type(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             BinarySearchTree(elements_type=None)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             BinarySearchTree(elements_type=2)
 
         binary = BinarySearchTree(elements_type=str)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.add(4)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             BinarySearchTree(root="hey", elements_type=int)
 
         binary = BinarySearchTree(root="hey", elements_type=str)
@@ -133,7 +138,7 @@ class BinarySearchTreeTest(unittest.TestCase):
         counter = 0
         for word in words:
             binary.add(word)
-            with self.assertRaises(TypeError):
+            with self.assertRaises(BinarySearchTreeTypeError):
                 binary.add(counter)
             counter += 1
             self.assertEqual(len(binary), counter, "Len method of the binary tree doesn't work")
@@ -148,15 +153,15 @@ class BinarySearchTreeTest(unittest.TestCase):
             self.assertEqual(word, words[index], "Iterator doesn't work with strings")
             index += 1
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.delete(index)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(BinarySearchTreeTypeError):
             binary.delete([])
 
         binary.delete("abc")
         self.assertEqual(binary.get_minimum(), "anotherword", "Binary tree delete method doesn't work properly")
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(BinarySearchTreeElementError):
             binary.delete("gfgfg")
 
         self.assertTrue(binary.get_root() == "hey", "Binary tree get_root method doesn't work properly")
@@ -173,6 +178,9 @@ class BinarySearchTreeTest(unittest.TestCase):
         binary = BinarySearchTree(elements_type=int)
         self.assertEqual(binary.get_minimum(), None, "Incorrect implementation of get_min")
 
+        binary = BinarySearchTree(root=5)
+        self.assertEqual(binary.get_minimum(), 5, "Incorrect implementation of get_min")
+
         binary = BinarySearchTree(root=10)
         binary.add(11)
         binary.add(5)
@@ -180,14 +188,17 @@ class BinarySearchTreeTest(unittest.TestCase):
         self.assertEqual(binary.get_minimum(), 5, "Incorrect implementation of get_min")
 
         binary = BinarySearchTree(root=2.5, elements_type=float)
-        l = [2.4, 5.7, 3.3, 7.8, 8.99]
-        for i in l:
+        l_test = [2.4, 5.7, 3.3, 7.8, 8.99]
+        for i in l_test:
             binary.add(i)
-        self.assertEqual(binary.get_minimum(), min(l))
+        self.assertEqual(binary.get_minimum(), min(l_test))
 
     def test_get_max(self):
         binary = BinarySearchTree(elements_type=int)
         self.assertEqual(binary.get_maximum(), None, "Incorrect implementation of get_max")
+
+        binary = BinarySearchTree(root=5)
+        self.assertEqual(binary.get_maximum(), 5, "Incorrect implementation of get_max")
 
         binary = BinarySearchTree(root=10)
         binary.add(11)
@@ -196,10 +207,10 @@ class BinarySearchTreeTest(unittest.TestCase):
         self.assertEqual(binary.get_maximum(), 223, "Incorrect implementation of get_max")
 
         binary = BinarySearchTree(root=2.5, elements_type=float)
-        l = [2.4, 5.7, 3.3, 7.8, 8.99]
-        for i in l:
+        l_test = [2.4, 5.7, 3.3, 7.8, 8.99]
+        for i in l_test:
             binary.add(i)
-        self.assertEqual(binary.get_maximum(), max(l))
+        self.assertEqual(binary.get_maximum(), max(l_test))
 
     def test_str(self):
         binary = BinarySearchTree()
@@ -210,6 +221,7 @@ class BinarySearchTreeTest(unittest.TestCase):
 
         binary = BinarySearchTree("root", elements_type=str)
         self.assertEqual(str(binary), "Binary search tree with root: root")
+
 
 if __name__ == '__main__':
     unittest.main()
