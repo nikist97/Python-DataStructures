@@ -383,20 +383,20 @@ priority_queue.is_reversed() # returns True if the queue dequeues the element wi
 # returns False if the queue dequeues the element with the highest priority
 
 priority = 10
-priority_queue.contains(priority) # returns True if the queue has an element, linked to the given priority and False otherwise
-# contains raises a TypeError if type of priority is not int
-boolean = priority in priority_queue # same as priority_queue.contains(priority)
+priority_queue.contains_priority(priority) # returns True if the queue has an element, linked to the given priority and False otherwise
+# contains raises a PriorityQueueTypeError if type of priority is not int
 
 element = "test_element"
 priority_queue.contains_element(element) # returns True if an element is contained in the queue
-# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
+# raises PriorityQueueTypeError if priority_queue.type() is not None and is different than the type of the given element
+boolean = element in priority_queue # same as priority_queue.contains_element(priority)
 
 item = "test_item"
 priority_queue.enqueue(item, priority) # enqueues the given item and links it the given priority
-# raises TypeError if type(priority) is not int
-# raises TypeError if priority_queue.type() is not None and is different than the type of the given item
-# keep in mind that if there is another element linked to the same priority, the other element will be replaced
-#  by the new element
+# raises PriorityQueueTypeError if type(priority) is not int
+# raises PriorityQueueTypeError if priority_queue.type() is not None and is different than the type of the given item
+# keep in mind that if there is another element linked to the same priority, the old element will be replaced
+# by the new element
 priority_queue.enqueue("first_item", 5)
 priority_queue.enqueue("second_item", 5)
 # doing this will link priority 5 to str object "second_item" while str object "first_item" will be ignored and 
@@ -411,11 +411,11 @@ priority_queue.peek() # returns element with minimum or maximum priority in the 
 # returns None if the queue is empty
 
 priority_queue.dequeue() # same as priority_queue.peek(), but removes the returned element from the queue
-# raises a ValueError if the queue is empty 
+# raises a EmptyPriorityQueueError if the queue is empty 
 
 priority_queue.get(priority) # returns the element linked to the given priority
 # returns None if no element is linked to this priority
-# raises a TypeError if type(priority) is not int
+# raises a PriorityQueueTypeError if type(priority) is not int
 
 # the implementation includes an iterator too
 for item in priority_queue:
@@ -426,9 +426,9 @@ priority_queue.is_empty() # will return True
 
 priority_queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
 # returns a boolean representing whether the element's priority has been replaced
-# raises TypeError if type(priority) is not int
-# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
-# raises KeyError if the element is not contained in the queue
+# raises PriorityQueueTypeError if type(priority) is not int
+# raises PriorityQueueTypeError if priority_queue.type() is not None and is different than the type of the given element
+# raises PriorityQueueElementError if the element is not contained in the queue
 # if there is another element already assigned to the new priority, the old element will be replaced with the element 
 # given as argument, thus the old element will be ignored and removed
 
@@ -444,8 +444,8 @@ priority_queue.replace_priority(element, priority, comparison=comparison_type)
 # raises ValueError if comparison is not -1, 1 or None
 
 priority_queue.remove_element(element) # finds and removes the element from the queue
-# raises TypeError if priority_queue.type() is not None and is different than the type of the given element
-# raises KeyError if the queue doesn't contain the element
+# raises PriorityQueueTypeError if priority_queue.type() is not None and is different than the type of the given element
+# raises PriorityQueueElementError if the queue doesn't contain the element
 ```
 
 <br> <br>
@@ -484,20 +484,20 @@ queue.is_reversed() # returns True if the queue dequeues the element with the lo
 # returns False if the queue dequeues the element with the highest priority
 
 priority = 10
-queue.contains(priority) # returns True if the queue has an element or elements, linked to the given priority and False otherwise
-# contains raises a TypeError if type of priority is not int
-boolean = priority in queue # same as queue.contains(priority)
+queue.contains_priority(priority) # returns True if the queue has an element or elements, linked to the given priority and False otherwise
+# contains raises a PriorityQueueTypeError if type of priority is not int
 
 element = "test_element"
 queue.contains_element(element) # returns True if an element is contained in the queue
-# raises TypeError if queue.type() is not None and is different than the type of the given element
+# raises PriorityQueueTypeError if queue.type() is not None and is different than the type of the given element
+boolean = element in queue # same as queue.contains_element(priority)
 
 item = "test_item"
 queue.enqueue(item, priority) # enqueues the given item and links it the given priority
-# raises TypeError if type(priority) is not int
-# raises TypeError if priority_queue.type() is not None and is different than the type of the given item
+# raises PriorityQueueTypeError if type(priority) is not int
+# raises PriorityQueueTypeError if priority_queue.type() is not None and is different than the type of the given item
 # in this implementation of a priority queue, if there is already an item with the given priority in the queue, then both 
-# items will be retained and when dequeuing they will be dequeued in the order they were enqueued
+# items will be retained and when dequeueing they will be dequeued in the order they were enqueued
 queue.enqueue("first_item", 5)
 queue.enqueue("second_item", 5)
 queue.dequeue() # dequeues "first_item"
@@ -513,13 +513,13 @@ queue.peek() # returns element with minimum or maximum priority in the queue, bu
 # if there are more than one elements with the same priority, peek() will return the first element that was enqueued
 
 queue.dequeue() # same as priority_queue.peek(), but removes the returned element from the queue
-# raises a ValueError if the queue is empty 
+# raises a EmptyPriorityQueueError if the queue is empty 
 # if there are more than one elements with the same priority, dequeue() will return and remove them in the order they were
 # enqueued
 
 queue.get(priority) # returns the element linked to the given priority
 # returns None if no element is linked to this priority
-# raises a TypeError if type(priority) is not int
+# raises a PriorityQueueTypeError if type(priority) is not int
 # if there are more than one elements with the same priority, get() will return the first element that was enqueued
 
 # the implementation includes an iterator too
@@ -530,9 +530,9 @@ for item in queue:
 queue.is_empty() # will return True
 
 queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
-# raises TypeError if type(priority) is not int
-# raises TypeError if queue.type() is not None and is different than the type of the given element
-# raises KeyError if the element is not contained in the queue
+# raises PriorityQueueTypeError if type(priority) is not int
+# raises PriorityQueueTypeError if queue.type() is not None and is different than the type of the given element
+# raises PriorityQueueElementError if the element is not contained in the queue
 # in this implementation duplicated priorities are allowed, hence no elements will be ignored even if there is already
 # an element assigned to the new priority
 
@@ -547,8 +547,8 @@ queue.replace_priority(element, priority, comparison=comparison_type)
 # raises ValueError if comparison is not -1, 1 or None
 
 queue.remove_element(element) # finds and removes the element from the queue
-# raises TypeError if queue.type() is not None and is different than the type of the given element
-# raises KeyError if the queue doesn't contain the element
+# raises PriorityQueueTypeError if queue.type() is not None and is different than the type of the given element
+# raises PriorityQueueElementError if the queue doesn't contain the element
 ```
 
 <br> <br>

@@ -1042,6 +1042,14 @@ class Graph(object):
         return "Graph: directed - " + str(self.__directed) + ", oriented - " + str(self.__oriented) + \
                ", weighted - " + str(self.__weighted)
 
+    def __repr__(self):
+        """
+        the repr representation of the graph
+        :return: a formatted string with basic information about the graph
+        """
+
+        repr(self.__directed) + ", " + repr(self.__oriented) + ", " + repr(self.__weighted)
+
     def __iter__(self):
         """
         overriding this method allows the use of an iterator

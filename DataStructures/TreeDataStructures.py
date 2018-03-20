@@ -47,10 +47,10 @@ class BinarySearchTree(object):
         :return: a string, which contains information about the tree, such as the root value
         """
 
-        if self.__root is not None:
-            return "Binary search tree with root: {0}".format(self.__root.get_value())
-        else:
-            return "Binary search tree with root: None"
+        return "Binary search tree with root: {0}".format(self.__root)
+
+    def __repr__(self):
+        repr(self.__root)
 
     def __contains__(self, item):
         """
@@ -292,6 +292,12 @@ class Node(object):
         self.__left = None
         self.__right = None
         self.__parent = None
+
+    def __str__(self):
+        return str(self.__value)
+
+    def __repr__(self):
+        return repr(self.__value)
 
     def get_value(self):
         """
@@ -560,6 +566,15 @@ class BinaryHeap(ABC):
         """
 
         return str(self.__elements)
+
+    def __repr__(self):
+        """
+        this is the repr representation of the heap
+
+        :return: the repr representation of the list of elements in the heap
+        """
+
+        return repr(self.__elements)
 
     def __contains__(self, item):
         """

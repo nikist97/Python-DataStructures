@@ -202,7 +202,7 @@ class DuplicatePriorityQueueTest(unittest.TestCase):
     def test_iterator(self):
         priority_queue = DuplicatePriorityQueue()
         with self.assertRaises(StopIteration):
-            iter(priority_queue).__next__()
+            next(iter(priority_queue))
 
         for p in range(0, 41, 2):
             priority_queue.enqueue(p * 2, p)
