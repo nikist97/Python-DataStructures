@@ -594,7 +594,7 @@ graph = Graph(elements_type=int, directed=True, oriented=False, weighted=True)
 # only integers can be added to the initialized graph; the graph is directed, but not oriented; the graph is also weighted
  
 graph = Graph(elements_type=str, directed=False, oriented=True, weighted=True)
-# this raises a ValueError since a graph cannot be oriented and not directed at the same time
+# this raises an InvalidGraphError since a graph cannot be oriented and not directed at the same time
 
 graph = Graph(float, True, True, True)
 # only floats can be added to the initialized graph; the graph is directed, oriented and weighted

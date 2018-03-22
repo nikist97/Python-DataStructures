@@ -1001,7 +1001,7 @@ class Graph(object):
         :param initial_edges_size: initial size of the matrix storing the edges of the graph (5 by default)
         :raises GraphTypeError: if elements_type is not a valid type
         :raises GraphTypeError: if type of directed, oriented or weighted is not boolean
-        :raises ValueError: if the graph is set to be oriented but not directed
+        :raises InvalidGraphError: if the graph is set to be oriented but not directed
         """
 
         if elements_type is not None and type(elements_type) != type:
@@ -1011,7 +1011,7 @@ class Graph(object):
             raise GraphTypeError("Type of the directed, oriented, and weighted arguments must be boolean")
 
         if oriented and not directed:
-            raise ValueError("A graph cannot be oriented and not directed at the same time")  # TODO edit value error
+            raise InvalidGraphError("A graph cannot be oriented and not directed at the same time")
 
         if type(initial_edges_size) != int:
             raise GraphTypeError("Initial size of the graph edges matrix must be an integer")
@@ -1020,7 +1020,7 @@ class Graph(object):
         self.__directed = directed
         self.__oriented = oriented
         self.__weighted = weighted
-        self.__nodes = []  # improve performance by converting this to a dictionary mapping elements to their indices
+        self.__nodes = {}
         self.__edges = []
 
         # initialize the edges with a number of None elements
@@ -1163,13 +1163,13 @@ class Graph(object):
             raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
 
         try:
-            first_index = self.__nodes.index(first_item)
-        except ValueError:
+            first_index = self.__nodes[first_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the element {0}".format(first_item))
 
         try:
-            second_index = self.__nodes.index(second_item)
-        except ValueError:
+            second_index = self.__nodes[second_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the element {0}".format(second_item))
 
         return self.__edges[first_index][second_index] is not None
@@ -1197,13 +1197,13 @@ class Graph(object):
             raise GraphEdgeError("The graph is not weighted. Use the contains_edge method.")
 
         try:
-            index_1 = self.__nodes.index(first_item)
-        except ValueError:
+            index_1 = self.__nodes[first_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the element {0}".format(first_item))
 
         try:
-            index_2 = self.__nodes.index(second_item)
-        except ValueError:
+            index_2 = self.__nodes[second_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the element {0}".format(second_item))
 
         if self.__edges[index_1][index_2] is None:
@@ -1219,7 +1219,7 @@ class Graph(object):
             is not manually altered by the user
         """
 
-        return deepcopy(self.__nodes)
+        return deepcopy(list(self.__nodes.keys()))
 
     def edges(self):
         """
@@ -1245,15 +1245,12 @@ class Graph(object):
             raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
 
         try:
-            init_index = self.__nodes.index(item)
-        except ValueError:
+            init_index = self.__nodes[item]
+        except KeyError:
             raise GraphElementError("Element {0} is not found in the graph.".format(item))
 
-        connected_nodes = []
-        for index in range(len(self.__edges[init_index])):
-            if self.__edges[init_index][index] is not None:
-                connected_nodes.append(self.__nodes[index])
-
+        reversed_indices = dict(zip(self.__nodes.values(), self.__nodes.keys()))
+        connected_nodes = [reversed_indices[index] for index in range(len(self.__edges[init_index])) if self.__edges[init_index][index] is not None]
         return connected_nodes
 
     def add_node(self, item):
@@ -1272,7 +1269,7 @@ class Graph(object):
             raise GraphElementError("You cannot add None nodes to the graph")
 
         if item not in self.__nodes:
-            self.__nodes.append(item)
+            self.__nodes[item] = len(self.nodes())
 
             # double the size of the graph edges matrix if resizing needed
             if len(self.__nodes) > len(self.__edges):
@@ -1301,8 +1298,11 @@ class Graph(object):
             raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
 
         if item in self.__nodes:
-            index = self.__nodes.index(item)
-            self.__nodes.remove(item)
+            index = self.__nodes[item]
+            self.__nodes.pop(item)
+            for item in self.__nodes:
+                if self.__nodes[item] > index:
+                    self.__nodes[item] = self.__nodes[item] - 1
 
             self.__edges[index] = []
             for i in range(len(self.__edges)):
@@ -1313,6 +1313,34 @@ class Graph(object):
                     node_edges[index] = None
         else:
             raise GraphElementError("The graph doesn't contain the node you are trying to delete")
+
+    def replace_node(self, old_node, new_node):
+        """
+        replaces an old node with a new node by not removing the old node's edges, and then linking them to the new node
+
+        :param old_node: the old node
+        :param new_node: the new node
+        :raises GraphTypeError: if the type of the nodes is not the same as the other nodes in the graph
+        :raises GraphElementError: if the graph doesn't contain the old node
+        :raises GraphElementError: if the graph already contains the new node
+        """
+
+        if self.__elements_type is not None and type(old_node) != self.__elements_type:
+            raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
+
+        if self.__elements_type is not None and type(new_node) != self.__elements_type:
+            raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
+
+        try:
+            old_node_index = self.__nodes[old_node]
+        except KeyError:
+            raise GraphElementError("You cannot replace a node, which the graph doesn't contain.")
+
+        if new_node in self.__nodes:
+            raise GraphElementError("The new node is a node, which the graph already contains.")
+
+        self.__nodes.pop(old_node)
+        self.__nodes[new_node] = old_node_index
 
     def add_edge(self, first_item, second_item, edge_weight=None):
         """
@@ -1338,13 +1366,13 @@ class Graph(object):
             raise GraphTypeError("The edge weight must be of type integer or float")
 
         try:
-            first_index = self.__nodes.index(first_item)
-        except ValueError:
+            first_index = self.__nodes[first_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the node from which you are trying to add an edge")
 
         try:
-            second_index = self.__nodes.index(second_item)
-        except ValueError:
+            second_index = self.__nodes[second_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the node to which you are trying to add an edge")
 
         weight = None
@@ -1394,13 +1422,13 @@ class Graph(object):
             raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
 
         try:
-            first_index = self.__nodes.index(first_item)
-        except ValueError:
+            first_index = self.__nodes[first_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the source node of the edge you are trying to remove")
 
         try:
-            second_index = self.__nodes.index(second_item)
-        except ValueError:
+            second_index = self.__nodes[second_item]
+        except KeyError:
             raise GraphElementError("The graph doesn't contain the target node of the edge you are trying to remove")
 
         if self.__edges[first_index][second_index] is None:
@@ -1411,30 +1439,3 @@ class Graph(object):
         else:
             self.__edges[first_index][second_index] = None
             self.__edges[second_index][first_index] = None
-
-    def replace_node(self, old_node, new_node):
-        """
-        replaces an old node with a new node by not removing the old node's edges, and then linking them to the new node
-
-        :param old_node: the old node
-        :param new_node: the new node
-        :raises GraphTypeError: if the type of the nodes is not the same as the other nodes in the graph
-        :raises GraphElementError: if the graph doesn't contain the old node
-        :raises GraphElementError: if the graph already contains the new node
-        """
-
-        if self.__elements_type is not None and type(old_node) != self.__elements_type:
-            raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
-
-        if self.__elements_type is not None and type(new_node) != self.__elements_type:
-            raise GraphTypeError("The graph contains only elements of type {0}".format(self.__elements_type))
-
-        try:
-            old_node_index = self.__nodes.index(old_node)
-        except ValueError:
-            raise GraphElementError("You cannot replace a node, which the graph doesn't contain.")
-
-        if new_node in self.__nodes:
-            raise GraphElementError("The new node is a node, which the graph already contains.")
-
-        self.__nodes[old_node_index] = new_node

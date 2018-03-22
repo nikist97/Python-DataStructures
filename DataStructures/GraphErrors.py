@@ -1,7 +1,6 @@
-class EmptyGraphError(ValueError):
+class InvalidGraphError(ValueError):
     """
-    A custom type of error, when an operation is performed, which requires a non-empty graph, but an empty one is
-    calling the function.
+    A custom type of error, when an invalid graph is being created, e.g. oriented but not directed
     """
 
     def __init__(self, msg):

@@ -79,10 +79,10 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(str(graph), "Graph: directed - False, oriented - False, weighted - True",
                          "Wrong string implementation")
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(InvalidGraphError):
             Graph(int, False, True, True)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(InvalidGraphError):
             Graph(str, False, True, False)
 
     def test_type(self):
