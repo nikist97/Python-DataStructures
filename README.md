@@ -588,7 +588,7 @@ _API_ :
 from DataStructures.AbstractDataStructures import Graph # import the graph data structure
 
 graph = Graph() # initialize a graph with None elements type, hence all types of elements can be added to the graph
-# the initialized graph is also nor directed, neither oriented, neither weighted
+# the initialized graph is also neither directed, nor oriented, nor weighted
 
 graph = Graph(elements_type=int, directed=True, oriented=False, weighted=True)
 # only integers can be added to the initialized graph; the graph is directed, but not oriented; the graph is also weighted
@@ -616,42 +616,42 @@ graph.is_weighted() # returns True if the graph is weighted and False otherwise
 
 item = "test_element"
 graph.contains(item) # returns True if item is in the set of nodes of the graph and False otherwise
-# raises a TypeError if the type of the graph is not None and is different than the type of the argument
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of the argument
 boolean = item in graph # same as graph.contains(item)
 
 first_item = "first_test_item"
 second_item = "second_test_item"
 graph.contains_edge(first_item, second_item) # returns True if an edge from first_item to second_item exists
-# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
-# raises a KeyError if first_item or second_item is not a node that the graph contains
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a GraphElementError if first_item or second_item is not a node that the graph contains
 # if the graph is not directed the result will be the same even if you reverse the order of the arguments
 
 graph.get_edge_weight(first_item, second_item)
-# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
-# raises a KeyError if first_item or second_item is not a node that the graph contains
-# raises a ValueError if the graph is not weighted
-# raises a ValueError if an edge between first_item and second_item doesn't exist
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a GraphElementError if first_item or second_item is not a node that the graph contains
+# raises a GraphEdgeError if the graph is not weighted
+# raises a GraphEdgeError if an edge between first_item and second_item doesn't exist
 # if the graph is not directed the result will be the same even if you reverse the order of the arguments
 
 graph.nodes() # returns a deep copy of the list of nodes of the graph
 # a deep copy is returned to avoid manual changes of the graph by changing the elements in the returned list
  
 graph.add_node(item) # adds item to the nodes of the graph if it is not already added
-# raises a TypeError if the type of the graph is not None and is different than the type of the argument
-# raises an AttributeError if item is None
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of the argument
+# raises an GraphElementError if item is None
 # if item is already added as a node to the graph, the function does nothing
 
 graph.remove_node(item) 
-# raises a TypeError if the type of the graph is not None and is different than the type of the argument
-# raises a KeyError if item is not a node in the graph
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of the argument
+# raises a GraphElementError if item is not a node in the graph
 # remove a node in the graph also removes all edges related to this node (going to and from this node)
 
 old_node = "test_old_node"
 new_node = "test_new_node"
 graph.replace_node(old_node, new_node) # replaces old_node with new_node in the graph list of nodes if possible
-# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
-# raises a KeyError if old_node is not a node the graph contains
-# raises a KeyError if new_node is a node the graph contains, since duplicate nodes are not allowed
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a GraphElementError if old_node is not a node the graph contains
+# raises a GraphElementError if new_node is a node the graph contains, since duplicate nodes are not allowed
 
 # the replacing of a node in the graph doesn't affect the edges in the graph, e.g.
 connected_nodes = graph.edges_of(old_node)
@@ -668,23 +668,23 @@ graph.edges() # returns a deep copy of the square matrix (2D list) representing 
 
 graph.edges_of(item) # returns a list of all nodes to which there is an edge from the argument
 # returns an empty list if there are no such nodes
-# raises a TypeError if the type of the graph is not None and is different than the type of the argument
-# raises a KeyError if the item if not a node in the graph
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of the argument
+# raises a GraphElementError if the item if not a node in the graph
 
 edge_weight = "test_edge_weight"
 graph.add_edge(first_item, second_item, edge_weight) # adds an edge from first_item to second_item with the given edge_weight if appropriate
 # edge_weight should only be specified if the graph is weighted, otherwise, just skip this argument (set to None by default)
-# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
-# raises a TypeError if edge_weight is specified and is not of type float or int
-# raises a KeyError if first_item or second_item is not a node that the graph contains
-# raises a ValueError if the graph is weighted and edge_weight is not specified or it is None
-# raises a KeyError if the graph is oriented and an edgre from second_item to first_item already exists
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a GraphTypeError if edge_weight is specified and is not of type float or int
+# raises a GraphElementError if first_item or second_item is not a node that the graph contains
+# raises a GraphEdgeError if the graph is weighted and edge_weight is not specified or it is None
+# raises a GraphEdgeError if the graph is oriented and an edge from second_item to first_item already exists
 
 graph.remove_edge(first_item, second_item) # removes the edge from first_item to second_item
 # if the graph is not directed, this function removes the edge from second_item to first_item too
-# raises a TypeError if the type of the graph is not None and is different than the type of any of the arguments
-# raises a KeyError if first_item or second_item is not a node that the graph contains
-# raises a KeyError if there is no edge from first_item to second_item
+# raises a GraphTypeError if the type of the graph is not None and is different than the type of any of the arguments
+# raises a GraphElementError if first_item or second_item is not a node that the graph contains
+# raises a GraphEdgeError if there is no edge from first_item to second_item
 
 # the implementation includes an iterator too
 for node in graph:

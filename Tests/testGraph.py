@@ -18,6 +18,7 @@ limitations under the License.
 import unittest
 
 from DataStructures.AbstractDataStructures import Graph
+from DataStructures.GraphErrors import *
 
 
 class GraphTest(unittest.TestCase):
@@ -100,11 +101,11 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(graph.type(), str, "Wrong type at initialization")
 
         graph.add_node("string")
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_node(3)
         graph.add_node("another string")
         graph.add_edge("string", "another string")
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_edge(2, 3)
 
     def test_contains(self):
@@ -125,9 +126,9 @@ class GraphTest(unittest.TestCase):
         self.assertFalse("str" in graph, "Wrong implementation of contains after removing a node")
 
         graph = Graph(int)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.contains("str")
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.contains(5.5)
         graph.add_node(3)
         graph.add_node(1)
@@ -141,7 +142,7 @@ class GraphTest(unittest.TestCase):
     def test_contains_edge(self):
         graph = Graph()
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.contains_edge(1, 2)
 
         graph.add_node(1)
@@ -153,7 +154,7 @@ class GraphTest(unittest.TestCase):
         graph.add_edge(True, 1)
         graph.add_edge(1, 1)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.contains_edge(0, 5)
 
         self.assertTrue(graph.contains_edge(1, 1), "Wrong implementation of contains_edge")
@@ -163,7 +164,7 @@ class GraphTest(unittest.TestCase):
         graph.remove_edge(1, True)
         self.assertFalse(graph.contains_edge(True, 1), "Wrong implementation of contains_edge")
         graph.remove_node(1)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             self.assertFalse(graph.contains_edge(1, 1))
 
         graph = Graph(str, True)
@@ -174,10 +175,10 @@ class GraphTest(unittest.TestCase):
         self.assertTrue(graph.contains_edge("string", "sentence"), "Wrong implementation of contains_edge")
         self.assertFalse(graph.contains_edge("sentence", "string"), "Wrong implementation of contains_edge")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.contains_edge(2, 3)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.contains_edge("a", "b")
 
         graph.remove_edge("string", "sentence")
@@ -186,13 +187,13 @@ class GraphTest(unittest.TestCase):
     def test_edges_of(self):
         graph = Graph(int)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.edges_of(5)
 
         for i in range(10):
             graph.add_node(i)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.edges_of(str(5))
 
         graph.add_edge(1, 3)
@@ -212,7 +213,7 @@ class GraphTest(unittest.TestCase):
         for node in nodes:
             graph.add_node(node)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.edges_of(10)
 
         graph.add_edge(True, "float")
@@ -223,10 +224,10 @@ class GraphTest(unittest.TestCase):
 
         graph = Graph(str)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.edges_of(10)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.edges_of("")
 
         graph.add_node("word")
@@ -242,10 +243,10 @@ class GraphTest(unittest.TestCase):
         for node in nodes:
             graph.add_node(node)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GraphEdgeError):
             graph.add_edge(1, 2)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_edge(1, 2, "str")
 
         graph.add_edge(1, 2, 10.0)
@@ -261,7 +262,7 @@ class GraphTest(unittest.TestCase):
         graph.add_edge(4, 3, 7.5)
         graph.add_edge(1, 4, 5)
         self.assertEqual(graph.get_edge_weight(1, 4), 5, "Wrong get_edge_weight implementation")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GraphEdgeError):
             graph.get_edge_weight(2, 1)
         self.assertEqual(graph.get_edge_weight(3, 4), 7, "Wrong get_edge_weight implementation")
         self.assertEqual(graph.get_edge_weight(4, 3), 7.5, "Wrong get_edge_weight implementation")
@@ -272,7 +273,7 @@ class GraphTest(unittest.TestCase):
         graph.add_edge(1.1, 1.2, 2.3)
         graph.add_edge(1.2, 1.4, 2.6)
         self.assertEqual(graph.get_edge_weight(1.2, 1.4), 2.6, "Wrong get_edge_weight implementation")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GraphEdgeError):
             graph.get_edge_weight(1.4, 1.2)
 
     def test_add_edge(self):
@@ -280,10 +281,10 @@ class GraphTest(unittest.TestCase):
         for node in [1, 1.1, "1", True]:
             graph.add_node(node)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.add_edge(11, True)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.add_edge(True, False)
 
         graph.add_edge(1, "1")
@@ -295,22 +296,22 @@ class GraphTest(unittest.TestCase):
 
         graph = Graph(int, True, True, True)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_edge("string", 0)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_edge(0, "string")
 
         for i in range(10):
             graph.add_node(i)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.add_edge(11, 0)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GraphEdgeError):
             graph.add_edge(5, 6)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_edge(5, 6, "weight")
 
         graph.add_edge(5, 6, 25.5)
@@ -320,17 +321,17 @@ class GraphTest(unittest.TestCase):
 
         graph.add_edge(5, 9, -10)
         self.assertEqual(graph.get_edge_weight(5, 9), -10, "Wrong add_edge implementation")
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GraphEdgeError):
             graph.get_edge_weight(9, 5)
         self.assertEqual(graph.edges_of(5), [6, 9], "Wrong add_edge implementation")
         self.assertEqual(graph.edges_of(3), [], "Wrong add_edge implementation")
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphEdgeError):
             graph.add_edge(9, 5, 10)
 
     def test_remove_edge(self):
         graph = Graph()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.remove_edge(1, 9)
 
         for node in [1, 1.1, "1", False]:
@@ -339,7 +340,7 @@ class GraphTest(unittest.TestCase):
         graph.add_edge(1, 1.1)
         graph.add_edge("1", False)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.add_edge(5, 5)
 
         self.assertTrue(graph.contains_edge(1, 1.1))
@@ -351,11 +352,11 @@ class GraphTest(unittest.TestCase):
         for node in range(0, 101, 1):
             graph.add_node(node/3)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.remove_edge(1, 2)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.remove_edge(105.2, 205.2)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphEdgeError):
             graph.remove_edge(10.0, 20.0)
 
         graph.add_edge(10.0, 20.0)
@@ -388,11 +389,11 @@ class GraphTest(unittest.TestCase):
         self.assertNotEqual(graph.edges(), edges, "Wrong edges implementation")
 
     def test_add_node(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             Graph(5)
 
         graph = Graph()
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(GraphElementError):
             graph.add_node(None)
         self.assertTrue(graph.is_empty())
         graph.add_node(1)
@@ -402,7 +403,7 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(graph.nodes(), [1, 5.5, "string"], "Wrong add_node implementation")
 
         graph = Graph(int)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.add_node(5.0)
         self.assertEqual(len(graph.edges()), 5, "Wrong number of edges at initialization")
         for i in range(100):
@@ -416,7 +417,7 @@ class GraphTest(unittest.TestCase):
 
     def test_remove_node(self):
         graph = Graph()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.remove_node(0)
 
         graph.add_node(1)
@@ -424,7 +425,7 @@ class GraphTest(unittest.TestCase):
         graph.add_node("1")
         self.assertEqual(graph.size(), 3)
         self.assertTrue(1 in graph)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.remove_node("1.1")
 
         graph.remove_node(1)
@@ -432,9 +433,9 @@ class GraphTest(unittest.TestCase):
         self.assertFalse(1 in graph, "Wrong remove_node implementation")
 
         graph = Graph(str)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.remove_node(4)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.remove_node("")
 
         for i in range(50):
@@ -500,21 +501,21 @@ class GraphTest(unittest.TestCase):
     def test_replace_node(self):
         graph = Graph(int, directed=False)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.replace_node("str", 5)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(GraphTypeError):
             graph.replace_node(5, "str")
 
         for i in range(10):
             graph.add_node(i)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.replace_node(55, 6)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.replace_node(5, 5)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.replace_node(4, 9)
 
         graph.add_edge(1, 3)
@@ -525,9 +526,9 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(graph.edges_of(1), [2, 3, 5])
         graph.replace_node(1, 11)
         self.assertEqual(graph.edges_of(11), [2, 3, 5], "Wrong replace_node implementation.")
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.edges_of(1)
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.replace_node(1, 2)
 
         graph.replace_node(9, 99)
@@ -537,10 +538,10 @@ class GraphTest(unittest.TestCase):
         for node in ["string", 5.5, 10, 10.1, "word"]:
             graph.add_node(node)
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.replace_node(5, "5")
 
-        with self.assertRaises(KeyError):
+        with self.assertRaises(GraphElementError):
             graph.replace_node(5.5, "word")
 
         graph.add_edge(5.5, 10)
