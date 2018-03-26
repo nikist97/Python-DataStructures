@@ -19,7 +19,7 @@ limitations under the License.
 import unittest
 
 from DataStructures.AbstractDataStructures import Queue
-from DataStructures.QueueErrors import *
+from DataStructures.Errors import *
 
 
 class QueueTest(unittest.TestCase):
@@ -140,7 +140,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(queue.type, None)
 
         with self.assertRaises(QueueTypeError):
-            queue = Queue(elements_type="type")
+            _ = Queue(elements_type="type")
 
         queue = Queue(elements_type=list)
         self.assertEqual(queue.type, list)
@@ -211,6 +211,7 @@ class QueueTest(unittest.TestCase):
         queue.remove(9)
         self.assertEqual(str(queue), "deque([2, 3, 4, 6, 7, 8])", "Wrong remove implementation")
         self.assertEqual(queue.dequeue(), 2, "Wrong remove implementation")
+
 
 if __name__ == '__main__':
     unittest.main()

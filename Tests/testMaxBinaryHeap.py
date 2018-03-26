@@ -19,7 +19,7 @@ limitations under the License.
 import unittest
 import random
 
-from DataStructures.BinaryHeapErrors import *
+from DataStructures.Errors import *
 from DataStructures.AbstractDataStructures import MaxBinaryHeap
 
 

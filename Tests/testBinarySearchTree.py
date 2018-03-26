@@ -19,7 +19,7 @@ limitations under the License.
 import unittest
 
 from DataStructures.TreeDataStructures import BinarySearchTree
-from DataStructures.BinarySearchTreeErrors import *
+from DataStructures.Errors import *
 
 
 class BinarySearchTreeTest(unittest.TestCase):

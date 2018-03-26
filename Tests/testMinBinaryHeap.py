@@ -20,7 +20,7 @@ import unittest
 import random
 
 from DataStructures.AbstractDataStructures import MinBinaryHeap
-from DataStructures.BinaryHeapErrors import *
+from DataStructures.Errors import *
 
 
 class MinBinaryHeapTests(unittest.TestCase):

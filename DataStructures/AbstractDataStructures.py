@@ -18,10 +18,7 @@ limitations under the License.
 from copy import deepcopy
 from collections import deque
 
-from DataStructures.StackErrors import *
-from DataStructures.QueueErrors import *
-from DataStructures.PriorityQueueErrors import *
-from DataStructures.GraphErrors import *
+from DataStructures.Errors import *
 from DataStructures.TreeDataStructures import MaxBinaryHeap, MinBinaryHeap
 
 

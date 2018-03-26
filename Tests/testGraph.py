@@ -18,7 +18,7 @@ limitations under the License.
 import unittest
 
 from DataStructures.AbstractDataStructures import Graph
-from DataStructures.GraphErrors import *
+from DataStructures.Errors import *
 
 
 class GraphTest(unittest.TestCase):
@@ -559,4 +559,8 @@ class GraphTest(unittest.TestCase):
             self.assertFalse(test_node in graph, "Wrong replce_node implementation")
 
         self.assertEqual(graph.edges_of("5.5"), ["10", "10.1", "word"], "Wrong replace_node implementation")
-        self.assertEqual(graph.edges_of("10"), ["5.5",], "Wrong replace_node implementation")
+        self.assertEqual(graph.edges_of("10"), ["5.5", ], "Wrong replace_node implementation")
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -19,7 +19,7 @@ limitations under the License.
 import unittest
 
 from DataStructures.AbstractDataStructures import Stack
-from DataStructures.StackErrors import *
+from DataStructures.Errors import *
 
 
 class StackTest(unittest.TestCase):
@@ -181,7 +181,7 @@ class StackTest(unittest.TestCase):
         self.assertTrue(stack.contains(1.55), "Stack contains method doesn't work")
 
         with self.assertRaises(StackTypeError):
-            boolean = 4 in stack
+            _ = 4 in stack
 
         with self.assertRaises(StackTypeError):
             stack.contains("word")
@@ -212,6 +212,7 @@ class StackTest(unittest.TestCase):
         stack.remove(9)
         self.assertEqual(str(stack), "deque([2, 3, 4, 6, 7, 8])", "Wrong remove implementation")
         self.assertEqual(stack.pop(), 8, "Wrong remove implementation")
+
 
 if __name__ == '__main__':
     unittest.main()
