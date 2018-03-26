@@ -1,5 +1,7 @@
 # Abstract Data Structures and Algorithms-Python
 
+## N.B. Substantial development is being done at the moment for a new release of the library, where most of the code base would be changed!
+
 **_The repository contains implementations for some of the most famous data structures, algorithms and applications of those algorithms_**
 
 ### Installation:
