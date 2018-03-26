@@ -27,7 +27,7 @@ def breadth_first_search(graph, func, start_node=None, *args, **kwargs):
     if not callable(func):
         raise TypeError("The second argument of this function must be a function.")
 
-    if graph.is_empty():
+    if graph.size == 0:
         raise ValueError("You cannot traverse an empty graph")
 
     try:
@@ -36,7 +36,7 @@ def breadth_first_search(graph, func, start_node=None, *args, **kwargs):
     except TypeError as err:
         raise err
 
-    queue = Queue(graph.type())
+    queue = Queue(graph.type)
 
     if start_node is None:
         for node in graph:
@@ -47,7 +47,7 @@ def breadth_first_search(graph, func, start_node=None, *args, **kwargs):
 
     explored = set()
 
-    while not queue.is_empty():
+    while not queue.size == 0:
         node = queue.dequeue()
         explored.add(node)
 
@@ -66,7 +66,7 @@ def breadth_first_search_list(graph, start_node=None):
     if type(graph) != Graph:
         raise TypeError("The first argument of this function must be of type Graph.")
 
-    if graph.is_empty():
+    if graph.size == 0:
         raise ValueError("You cannot traverse an empty graph")
 
     try:
@@ -75,7 +75,7 @@ def breadth_first_search_list(graph, start_node=None):
     except TypeError as err:
         raise err
 
-    queue = Queue(graph.type())
+    queue = Queue(graph.type)
 
     if start_node is None:
         for node in graph:
@@ -87,7 +87,7 @@ def breadth_first_search_list(graph, start_node=None):
     explored = set()
     result_nodes = []
 
-    while not queue.is_empty():
+    while not queue.size == 0:
         node = queue.dequeue()
         explored.add(node)
         result_nodes.append(node)
@@ -105,7 +105,7 @@ def breadth_first_search_generator(graph, start_node=None):
     if type(graph) != Graph:
         raise TypeError("The first argument of this function must be of type Graph.")
 
-    if graph.is_empty():
+    if graph.size == 0:
         raise ValueError("You cannot traverse an empty graph")
 
     try:
@@ -114,7 +114,7 @@ def breadth_first_search_generator(graph, start_node=None):
     except TypeError as err:
         raise err
 
-    queue = Queue(graph.type())
+    queue = Queue(graph.type)
 
     if start_node is None:
         for node in graph:
@@ -125,7 +125,7 @@ def breadth_first_search_generator(graph, start_node=None):
 
     explored = set()
 
-    while not queue.is_empty():
+    while not queue.size == 0:
         node = queue.dequeue()
         explored.add(node)
         yield node
@@ -145,7 +145,7 @@ def depth_first_search(graph, func, start_node=None, *args, **kwargs):
     if not callable(func):
         raise TypeError("The second argument of this function must be a function.")
 
-    if graph.is_empty():
+    if graph.size == 0:
         raise ValueError("You cannot traverse an empty graph")
 
     try:
@@ -154,7 +154,7 @@ def depth_first_search(graph, func, start_node=None, *args, **kwargs):
     except TypeError as err:
         raise err
 
-    stack = Stack(graph.type())
+    stack = Stack(graph.type)
 
     if start_node is None:
         for node in graph:
@@ -165,7 +165,7 @@ def depth_first_search(graph, func, start_node=None, *args, **kwargs):
 
     explored = set()
 
-    while not stack.is_empty():
+    while not stack.size == 0:
         node = stack.pop()
         explored.add(node)
 
@@ -184,7 +184,7 @@ def depth_first_search_list(graph, start_node=None):
     if type(graph) != Graph:
         raise TypeError("The first argument of this function must be of type Graph.")
 
-    if graph.is_empty():
+    if graph.size == 0:
         raise ValueError("You cannot traverse an empty graph")
 
     try:
@@ -193,7 +193,7 @@ def depth_first_search_list(graph, start_node=None):
     except TypeError as err:
         raise err
 
-    stack = Stack(graph.type())
+    stack = Stack(graph.type)
 
     if start_node is None:
         for node in graph:
@@ -205,7 +205,7 @@ def depth_first_search_list(graph, start_node=None):
     explored = set()
     result_nodes = []
 
-    while not stack.is_empty():
+    while not stack.size == 0:
         node = stack.pop()
         explored.add(node)
         result_nodes.append(node)
@@ -223,7 +223,7 @@ def depth_first_search_generator(graph, start_node=None):
     if type(graph) != Graph:
         raise TypeError("The first argument of this function must be of type Graph.")
 
-    if graph.is_empty():
+    if graph.size == 0:
         raise ValueError("You cannot traverse an empty graph")
 
     try:
@@ -232,7 +232,7 @@ def depth_first_search_generator(graph, start_node=None):
     except TypeError as err:
         raise err
 
-    stack = Stack(graph.type())
+    stack = Stack(graph.type)
 
     if start_node is None:
         for node in graph:
@@ -243,7 +243,7 @@ def depth_first_search_generator(graph, start_node=None):
 
     explored = set()
 
-    while not stack.is_empty():
+    while not stack.size == 0:
         node = stack.pop()
         explored.add(node)
         yield node

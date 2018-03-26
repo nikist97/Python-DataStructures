@@ -71,7 +71,7 @@ class BinarySearchTree(object):
         :return: calls the get_number_of_elements() method to get the number of elements in the tree
         """
 
-        return self.get_number_of_elements()
+        return self.size
 
     def __iter__(self):
         """
@@ -94,7 +94,7 @@ class BinarySearchTree(object):
         :raises StopIteration: if the iteration is over
         """
 
-        if self.__iterator_counter is None or self.__iterator_counter == self.get_number_of_elements():
+        if self.__iterator_counter is None or self.__iterator_counter == self.size:
             self.__iterator_counter = None
             raise StopIteration
 
@@ -103,29 +103,29 @@ class BinarySearchTree(object):
                 self.__current_item = self.__get_minimum_node()
             else:
                 # if the current item has a right child, go right and then go left as much as possible
-                if self.__current_item.get_right() is not None:
-                    successor = self.__current_item.get_right()
-                    while successor.get_left() is not None:
-                        successor = successor.get_left()
+                if self.__current_item.right is not None:
+                    successor = self.__current_item.right
+                    while successor.left is not None:
+                        successor = successor.left
 
                     self.__current_item = successor
 
                 # else if there is no right child, go up left as much as possible and then go right
                 else:
                     successor = self.__current_item
-                    while successor.get_parent() is not None and successor.get_parent().get_right() == successor:
-                        successor = successor.get_parent()
+                    while successor.parent is not None and successor.parent.right == successor:
+                        successor = successor.parent
 
-                    if successor.get_parent() is None:
+                    if successor.parent is None:
                         self.__iterator_counter = 0
                         raise StopIteration
                     else:
-                        successor = successor.get_parent()
+                        successor = successor.parent
 
                     self.__current_item = successor
 
             self.__iterator_counter += 1
-            return self.__current_item.get_value()
+            return self.__current_item.value
 
     def add(self, value):
         """
@@ -137,7 +137,7 @@ class BinarySearchTree(object):
 
         if type(value) == self.__elements_type:
             # if there is no root, create one
-            if self.__root is None or self.__root.get_value() is None:
+            if self.__root is None or self.__root.value is None:
                 self.__root = Node(value)
                 self.__number_of_items = 1
             else:
@@ -170,7 +170,7 @@ class BinarySearchTree(object):
         :raises BinarySearchTreeElementError: if there is no node with the given value in the tree
         """
 
-        if self.is_empty():
+        if self.size == 0:
             raise BinarySearchTreeElementError("You are trying to delete an element which doesn't exist in the tree.")
 
         if type(value) == self.__elements_type:
@@ -181,7 +181,8 @@ class BinarySearchTree(object):
         else:
             raise BinarySearchTreeTypeError("The binary tree only contains elements of type {0}".format(self.__elements_type))
 
-    def get_root(self):
+    @property
+    def root(self):
         """
         this method gets the value of the root of the tree
 
@@ -191,9 +192,10 @@ class BinarySearchTree(object):
         if self.__root is None:
             return None
         else:
-            return self.__root.get_value()
+            return self.__root.value
 
-    def get_number_of_elements(self):
+    @property
+    def size(self):
         """
         this method gets the number of elements in the tree
 
@@ -202,15 +204,7 @@ class BinarySearchTree(object):
 
         return self.__number_of_items
 
-    def is_empty(self):
-        """
-        this method checks if the tree has no elements
-
-        :return: True if the number of elements in the tree is 0 and False otherwise
-        """
-
-        return self.get_number_of_elements() == 0
-
+    @property
     def type(self):
         """
         get the type of elements in the tree
@@ -228,7 +222,7 @@ class BinarySearchTree(object):
         """
 
         min_node = self.__get_minimum_node()
-        return min_node.get_value() if min_node is not None else None
+        return min_node.value if min_node is not None else None
 
     def __get_minimum_node(self):
         """
@@ -243,8 +237,8 @@ class BinarySearchTree(object):
             return None
 
         # go left as much as possible to find the minimum element
-        while current_node.get_left() is not None:
-            current_node = current_node.get_left()
+        while current_node.left is not None:
+            current_node = current_node.left
         return current_node
 
     def get_maximum(self):
@@ -255,7 +249,7 @@ class BinarySearchTree(object):
         """
 
         max_node = self.__get_maximum_node()
-        return max_node.get_value() if max_node is not None else None
+        return max_node.value if max_node is not None else None
 
     def __get_maximum_node(self):
         """
@@ -271,8 +265,8 @@ class BinarySearchTree(object):
             return None
 
         # go right as much as possible to find the maximum element
-        while current_node.get_right() is not None:
-            current_node = current_node.get_right()
+        while current_node.right is not None:
+            current_node = current_node.right
         return current_node
 
 
@@ -288,79 +282,16 @@ class Node(object):
         :param value: the value of the node
         """
 
-        self.__value = value
-        self.__left = None
-        self.__right = None
-        self.__parent = None
+        self.value = value
+        self.left = None
+        self.right = None
+        self.parent = None
 
     def __str__(self):
-        return str(self.__value)
+        return str(self.value)
 
     def __repr__(self):
-        return repr(self.__value)
-
-    def get_value(self):
-        """
-        a getter method for the value of the node
-
-        :return: the value of the node
-        """
-
-        return self.__value
-
-    def get_left(self):
-        """
-        a getter method for the left child
-
-        :return: the left child node of this node
-        """
-
-        return self.__left
-
-    def set_left(self, node=None):
-        """
-        a setter method for the left child of this node
-
-        :param node: (optional) the new node object to set to be the left child, default value is None (no left child)
-        """
-
-        self.__left = node
-
-    def get_right(self):
-        """
-        a getter method for the right child
-
-        :return: the right child node of this node
-        """
-
-        return self.__right
-
-    def set_right(self, node=None):
-        """
-        a setter method for the right child of this node
-
-        :param node: (optional) the new node object to set to be the right child, default value is None (no right child)
-        """
-
-        self.__right = node
-
-    def get_parent(self):
-        """
-        a getter method for the parent
-
-        :return: the parent node of this node
-        """
-
-        return self.__parent
-
-    def set_parent(self, node=None):
-        """
-        a setter method for the parent of this node
-
-        :param node: (optional) the new node object to set to be the parent, default value is None (no parent)
-        """
-
-        self.__parent = node
+        return repr(self.value)
 
     def add(self, node):
         """
@@ -371,20 +302,22 @@ class Node(object):
         """
 
         # if the node's value is less than the current node's value, go to the left subtree
-        if node.get_value() < self.get_value():
-            if self.__left is None:
-                self.__add_left(node)
+        if node.value < self.value:
+            if self.left is None:
+                self.left = node
+                self.left.parent = self
                 return True
             else:
-                return self.__left.add(node)
+                return self.left.add(node)
 
         # if the node's value is greater than the current node's value, go to the right subtree
-        elif node.get_value() > self.get_value():
-            if self.__right is None:
-                self.__add_right(node)
+        elif node.value > self.value:
+            if self.right is None:
+                self.right = node
+                self.right.parent = self
                 return True
             else:
-                return self.__right.add(node)
+                return self.right.add(node)
 
         # else if the node's value is equal to the current node's value, do nothing
         else:
@@ -398,85 +331,85 @@ class Node(object):
         :return: True if the element has been deleted and False otherwise
         """
 
-        if self.get_value() == value:
+        if self.value == value:
             # if we are deleting a node with no children, just delete the node
-            if self.__left is None and self.__right is None:
-                if self.__parent is not None:
-                    if self.__parent.get_left() == self:
-                        self.__parent.set_left(None)
-                    elif self.__parent.get_right() == self:
-                        self.__parent.set_right(None)
+            if self.left is None and self.right is None:
+                if self.parent is not None:
+                    if self.parent.left == self:
+                        self.parent.left = None
+                    elif self.parent.right == self:
+                        self.parent.parent(None)
 
                 # case when we are deleting the root of the tree with no children
                 else:
-                    self.__value = None
+                    self.value = None
 
             # else if the node we are deleting has a left child, the left child takes the place of the node
             # we are deleting
-            elif self.__right is None:
-                if self.__parent is not None:
-                    if self.__parent.get_left() == self:
-                        self.__parent.set_left(self.__left)
-                    elif self.__parent.get_right() == self:
-                        self.__parent.set_right(self.__left)
-                    self.__left.set_parent(self.__parent)
+            elif self.right is None:
+                if self.parent is not None:
+                    if self.parent.left == self:
+                        self.parent.left = self.left
+                    elif self.parent.right == self:
+                        self.parent.right = self.left
+                    self.left.parent = self.parent
 
                 # case when we are deleting the root of the tree with only a left child
                 else:
-                    self.__value = self.__left.get_value()
-                    self.__right = self.__left.get_right()
-                    self.__left = self.__left.get_left()
-                    self.__parent = None
+                    self.value = self.left.value
+                    self.right = self.left.right
+                    self.left = self.left.left
+                    self.parent = None
 
             # else if the node we are deleting has a right child, the right child takes the place of the node
             # we are deleting
-            elif self.__left is None:
-                if self.__parent is not None:
-                    if self.__parent.get_left() == self:
-                        self.__parent.set_left(self.__right)
-                    elif self.__parent.get_right() == self:
-                        self.__parent.set_right(self.__right)
-                    self.__right.set_parent(self.__parent)
+            elif self.left is None:
+                if self.parent is not None:
+                    if self.parent.left == self:
+                        self.parent.left = self.right
+                    elif self.parent.right == self:
+                        self.parent.right = self.right
+                    self.right.parent = self.parent
 
                 # case when we are deleting the root of the tree with only a right child
                 else:
-                    self.__value = self.__right.get_value()
-                    self.__left = self.__right.get_left()
-                    self.__right = self.__right.get_right()
-                    self.__parent = None
+                    self.value = self.right.value
+                    self.left = self.right.left
+                    self.right = self.right.right
+                    self.parent = None
 
             # else if the node we are deleting has two children, find the successor of the node,
             # shift the values of the node and the successor, and then delete the successor node
             else:
-                if self.__right is not None:
-                    successor = self.__right
-                    while successor.get_left() is not None:
-                        successor = successor.get_left()
-                    successor_value = successor.get_value()
-                    self.delete(successor_value)
-                    self.__value = successor_value
+                if self.right is not None:
+                    successor = self.right
+                    while successor.left is not None:
+                        successor = successor.left
+                    successorvalue = successor.value
+                    self.delete(successorvalue)
+                    self.value = successorvalue
 
                 # case when we are deleting the root of the tree with two children
                 else:
                     successor = self
-                    while successor.get_parent().get_right() == self:
-                        successor = successor.get_parent()
-                    successor = successor.get_parent()
-                    successor_value = successor.get_value()
-                    self.delete(successor_value)
-                    self.__value = successor_value
+                    while successor.parent.right == self:
+                        successor = successor.parent
+                    successor = successor.parent
+                    successorvalue = successor.value
+                    self.delete(successorvalue)
+                    self.value = successorvalue
 
             return True
 
         # else if the current node's value is less than the value we want to delete and there is a right child
         # call the delete method for the right child
-        elif self.get_value() < value and self.__right is not None:
-            return self.__right.delete(value)
+        elif self.value < value and self.right is not None:
+            return self.right.delete(value)
 
         # else if the current node's value is greater than the value we want to delete and there is a left child
         # call the delete method for the left child
-        elif self.get_value() > value and self.__left is not None:
-            return self.__left.delete(value)
+        elif self.value > value and self.left is not None:
+            return self.left.delete(value)
 
         # else the element doesn't exist in the tree, hence return False
         else:
@@ -490,42 +423,22 @@ class Node(object):
         :return: True if a node with the given value is found and False otherwise
         """
 
-        if self.get_value() == value:
+        if self.value == value:
             return True
 
         # else if the current node's value is less than the argument value and there is a right child,
         # search in the right subtree
-        elif self.get_value() is not None and self.get_value() < value and self.__right is not None:
-            return self.__right.contains(value)
+        elif self.value is not None and self.value < value and self.right is not None:
+            return self.right.contains(value)
 
         # else if the current node's value is greater than the argument value and there is a left child,
         # search in the left subtree
-        elif self.get_value() is not None and self.get_value() > value and self.__left is not None:
-            return self.__left.contains(value)
+        elif self.value is not None and self.value > value and self.left is not None:
+            return self.left.contains(value)
 
         # else the element could not be found, hence return false
         else:
             return False
-
-    def __add_left(self, node):
-        """
-        'private' method, used to add a node object as left child, intended to be used only in the scope of this class
-
-        :param node: the node object to add
-        """
-
-        self.__left = node
-        self.__left.set_parent(self)
-
-    def __add_right(self, node):
-        """
-        'private' method, used to add a node object as right child, intended to be used only in the scope of this class
-
-        :param node: the node object to add
-        """
-
-        self.__right = node
-        self.__right.set_parent(self)
 
 
 class BinaryHeap(ABC):
@@ -553,10 +466,10 @@ class BinaryHeap(ABC):
         """
         overriding this method allows the use of the 'len(heap)' syntax
 
-        :return: calls the size() method to get the number of elements in the heap
+        :return: calls the size method to get the number of elements in the heap
         """
 
-        return self.size()
+        return self.size
 
     def __str__(self):
         """
@@ -586,6 +499,26 @@ class BinaryHeap(ABC):
 
         return self.contains(item)
 
+    @property
+    def size(self):
+        """
+        this method gets the size of the heap
+
+        :return: the number of elements in the heap
+        """
+
+        return len(self.__elements)
+
+    @property
+    def type(self):
+        """
+        this method gets the type of elements allowed to be added in the heap
+
+        :return: the type of elements in the heap
+        """
+
+        return self.__elements_type
+
     @abstractmethod
     def __iter__(self):
         """
@@ -601,33 +534,6 @@ class BinaryHeap(ABC):
         """
 
         pass
-
-    def is_empty(self):
-        """
-        this method checks if the size of the heap is 0
-
-        :return: True if there are no elements in the heap and False otherwise
-        """
-
-        return self.size() == 0
-
-    def size(self):
-        """
-        this method gets the size of the heap
-
-        :return: the number of elements in the heap
-        """
-
-        return len(self.__elements)
-
-    def type(self):
-        """
-        this method gets the type of elements allowed to be added in the heap
-
-        :return: the type of elements in the heap
-        """
-
-        return self.__elements_type
 
     def contains(self, item):
         """
@@ -742,7 +648,7 @@ class MinBinaryHeap(BinaryHeap):
         :raises StopIteration: if the heap is empty
         """
 
-        if not self.is_empty():
+        if not self.size == 0:
             return self.remove_min()
         else:
             raise StopIteration
@@ -754,11 +660,11 @@ class MinBinaryHeap(BinaryHeap):
         """
 
         if initial_index == -1:
-            initial_index = self.size() - 1
+            initial_index = self.size - 1
 
         child = initial_index
 
-        if child < self.size():
+        if child < self.size:
             # find its correct place in the heap
             while child > 0:
                 parent = int((child - 1)/2)
@@ -802,7 +708,7 @@ class MinBinaryHeap(BinaryHeap):
         :return: minimum element or None if there are no elements in the heap
         """
 
-        if not self.is_empty():
+        if not self.size == 0:
             return self.__elements[0]
         else:
             return None
@@ -815,7 +721,7 @@ class MinBinaryHeap(BinaryHeap):
         :raises EmptyBinaryHeapError: if there are no elements in the heap
         """
 
-        if not self.is_empty():
+        if not self.size == 0:
             min_element = self.__elements[0]
 
             self.__elements[0] = self.__elements[len(self.__elements) - 1]
@@ -914,7 +820,7 @@ class MinBinaryHeap(BinaryHeap):
         removed = False
         for index in range(len(self.__elements)):
             if self.__elements[index] == element:
-                if self.size() == 1:
+                if self.size == 1:
                     self.__elements.pop()
                 else:
                     self.__elements[index] = self.__elements[len(self.__elements) - 1]
@@ -966,7 +872,7 @@ class MaxBinaryHeap(BinaryHeap):
         :raises StopIteration: if the heap is empty
         """
 
-        if not self.is_empty():
+        if not self.size == 0:
             return self.remove_max()
         else:
             raise StopIteration
@@ -978,11 +884,11 @@ class MaxBinaryHeap(BinaryHeap):
         """
 
         if initial_index == -1:
-            initial_index = self.size() - 1
+            initial_index = self.size - 1
 
         child = initial_index
 
-        if child < self.size():
+        if child < self.size:
             # find its place in the heap
             while child > 0:
                 parent = int((child - 1)/2)
@@ -1026,7 +932,7 @@ class MaxBinaryHeap(BinaryHeap):
         :return: maximum element or None if there are no elements in the heap
         """
 
-        if not self.is_empty():
+        if not self.size == 0:
             return self.__elements[0]
         else:
             return None
@@ -1039,7 +945,7 @@ class MaxBinaryHeap(BinaryHeap):
         :raises EmptyBinaryHeapError: if there are no elements in the heap
         """
 
-        if not self.is_empty():
+        if not self.size == 0:
             max_element = self.__elements[0]
 
             self.__elements[0] = self.__elements[len(self.__elements) - 1]
@@ -1138,7 +1044,7 @@ class MaxBinaryHeap(BinaryHeap):
         removed = False
         for index in range(len(self.__elements)):
             if self.__elements[index] == element:
-                if self.size() == 1:
+                if self.size == 1:
                     self.__elements.pop()
                 else:
                     self.__elements[index] = self.__elements[len(self.__elements) - 1]

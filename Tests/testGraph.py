@@ -25,13 +25,13 @@ class GraphTest(unittest.TestCase):
 
     def test_size(self):
         graph = Graph(int, True)
-        self.assertEqual(graph.size(), 0, "Wrong size at initialization")
+        self.assertEqual(graph.size, 0, "Wrong size at initialization")
         self.assertEqual(len(graph), 0, "Wrong size at initialization")
 
         for i in range(5):
             graph.add_node(i**2)
-        self.assertTrue(len(graph), graph.size())
-        self.assertEqual(graph.size(), 5, "Wrong size after multiple addition of nodes")
+        self.assertTrue(len(graph), graph.size)
+        self.assertEqual(graph.size, 5, "Wrong size after multiple addition of nodes")
 
         graph.remove_node(4)
         graph.remove_node(16)
@@ -39,7 +39,7 @@ class GraphTest(unittest.TestCase):
 
         graph.add_edge(1, 9)
         graph.add_edge(9, 1)
-        self.assertEqual(graph.size(), 3, "Wrong size after adding edges")
+        self.assertEqual(graph.size, 3, "Wrong size after adding edges")
 
         graph.remove_node(9)
         self.assertEqual(len(graph), 2, "Wrong size after removing a node with edges")
@@ -50,10 +50,10 @@ class GraphTest(unittest.TestCase):
         graph.add_node("item")
         graph.add_node(120)
         graph.add_node(2.5)
-        self.assertEqual(graph.size(), 3, "Wrong size after addition of multiple nodes")
+        self.assertEqual(graph.size, 3, "Wrong size after addition of multiple nodes")
 
         graph.add_edge("item", 120)
-        self.assertEqual(graph.size(), 3, "Wrong size after adding an edge")
+        self.assertEqual(graph.size, 3, "Wrong size after adding an edge")
 
         graph.remove_node(2.5)
         self.assertEqual(len(graph), 2, "Wrong size after removing a node")
@@ -87,10 +87,10 @@ class GraphTest(unittest.TestCase):
 
     def test_type(self):
         graph = Graph()
-        self.assertEqual(graph.type(), None, "Wrong type at initialization")
+        self.assertEqual(graph.type, None, "Wrong type at initialization")
 
         graph = Graph(directed=True, oriented=False, weighted=False)
-        self.assertEqual(graph.type(), None, "Wrong type at initialization")
+        self.assertEqual(graph.type, None, "Wrong type at initialization")
 
         graph.add_node(0)
         graph.add_node(5.25)
@@ -98,7 +98,7 @@ class GraphTest(unittest.TestCase):
         graph.add_edge("string", 0)
 
         graph = Graph(str)
-        self.assertEqual(graph.type(), str, "Wrong type at initialization")
+        self.assertEqual(graph.type, str, "Wrong type at initialization")
 
         graph.add_node("string")
         with self.assertRaises(GraphTypeError):
@@ -395,7 +395,7 @@ class GraphTest(unittest.TestCase):
         graph = Graph()
         with self.assertRaises(GraphElementError):
             graph.add_node(None)
-        self.assertTrue(graph.is_empty())
+        self.assertTrue(graph.size == 0)
         graph.add_node(1)
         graph.add_node(5.5)
         graph.add_node("string")
@@ -423,7 +423,7 @@ class GraphTest(unittest.TestCase):
         graph.add_node(1)
         graph.add_node(1.1)
         graph.add_node("1")
-        self.assertEqual(graph.size(), 3)
+        self.assertEqual(graph.size, 3)
         self.assertTrue(1 in graph)
         with self.assertRaises(GraphElementError):
             graph.remove_node("1.1")

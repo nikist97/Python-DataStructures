@@ -71,7 +71,7 @@ class Stack(object):
         :return: calls the size() method of the stack to get the number of elements in the stack
         """
 
-        return self.size()
+        return self.size
 
     def __iter__(self):
         """
@@ -90,7 +90,7 @@ class Stack(object):
         :raises StopIteration: if the stack is empty
         """
 
-        if self.is_empty():
+        if self.size == 0:
             raise StopIteration
         else:
             return self.pop()
@@ -106,6 +106,26 @@ class Stack(object):
 
         return self.contains(item)
 
+    @property
+    def size(self):
+        """
+        this method gets the number of elements in the stack
+
+        :return: the number of elements in the deque object, which contains the elements of the stack
+        """
+
+        return len(self.__elements)
+
+    @property
+    def type(self):
+        """
+        this method gets the type of elements in the stack
+
+        :return: the type of elements in the stack or None if there are elements of multiple types in the stack
+        """
+
+        return self.__elements_type
+
     def contains(self, item):
         """
         this method checks if a value is contained in the stack
@@ -120,33 +140,6 @@ class Stack(object):
             return item in self.__elements
         else:
             raise StackTypeError("The parameter {0} is not of type {1}.".format(item, self.__elements_type))
-
-    def is_empty(self):
-        """
-        this method checks if the stack is empty
-
-        :return: True if the number of elements in the stack is 0 and False otherwise
-        """
-
-        return self.size() == 0
-
-    def size(self):
-        """
-        this method gets the number of elements in the stack
-
-        :return: the number of elements in the deque object, which contains the elements of the stack
-        """
-
-        return len(self.__elements)
-
-    def type(self):
-        """
-        this method gets the type of elements in the stack
-
-        :return: the type of elements in the stack or None if there are elements of multiple types in the stack
-        """
-
-        return self.__elements_type
 
     def push(self, item):
         """
@@ -170,7 +163,7 @@ class Stack(object):
         :raises EmptyStackError: if there are no elements in the stack
         """
 
-        if len(self.__elements) > 0:
+        if self.size > 0:
             return self.__elements.pop()
         else:
             raise EmptyStackError("There are no elements in the stack")
@@ -183,7 +176,7 @@ class Stack(object):
         :return: the last pushed element in the stack or None if there are no elements in the stack
         """
 
-        if len(self.__elements) > 0:
+        if self.size > 0:
             return self.__elements[-1]
         else:
             return None
@@ -252,7 +245,7 @@ class Queue(object):
         :return: calls the size() method to get the number of elements in the queue
         """
 
-        return self.size()
+        return self.size
 
     def __iter__(self):
         """
@@ -271,7 +264,7 @@ class Queue(object):
         :raises StopIteration: if there are no elements in the queue
         """
 
-        if self.is_empty():
+        if self.size == 0:
             raise StopIteration
         else:
             return self.dequeue()
@@ -286,6 +279,26 @@ class Queue(object):
 
         return self.contains(item)
 
+    @property
+    def size(self):
+        """
+        this method gets the number of elements in the queue
+
+        :return: the number of elements in the queue
+        """
+
+        return len(self.__elements)
+
+    @property
+    def type(self):
+        """
+        this method gets the type of elements in the queue
+
+        :return: the type of elements in the queue or None if the queue can contain all types of elements
+        """
+
+        return self.__elements_type
+
     def contains(self, item):
         """
         this method checks if an item is contained in the queue
@@ -299,33 +312,6 @@ class Queue(object):
             return item in self.__elements
         else:
             raise QueueTypeError("The parameter {0} is not of type {1}.".format(item, self.__elements_type))
-
-    def is_empty(self):
-        """
-        this method checks if the queue is empty
-
-        :return: True if the number of elements in the queue is 0 and False otherwise
-        """
-
-        return self.size() == 0
-
-    def size(self):
-        """
-        this method gets the number of elements in the queue
-
-        :return: the number of elements in the queue
-        """
-
-        return len(self.__elements)
-
-    def type(self):
-        """
-        this method gets the type of elements in the queue
-
-        :return: the type of elements in the queue or None if the queue can contain all types of elements
-        """
-
-        return self.__elements_type
 
     def enqueue(self, item):
         """
@@ -348,7 +334,7 @@ class Queue(object):
         :raises EmptyQueueError: if there are no elements in the queue
         """
 
-        if self.size() > 0:
+        if self.size > 0:
             return self.__elements.popleft()
         else:
             raise EmptyQueueError("There are no elements in the queue")
@@ -360,7 +346,7 @@ class Queue(object):
         :return: the peeked item or None if there are no elements in the queue
         """
 
-        if self.size() > 0:
+        if self.size > 0:
             return self.__elements[0]
         else:
             return None
@@ -443,7 +429,7 @@ class PriorityQueue(object):
         :return: the number of elements in the queue
         """
 
-        return self.size()
+        return self.size
 
     def __contains__(self, element):
         """
@@ -472,20 +458,12 @@ class PriorityQueue(object):
         :raises StopIteration: if the queue is empty
         """
 
-        if self.is_empty():
+        if self.size == 0:
             raise StopIteration
         else:
             return self.dequeue()
 
-    def is_empty(self):
-        """
-        this method checks if the size of the queue is
-
-        :return: True if there are no elements in the queue and False otherwise
-        """
-
-        return self.size() == 0
-
+    @property
     def size(self):
         """
         this method gets the size of the queue
@@ -495,6 +473,7 @@ class PriorityQueue(object):
 
         return len(self.__elements)
 
+    @property
     def type(self):
         """
         a getter for the type of elements in the queue
@@ -504,7 +483,8 @@ class PriorityQueue(object):
 
         return self.__elements_type
 
-    def is_reversed(self):
+    @property
+    def reversed(self):
         """
         this method checks if the queue is reversed
 
@@ -545,7 +525,7 @@ class PriorityQueue(object):
         :raises EmptyPriorityQueueError: if the queue is empty
         """
 
-        if self.is_empty():
+        if self.size == 0:
             raise EmptyPriorityQueueError("The priority queue doesn't contain any elements")
 
         if type(self.__indices) == MinBinaryHeap:
@@ -566,7 +546,7 @@ class PriorityQueue(object):
         :return: the element to be dequeued without removing it or None if the queue is empty
         """
 
-        if self.is_empty():
+        if self.size == 0:
             return None
 
         if type(self.__indices) == MinBinaryHeap:
@@ -574,7 +554,7 @@ class PriorityQueue(object):
         elif type(self.__indices) == MaxBinaryHeap:
             return self.__elements.get(self.__indices.peek_max())
 
-    def get(self, priority):
+    def get_element(self, priority):
         """
         this method gets the element with a specified priority
 
@@ -707,6 +687,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         self.__indices = self._PriorityQueue__indices
         self.__size = 0
 
+    @property
     def size(self):
         """
         overriding the size() method to return the __size attribute
@@ -729,8 +710,8 @@ class DuplicatePriorityQueue(PriorityQueue):
         if type(priority) != int:
             raise PriorityQueueTypeError("The priority of an element must be an integer")
 
-        if self.type() is not None and type(item) != self.type():
-            raise PriorityQueueTypeError("The element you are trying to enqueue is not of type {0}".format(self.type()))
+        if self.type is not None and type(item) != self.type:
+            raise PriorityQueueTypeError("The element you are trying to enqueue is not of type {0}".format(self.type))
 
         if priority not in self.__elements:
             self.__indices.add(priority)
@@ -740,7 +721,7 @@ class DuplicatePriorityQueue(PriorityQueue):
             if type(element) == Queue:
                 element.enqueue(item)
             else:
-                duplicates = Queue(self.type())
+                duplicates = Queue(self.type)
                 duplicates.enqueue(element)
                 duplicates.enqueue(item)
                 self.__elements[priority] = duplicates
@@ -754,7 +735,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         :raises EmptyPriorityQueueError: if the queue is empty
         """
 
-        if self.is_empty():
+        if self.size == 0:
             raise EmptyPriorityQueueError("The priority queue doesn't contain any elements")
 
         if type(self.__indices) == MinBinaryHeap:
@@ -800,7 +781,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         :return: the element to be dequeued, but without removing it or None if the queue is empty
         """
 
-        if self.is_empty():
+        if self.size == 0:
             return None
 
         to_peek = None
@@ -814,7 +795,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         else:
             return to_peek.peek()
 
-    def get(self, priority):
+    def get_element(self, priority):
         """
         overriding the get method to handle duplicated priorities
 
@@ -841,8 +822,8 @@ class DuplicatePriorityQueue(PriorityQueue):
         :raises PriorityQueueTypeError: if the element's type is not the same as the type of queue's elements
         """
 
-        if self.type() is not None and type(element) != self.type():
-            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type()))
+        if self.type is not None and type(element) != self.type:
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type))
 
         if not self.has_duplicates():
             return super().contains_element(element)
@@ -862,7 +843,7 @@ class DuplicatePriorityQueue(PriorityQueue):
         :return: True if there are two or more elements with the same priority and False otherwise
         """
 
-        return self.size() != len(self.__elements)
+        return self.size != len(self.__elements)
 
     def replace_priority(self, element, new_priority, comparison=None):
         """
@@ -880,8 +861,8 @@ class DuplicatePriorityQueue(PriorityQueue):
         :return:
         """
 
-        if self.type() is not None and type(element) != self.type():
-            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type()))
+        if self.type is not None and type(element) != self.type:
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type))
 
         if type(new_priority) != int:
             raise PriorityQueueTypeError("The priority parameter must be an integer.")
@@ -910,7 +891,7 @@ class DuplicatePriorityQueue(PriorityQueue):
                             if type(self.__elements[new_priority]) == Queue:
                                 self.__elements[new_priority].enqueue(element)
                             else:
-                                duplicates = Queue(self.type())
+                                duplicates = Queue(self.type)
                                 duplicates.enqueue(self.__elements[new_priority])
                                 duplicates.enqueue(element)
                                 self.__elements[new_priority] = duplicates
@@ -932,7 +913,7 @@ class DuplicatePriorityQueue(PriorityQueue):
                             if type(self.__elements[new_priority]) == Queue:
                                 self.__elements[new_priority].enqueue(element)
                             else:
-                                duplicates = Queue(self.type())
+                                duplicates = Queue(self.type)
                                 duplicates.enqueue(self.__elements[new_priority])
                                 duplicates.enqueue(element)
                                 self.__elements[new_priority] = duplicates
@@ -954,8 +935,8 @@ class DuplicatePriorityQueue(PriorityQueue):
         :raises PriorityQueueElementError: if the element to remove is not contained in the heap
         """
 
-        if self.type() is not None and type(element) != self.type():
-            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type()))
+        if self.type is not None and type(element) != self.type:
+            raise PriorityQueueTypeError("The priority queue only contains elements of type {0}".format(self.type))
 
         removed = False
         for priority in self.__elements:
@@ -1037,7 +1018,7 @@ class Graph(object):
         :return: the number of elements in the graph
         """
 
-        return self.size()
+        return self.size
 
     def __str__(self):
         """
@@ -1077,6 +1058,7 @@ class Graph(object):
 
         return self.contains(item)
 
+    @property
     def size(self):
         """
         this method gets the size of the graph
@@ -1086,15 +1068,7 @@ class Graph(object):
 
         return len(self.__nodes)
 
-    def is_empty(self):
-        """
-        this method checks if the graph is empty
-
-        :return: True if there are no nodes in the graph and False otherwise
-        """
-
-        return self.size() == 0
-
+    @property
     def type(self):
         """
         a getter method for the type of elements in the graph
@@ -1104,7 +1078,8 @@ class Graph(object):
 
         return self.__elements_type
 
-    def is_weighted(self):
+    @property
+    def weighted(self):
         """
         checks if the graph is weighted
 
@@ -1113,7 +1088,8 @@ class Graph(object):
 
         return self.__weighted
 
-    def is_oriented(self):
+    @property
+    def oriented(self):
         """
         checks if the graph is oriented
 
@@ -1122,7 +1098,8 @@ class Graph(object):
 
         return self.__oriented
 
-    def is_directed(self):
+    @property
+    def directed(self):
         """
         checks if the graph is directed
 

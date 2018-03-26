@@ -26,17 +26,16 @@ class BinarySearchTreeTest(unittest.TestCase):
 
     def test_size(self):
         binary = BinarySearchTree(12)
-        self.assertEqual(binary.get_number_of_elements(), len(binary), "Len method not working.")
-        self.assertEqual(binary.get_number_of_elements(), 1, "The binary tree must be with 1 elements when initialised"
-                                                             "with a root.")
+        self.assertEqual(binary.size, len(binary), "Len method not working.")
+        self.assertEqual(binary.size, 1, "The binary tree must be with 1 elements when initialised with a root.")
         binary = BinarySearchTree()
-        self.assertEqual(binary.get_number_of_elements(), 0, "The binary tree must be with 0 elements when initialised")
+        self.assertEqual(binary.size, 0, "The binary tree must be with 0 elements when initialised")
         binary.add(25)
         for i in range(1, 11):
             binary.add(i)
             binary.add(i + 25)
-            self.assertEqual(binary.get_number_of_elements(), len(binary), "Len method not working.")
-        self.assertEqual(binary.get_number_of_elements(), 21, "BinaryTree gives wrong size.")
+            self.assertEqual(binary.size, len(binary), "Len method not working.")
+        self.assertEqual(binary.size, 21, "BinaryTree gives wrong size.")
 
     def test_contains(self):
         binary = BinarySearchTree(26)
@@ -59,18 +58,18 @@ class BinarySearchTreeTest(unittest.TestCase):
     def test_add(self):
         binary = BinarySearchTree()
         binary.add(23)
-        self.assertEqual(binary.get_root(), 23, "Add method cannot add the item to the root")
-        self.assertEqual(binary.get_number_of_elements(), 1, "Add method doesn't increment number of elements")
+        self.assertEqual(binary.root, 23, "Add method cannot add the item to the root")
+        self.assertEqual(binary.size, 1, "Add method doesn't increment number of elements")
         binary.add(12)
         binary.add(54)
         binary.add(1)
-        self.assertEqual(binary.get_number_of_elements(), 4, "Add method doesn't adjust the number of elements")
+        self.assertEqual(binary.size, 4, "Add method doesn't adjust the number of elements")
         self.assertTrue(binary.contains(54), "Add method doesn't add the elements properly")
         self.assertFalse(binary.contains(0), "Add method adds elements that are not supposed to be there.")
         with self.assertRaises(BinarySearchTreeTypeError):
             binary.add("string")
         binary.add(23)
-        self.assertEqual(binary.get_number_of_elements(), 4, "Add method adds elements which already exist.")
+        self.assertEqual(binary.size, 4, "Add method adds elements which already exist.")
 
     def test_delete(self):
         binary = BinarySearchTree()
@@ -79,26 +78,26 @@ class BinarySearchTreeTest(unittest.TestCase):
 
         binary = BinarySearchTree(50)
         binary.delete(50)
-        self.assertEqual(binary.get_number_of_elements(), 0, "Delete method cannot delete the root.")
+        self.assertEqual(binary.size, 0, "Delete method cannot delete the root.")
         self.assertFalse(binary.contains(50), "Delete method cannot delete the root")
         binary.add(1)
         binary.add(0)
         binary.add(2)
         binary.add(3)
         binary.delete(2)
-        self.assertEqual(binary.get_number_of_elements(), 3, "Delete method cannot delete properly.")
+        self.assertEqual(binary.size, 3, "Delete method cannot delete properly.")
         binary.add(12)
         binary.add(9)
         with self.assertRaises(BinarySearchTreeTypeError):
             binary.delete("9")
         binary.add(34)
         binary.delete(1)
-        self.assertEqual(binary.get_number_of_elements(), 5, "Delete method cannot delete the root.")
+        self.assertEqual(binary.size, 5, "Delete method cannot delete the root.")
         self.assertFalse(binary.contains(1), "Delete method cannot delete the root")
         binary.add(-4)
         binary.add(-6)
         binary.delete(-4)
-        self.assertEqual(binary.get_number_of_elements(), 6, "Delete method cannot delete a node with one child.")
+        self.assertEqual(binary.size, 6, "Delete method cannot delete a node with one child.")
         self.assertFalse(binary.contains(-4), "Delete method cannot a node with one child.")
         with self.assertRaises(BinarySearchTreeElementError):
             binary.delete(11232)
@@ -164,15 +163,15 @@ class BinarySearchTreeTest(unittest.TestCase):
         with self.assertRaises(BinarySearchTreeElementError):
             binary.delete("gfgfg")
 
-        self.assertTrue(binary.get_root() == "hey", "Binary tree get_root method doesn't work properly")
+        self.assertTrue(binary.root == "hey", "Binary tree get_root method doesn't work properly")
         binary.delete("hey")
-        self.assertTrue(binary.get_root() != "hey", "Binary tree delete method doesn't work properly")
+        self.assertTrue(binary.root != "hey", "Binary tree delete method doesn't work properly")
 
         binary = BinarySearchTree()
-        self.assertTrue(binary.get_root() is None, "Binary tree get_root method doesn't work properly")
+        self.assertTrue(binary.root is None, "Binary tree get_root method doesn't work properly")
         binary.add(1)
         binary.delete(1)
-        self.assertTrue(binary.get_root() is None, "Binary tree get_root method doesn't work properly after deletion")
+        self.assertTrue(binary.root is None, "Binary tree get_root method doesn't work properly after deletion")
 
     def test_get_min(self):
         binary = BinarySearchTree(elements_type=int)

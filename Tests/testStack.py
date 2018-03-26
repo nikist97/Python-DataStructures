@@ -26,34 +26,34 @@ class StackTest(unittest.TestCase):
 
     def test_size(self):
         stack = Stack()
-        self.assertEqual(stack.size(), 0, "Stack size should be 0 at initialization")
+        self.assertEqual(stack.size, 0, "Stack size should be 0 at initialization")
         for i in range(1, 41):
             stack.push(i)
             stack.push(i+1)
             stack.pop()
-        self.assertEqual(stack.size(), 40, "Incorrect stack size")
+        self.assertEqual(stack.size, 40, "Incorrect stack size")
 
         stack = Stack(str)
-        self.assertEqual(stack.size(), 0, "Stack size should be 0 at initialization")
+        self.assertEqual(stack.size, 0, "Stack size should be 0 at initialization")
         for l in ["a", "d", "b", "m"]:
             stack.push(l)
 
         stack.pop()
-        self.assertEqual(stack.size(), 3, "Incorrect stack size")
+        self.assertEqual(stack.size, 3, "Incorrect stack size")
 
     def test_empty(self):
         stack = Stack()
-        self.assertTrue(stack.is_empty(), "Stack should be empty")
+        self.assertTrue(stack.size == 0, "Stack should be empty")
         stack.push("word")
         stack.push("sentence")
         stack.pop()
-        self.assertFalse(stack.is_empty(), "Stack should not be empty")
+        self.assertFalse(stack.size == 0, "Stack should not be empty")
 
         stack = Stack(int)
-        self.assertTrue(stack.is_empty(), "Stack should be empty")
+        self.assertTrue(stack.size == 0, "Stack should be empty")
 
         stack.push(0)
-        self.assertFalse(stack.is_empty(), "Stack should not be empty")
+        self.assertFalse(stack.size == 0, "Stack should not be empty")
 
     def test_peek(self):
         stack = Stack()
@@ -102,17 +102,17 @@ class StackTest(unittest.TestCase):
                 stack.push(True)
             else:
                 stack.push(False)
-        self.assertEqual(stack.size(), 10, "Wrong stack push implementation")
+        self.assertEqual(stack.size, 10, "Wrong stack push implementation")
 
     def test_type(self):
         stack = Stack()
-        self.assertEqual(stack.type(), None)
+        self.assertEqual(stack.type, None)
 
         with self.assertRaises(StackTypeError):
             Stack(elements_type=3)
 
         stack = Stack(elements_type=list)
-        self.assertEqual(stack.type(), list)
+        self.assertEqual(stack.type, list)
 
         with self.assertRaises(StackTypeError):
             stack.push("hey")

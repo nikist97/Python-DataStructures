@@ -27,36 +27,36 @@ class MinBinaryHeapTests(unittest.TestCase):
 
     def test_size(self):
         heap = MinBinaryHeap()
-        self.assertEqual(heap.size(), 0, "Size method is not correct")
-        self.assertTrue(heap.size() == len(heap), "len(heap) method not implemented correctly")
-        self.assertTrue(heap.is_empty(), "is_empty method not implemented correctly")
+        self.assertEqual(heap.size, 0, "Size method is not correct")
+        self.assertTrue(heap.size == len(heap), "len(heap) method not implemented correctly")
+        self.assertTrue(heap.size == 0, "is_empty method not implemented correctly")
 
         heap = MinBinaryHeap(str)
-        self.assertEqual(heap.size(), 0, "Size method is not correct")
-        self.assertTrue(heap.size() == len(heap), "len(heap) method not implemented correctly")
-        self.assertTrue(heap.is_empty(), "is_empty method not implemented correctly")
+        self.assertEqual(heap.size, 0, "Size method is not correct")
+        self.assertTrue(heap.size == len(heap), "len(heap) method not implemented correctly")
+        self.assertTrue(heap.size == 0, "is_empty method not implemented correctly")
 
         size = 0
         for i in ["word", "sentence", "text"]:
             heap.add(i)
             size += 1
-            self.assertEqual(heap.size(), size, "Size method is not correct")
-        self.assertFalse(heap.is_empty(), "is_empty method not implemented correctly")
+            self.assertEqual(heap.size, size, "Size method is not correct")
+        self.assertFalse(heap.size == 0, "is_empty method not implemented correctly")
 
         heap = MinBinaryHeap()
         for i in range(10):
             heap.add(i)
             heap.peek_min()
-        self.assertEqual(heap.size(), 10, "Size method is not correct")
+        self.assertEqual(heap.size, 10, "Size method is not correct")
 
         for i in range(5):
             heap.remove_min()
             heap.replace_root(i**2)
 
-        self.assertEqual(heap.size(), 5, "Size method is not correct")
+        self.assertEqual(heap.size, 5, "Size method is not correct")
         heap.replace_root(313)
-        self.assertFalse(heap.is_empty(), "is_empty method not implemented correctly")
-        self.assertEqual(heap.size(), 5, "Size method is not correct")
+        self.assertFalse(heap.size == 0, "is_empty method not implemented correctly")
+        self.assertEqual(heap.size, 5, "Size method is not correct")
 
     def test_type(self):
         with self.assertRaises(BinaryHeapTypeError):
@@ -66,7 +66,7 @@ class MinBinaryHeapTests(unittest.TestCase):
             MinBinaryHeap(elements_type=None)
 
         heap = MinBinaryHeap()
-        self.assertEqual(heap.type(), int, "type method is not correct")
+        self.assertEqual(heap.type, int, "type method is not correct")
 
         with self.assertRaises(BinaryHeapTypeError):
             heap.add("string")
@@ -79,10 +79,10 @@ class MinBinaryHeapTests(unittest.TestCase):
             heap.add(i**2)
         heap.remove_min()
         heap.peek_min()
-        self.assertEqual(heap.type(), int, "type method is not correct")
+        self.assertEqual(heap.type, int, "type method is not correct")
 
         heap = MinBinaryHeap(str)
-        self.assertEqual(heap.type(), str, "type method is not correct")
+        self.assertEqual(heap.type, str, "type method is not correct")
 
         with self.assertRaises(BinaryHeapTypeError):
             heap.add(1.23123)
@@ -101,19 +101,19 @@ class MinBinaryHeapTests(unittest.TestCase):
         heap.add(32)
         self.assertEqual(heap.peek_min(), 32, "peek_min not working")
         self.assertEqual(heap.remove_min(), 32, "remove_min method not working")
-        self.assertEqual(heap.size(), 0, "remove_min doesn't adjust size properly")
+        self.assertEqual(heap.size, 0, "remove_min doesn't adjust size properly")
 
         for num in [2, 43, 12, 234, 101, 59, 67]:
             heap.add(num)
         self.assertEqual(heap.remove_min(), 2, "remove_min method not working")
-        self.assertEqual(heap.size(), 6, "remove_min doesn't adjust size properly")
+        self.assertEqual(heap.size, 6, "remove_min doesn't adjust size properly")
         self.assertEqual(heap.peek_min(), 12, "remove_min doesn't adjust heap properly after the removal")
 
         heap.replace_root(0)
         self.assertEqual(0, heap.peek_min(), "peek_min is not working")
-        size = heap.size()
+        size = heap.size
         self.assertEqual(heap.remove_min(), 0, "remove_min doesnt work when replacing root")
-        self.assertEqual(heap.size(), size - 1, "remove_min doesn't adjust size of heap properly")
+        self.assertEqual(heap.size, size - 1, "remove_min doesn't adjust size of heap properly")
 
     def test_add(self):
         heap = MinBinaryHeap(str)
@@ -124,7 +124,7 @@ class MinBinaryHeapTests(unittest.TestCase):
         letters = ["g", "b", "f"]
         for string in letters:
             heap.add(string)
-        self.assertEqual(heap.size(), 3, "add method doesn't adjust size")
+        self.assertEqual(heap.size, 3, "add method doesn't adjust size")
         self.assertEqual(heap.peek_min(), "b", "add method doesn't adjust the heap properly")
 
         sorted_letters = heap.get_sorted_elements()
@@ -171,7 +171,7 @@ class MinBinaryHeapTests(unittest.TestCase):
         heap.remove_min()
         self.assertEqual(heap.get_sorted_elements(), random_nums, "get_sorted_elements not working properly when "
                                                                   "removing min element")
-        self.assertEqual(heap.size(), len(random_nums))
+        self.assertEqual(heap.size, len(random_nums))
 
     def test_iterator(self):
         heap = MinBinaryHeap(float)
@@ -273,11 +273,11 @@ class MinBinaryHeapTests(unittest.TestCase):
         with self.assertRaises(BinaryHeapElementError):
             heap.replace(6.5, 8.5)
 
-        self.assertFalse(heap.is_empty())
+        self.assertFalse(heap.size == 0)
         with self.assertRaises(BinaryHeapTypeError):
             heap.remove(15)
         heap.remove(5.5)
-        self.assertTrue(heap.is_empty())
+        self.assertTrue(heap.size == 0)
 
         heap.add(10.0)
         heap.add(11.5)

@@ -31,7 +31,7 @@ def adjust_stacks(operands, operators, current_token):
 
     # while the operators' stack is empty and the priority of the current token is less than or equal to the priority
     # of the top operator in the stack, adjust the stack
-    while (not operators.is_empty()) and operators_priorities[current_token] <= operators_priorities[operators.peek()]:
+    while (not operators.size == 0) and operators_priorities[current_token] <= operators_priorities[operators.peek()]:
         # popping the last operator with the last two operands
         operator = operators.pop()
         b = operands.pop()
@@ -91,13 +91,13 @@ def check_parenthesis(expression):
 
         # if there's a right parenthesis, check if the stack is empty, that is there is no left parenthesis left
         elif token == ")":
-            if parenthesis.is_empty():
+            if parenthesis.size == 0:
                 return False
             else:
                 parenthesis.pop()
 
     # at the end, if the stack is empty, return true, all the parenthesis are valid; otherwise, return false
-    return parenthesis.is_empty()
+    return parenthesis.size == 0
 
 
 # the evaluate_expression method, which takes as argument a mathematical expression as a string
@@ -128,7 +128,7 @@ def evaluate_expression(expression):
         except ValueError:
             try:
                 # if the operators' stack is empty, add the token there
-                if operators.is_empty():
+                if operators.size == 0:
                     operators.push(token)
 
                 # if the operator is a '(', add the token to the stack
@@ -155,10 +155,10 @@ def evaluate_expression(expression):
 
     # when we went through all the tokens, check if there's only one value left in the operands' stack and 0 operators
     # in the operators' stack, only then we know we are finished
-    if operands.size() != 1 and operators.size() != 0:
+    if operands.size != 1 and operators.size != 0:
         # if the finishing property is not true, then we repeat the operation from the adjust_stacks method,
         # while we know that we are finished
-        while operands.size() != 1 and operators.size() != 0:
+        while operands.size != 1 and operators.size != 0:
             # popping the last operator with the last two operands
             operator = operators.pop()
             b = operands.pop()
