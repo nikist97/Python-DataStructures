@@ -141,7 +141,7 @@ class BinarySearchTree(object):
                 self.__number_of_items = 1
             else:
                 # if there is a root created, call the add method to the Node root object
-                if self.__root.add(Node(value)):
+                if self.__root.add(Node(value))[0]:
                     self.__number_of_items += 1
         else:
             raise BinarySearchTreeTypeError("The binary tree can only contain elements of type {0}".format(self.__elements_type))
@@ -188,10 +188,17 @@ class BinarySearchTree(object):
         :return: the value of the root of the tree and None if there is no root
         """
 
-        if self.__root is None:
-            return None
-        else:
-            return self.__root.value
+        return None if self.__root is None else self.__root.value
+
+    @property
+    def height(self):
+        """
+        Return the deepest height in the tree
+
+        :return: the height of the root node in the tree
+        """
+
+        return 0 if self.__root is None else self.__root.height
 
     @property
     def size(self):
@@ -276,12 +283,14 @@ class Node(object):
 
     def __init__(self, value):
         """
-        a constructor for the Node class, a node object has a value, a parent node, left and right child nodes
+        a constructor for the Node class, a node object has a value, a parent node, left and right child nodes and a height, which represents the maximum height of the subtree with
+        this node being the root
 
         :param value: the value of the node
         """
 
         self.value = value
+        self.height = 1
         self.left = None
         self.right = None
         self.parent = None
@@ -297,7 +306,7 @@ class Node(object):
         this method adds a node to the current node as a child by determining the right place of the node
 
         :param node: the node to add
-        :return: True if the element has been added and False otherwise
+        :return: True if the element has been added and False otherwise, also returns the height of the current node
         """
 
         # if the node's value is less than the current node's value, go to the left subtree
@@ -305,29 +314,35 @@ class Node(object):
             if self.left is None:
                 self.left = node
                 self.left.parent = self
-                return True
+                self.height = max(2, self.height)
+                return True, self.height
             else:
-                return self.left.add(node)
+                added, subheight = self.left.add(node)
+                self.height = max(subheight + 1, self.height)
+                return added, self.height
 
         # if the node's value is greater than the current node's value, go to the right subtree
         elif node.value > self.value:
             if self.right is None:
                 self.right = node
                 self.right.parent = self
-                return True
+                self.height = max(2, self.height)
+                return True, self.height
             else:
-                return self.right.add(node)
+                added, subheight = self.right.add(node)
+                self.height = max(subheight + 1, self.height)
+                return added, self.height
 
         # else if the node's value is equal to the current node's value, do nothing
         else:
-            return False
+            return False, self.height
 
     def delete(self, value):
         """
         this method deletes a node with a certain value considering only child nodes
 
         :param value: the value of the node to delete
-        :return: True if the element has been deleted and False otherwise
+        :return: True if the element has been deleted and False otherwise, also returns the height of the node
         """
 
         if self.value == value:
@@ -337,11 +352,14 @@ class Node(object):
                     if self.parent.left == self:
                         self.parent.left = None
                     elif self.parent.right == self:
-                        self.parent.parent(None)
+                        self.parent.right = None
+
+                    self.parent.height = max(self.height - 1, )
 
                 # case when we are deleting the root of the tree with no children
                 else:
                     self.value = None
+                    self.height = 0
 
             # else if the node we are deleting has a left child, the left child takes the place of the node
             # we are deleting

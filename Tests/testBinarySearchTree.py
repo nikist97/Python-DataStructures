@@ -37,6 +37,43 @@ class BinarySearchTreeTest(unittest.TestCase):
             self.assertEqual(binary.size, len(binary), "Len method not working.")
         self.assertEqual(binary.size, 21, "BinaryTree gives wrong size.")
 
+    def test_height(self):
+        binary = BinarySearchTree()
+        self.assertEqual(binary.height, 0, "Binary tree not initialized with height 0")
+
+        for i in range(10):
+            binary.add(i)
+        self.assertEqual(binary.height, 10, "Binary tree's height not adjusted when adding elements only to the left")
+
+        binary = BinarySearchTree()
+        for i in range(10, 0, -1):
+            binary.add(i)
+        self.assertEqual(binary.height, 10, "Binary tree's height not adjusted when adding elements only to the right")
+
+        binary = BinarySearchTree()
+        l = [5, 7, 9, 10, 1, 6, 8, 3, 2]
+        for i in l:
+            binary.add(i)
+        self.assertEqual(binary.height, 4, "Binary tree not adjusted when adding elements in random directions")
+
+        binary = BinarySearchTree(root=15, elements_type=int)
+        self.assertEqual(binary.height, 1, "Binary tree not initialized with appropriate height 1")
+
+        for i in range(10):
+            binary.add(i)
+        self.assertEqual(binary.height, 11, "Binary tree's height not adjusted when adding elements only to the left")
+        for i in range(5):
+            binary.delete(i)
+        self.assertEqual(binary.height, 6, "Binary tree's height not adjusted when removing elements")
+
+        binary = BinarySearchTree(root=16, elements_type=int)
+        for i in range(10, 0, -1):
+            binary.add(i)
+        self.assertEqual(binary.height, 11, "Binary tree's height not adjusted when adding elements only to the right")
+        for i in range(5, 0, -1):
+            binary.delete(i)
+        self.assertEqual(binary.height, 6, "Binary tree's height not adjusted when removing elements")
+
     def test_contains(self):
         binary = BinarySearchTree(26)
         binary.add(12)
