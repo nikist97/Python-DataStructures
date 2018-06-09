@@ -1,4 +1,4 @@
-# Abstract and Tree Data Structures - Python
+# Abstract and Tree-like Data Structures - Python
 
 **_The repository contains Python-based implementations for some of the most famous data structures._**
 
