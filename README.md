@@ -3,7 +3,7 @@
 **_The repository contains Python-based implementations for some of the most famous data structures._**
 
 ### Installation:
-Please use 'pip install data-structures'.
+Please use 'pip install pythonic-data-structures'.
 
 ### Issues:
 Please register any issues you find in the github repository so that they can be fixed as soon as possible.
