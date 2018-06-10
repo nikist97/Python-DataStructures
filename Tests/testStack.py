@@ -18,41 +18,42 @@ limitations under the License.
 # Simple unittests for the ADT Stack
 import unittest
 
-from ADTs.AbstractDataStructures import Stack
+from DataStructures.AbstractDataStructures import Stack
+from DataStructures.Errors import *
 
 
 class StackTest(unittest.TestCase):
 
     def test_size(self):
         stack = Stack()
-        self.assertEqual(stack.size(), 0, "Stack size should be 0 at initialization")
+        self.assertEqual(stack.size, 0, "Stack size should be 0 at initialization")
         for i in range(1, 41):
             stack.push(i)
             stack.push(i+1)
             stack.pop()
-        self.assertEqual(stack.size(), 40, "Incorrect stack size")
+        self.assertEqual(stack.size, 40, "Incorrect stack size")
 
         stack = Stack(str)
-        self.assertEqual(stack.size(), 0, "Stack size should be 0 at initialization")
+        self.assertEqual(stack.size, 0, "Stack size should be 0 at initialization")
         for l in ["a", "d", "b", "m"]:
             stack.push(l)
 
         stack.pop()
-        self.assertEqual(stack.size(), 3, "Incorrect stack size")
+        self.assertEqual(stack.size, 3, "Incorrect stack size")
 
     def test_empty(self):
         stack = Stack()
-        self.assertTrue(stack.is_empty(), "Stack should be empty")
+        self.assertTrue(stack.size == 0, "Stack should be empty")
         stack.push("word")
         stack.push("sentence")
         stack.pop()
-        self.assertFalse(stack.is_empty(), "Stack should not be empty")
+        self.assertFalse(stack.size == 0, "Stack should not be empty")
 
         stack = Stack(int)
-        self.assertTrue(stack.is_empty(), "Stack should be empty")
+        self.assertTrue(stack.size == 0, "Stack should be empty")
 
         stack.push(0)
-        self.assertFalse(stack.is_empty(), "Stack should not be empty")
+        self.assertFalse(stack.size == 0, "Stack should not be empty")
 
     def test_peek(self):
         stack = Stack()
@@ -70,7 +71,7 @@ class StackTest(unittest.TestCase):
 
     def test_pop(self):
         stack = Stack()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyStackError):
             stack.pop()
         stack.push([1, 2, 3])
         self.assertEqual(stack.pop()[1], 2, "Stack pops wrong element")
@@ -78,7 +79,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(stack.pop(), "pushed string", "Stack pops wrong element")
 
         stack = Stack(bool)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyStackError):
             stack.pop()
         stack.push(True)
         stack.push(False)
@@ -93,7 +94,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(len(stack), 2, "Wrong stack push implementation")
 
         stack = Stack(bool)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.push("word")
 
         for i in range(10):
@@ -101,19 +102,19 @@ class StackTest(unittest.TestCase):
                 stack.push(True)
             else:
                 stack.push(False)
-        self.assertEqual(stack.size(), 10, "Wrong stack push implementation")
+        self.assertEqual(stack.size, 10, "Wrong stack push implementation")
 
     def test_type(self):
         stack = Stack()
-        self.assertEqual(stack.type(), None)
+        self.assertEqual(stack.type, None)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             Stack(elements_type=3)
 
         stack = Stack(elements_type=list)
-        self.assertEqual(stack.type(), list)
+        self.assertEqual(stack.type, list)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.push("hey")
 
         stack = Stack(elements_type=str)
@@ -122,7 +123,7 @@ class StackTest(unittest.TestCase):
         test_string = stack.pop() + " " + stack.pop()
         self.assertEqual(test_string, "hello world", "Stack with strings doesn't pop correctly")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.push(123)
 
     def test_str(self):
@@ -179,15 +180,15 @@ class StackTest(unittest.TestCase):
         self.assertTrue(2.3 in stack, "Stack contains method doesn't work")
         self.assertTrue(stack.contains(1.55), "Stack contains method doesn't work")
 
-        with self.assertRaises(TypeError):
-            boolean = 4 in stack
+        with self.assertRaises(StackTypeError):
+            _ = 4 in stack
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.contains("word")
 
     def test_remove(self):
         stack = Stack()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(StackElementError):
             stack.remove(5)
 
         stack.push(5)
@@ -200,7 +201,7 @@ class StackTest(unittest.TestCase):
         self.assertEqual(stack.peek(), "str", "Wrong remove implementation")
 
         stack = Stack(int)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(StackTypeError):
             stack.remove("string")
         for i in range(10):
             stack.push(i)
@@ -211,6 +212,7 @@ class StackTest(unittest.TestCase):
         stack.remove(9)
         self.assertEqual(str(stack), "deque([2, 3, 4, 6, 7, 8])", "Wrong remove implementation")
         self.assertEqual(stack.pop(), 8, "Wrong remove implementation")
+
 
 if __name__ == '__main__':
     unittest.main()

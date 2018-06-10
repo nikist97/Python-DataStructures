@@ -18,27 +18,28 @@ limitations under the License.
 # Simple unittests for the ADT Queue
 import unittest
 
-from ADTs.AbstractDataStructures import Queue
+from DataStructures.AbstractDataStructures import Queue
+from DataStructures.Errors import *
 
 
 class QueueTest(unittest.TestCase):
 
     def test_size(self):
         queue = Queue()
-        self.assertEqual(queue.size(), 0, "Queue size should be 0 at initialization")
+        self.assertEqual(queue.size, 0, "Queue size should be 0 at initialization")
         for i in range(1, 41):
             queue.enqueue(i)
             queue.enqueue(i + 1)
             queue.dequeue()
-        self.assertEqual(queue.size(), 40, "Incorrect queue size")
+        self.assertEqual(queue.size, 40, "Incorrect queue size")
 
         queue = Queue(str)
-        self.assertEqual(queue.size(), 0, "Queue size should be 0 at initialization")
+        self.assertEqual(queue.size, 0, "Queue size should be 0 at initialization")
         queue.enqueue("b")
-        self.assertEqual(queue.size(), 1, "Incorrect queue size")
+        self.assertEqual(queue.size, 1, "Incorrect queue size")
         queue.enqueue("c")
         queue.peek()
-        self.assertEqual(queue.size(), 2, "Incorrect queue size")
+        self.assertEqual(queue.size, 2, "Incorrect queue size")
 
     def test_str(self):
         queue = Queue()
@@ -68,19 +69,19 @@ class QueueTest(unittest.TestCase):
 
     def test_empty(self):
         queue = Queue()
-        self.assertTrue(queue.is_empty(), "Queue should be empty")
+        self.assertTrue(queue.size == 0, "Queue should be empty")
         queue.enqueue("word")
         queue.enqueue("sentence")
         queue.dequeue()
-        self.assertFalse(queue.is_empty(), "Queue should not be empty")
+        self.assertFalse(queue.size == 0, "Queue should not be empty")
 
         queue = Queue(float)
-        self.assertTrue(queue.is_empty(), "Queue should be empty")
+        self.assertTrue(queue.size == 0, "Queue should be empty")
         queue.enqueue(2.5)
         queue.peek()
         queue.enqueue(1.54)
         queue.dequeue()
-        self.assertFalse(queue.is_empty(), "Queue should not be empty")
+        self.assertFalse(queue.size == 0, "Queue should not be empty")
 
     def test_peek(self):
         queue = Queue()
@@ -106,20 +107,20 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(len(queue), 1, "Wrong enqueue implementation")
 
         queue = Queue(str)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.enqueue(5)
         self.assertEqual(len(queue), 0)
-        self.assertTrue(queue.is_empty())
+        self.assertTrue(queue.size == 0)
 
         queue.enqueue("2")
         queue.enqueue("word")
         self.assertEqual(len(queue), 2, "Wrong enqueue implementation")
-        self.assertFalse(queue.is_empty(), "Wrong enqueue implementation")
+        self.assertFalse(queue.size == 0, "Wrong enqueue implementation")
         self.assertEqual(queue.dequeue(), "2", "Wrong enqueue implementation")
 
     def test_dequeue(self):
         queue = Queue()
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyQueueError):
             queue.dequeue()
 
         queue.enqueue(4)
@@ -127,7 +128,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(queue.dequeue(), 4, "Wrong queue implementation")
 
         queue = Queue(tuple)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(EmptyQueueError):
             queue.dequeue()
 
         queue.enqueue((2,))
@@ -136,15 +137,15 @@ class QueueTest(unittest.TestCase):
 
     def test_type(self):
         queue = Queue()
-        self.assertEqual(queue.type(), None)
+        self.assertEqual(queue.type, None)
 
-        with self.assertRaises(TypeError):
-            queue = Queue(elements_type="type")
+        with self.assertRaises(QueueTypeError):
+            _ = Queue(elements_type="type")
 
         queue = Queue(elements_type=list)
-        self.assertEqual(queue.type(), list)
+        self.assertEqual(queue.type, list)
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.enqueue("hey")
 
         queue = Queue(elements_type=str)
@@ -153,7 +154,7 @@ class QueueTest(unittest.TestCase):
         test_string = queue.dequeue() + " " + queue.dequeue()
         self.assertEqual(test_string, "hello world", "Queue with strings doesn't dequeue correctly")
 
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.enqueue(123)
 
     def test_contains(self):
@@ -186,7 +187,7 @@ class QueueTest(unittest.TestCase):
 
     def test_remove(self):
         queue = Queue()
-        with self.assertRaises(KeyError):
+        with self.assertRaises(QueueElementError):
             queue.remove(5)
 
         queue.enqueue(5)
@@ -199,7 +200,7 @@ class QueueTest(unittest.TestCase):
         self.assertEqual(queue.peek(), "str", "Wrong remove implementation")
 
         queue = Queue(int)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(QueueTypeError):
             queue.remove("string")
         for i in range(10):
             queue.enqueue(i)
@@ -210,6 +211,7 @@ class QueueTest(unittest.TestCase):
         queue.remove(9)
         self.assertEqual(str(queue), "deque([2, 3, 4, 6, 7, 8])", "Wrong remove implementation")
         self.assertEqual(queue.dequeue(), 2, "Wrong remove implementation")
+
 
 if __name__ == '__main__':
     unittest.main()
