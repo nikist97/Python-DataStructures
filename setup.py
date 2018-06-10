@@ -5,7 +5,7 @@ with open("README.md", "r") as file:
     long_description = file.read()
 
 setup(
-    name='data-structures',
+    name='python-data-structures',
     packages=['DataStructures'],
     version='0.1',
     description='Python-based implementations for many data structures.',
