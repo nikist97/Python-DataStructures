@@ -36,7 +36,6 @@ stack = Stack(elements_type = int) # type is set to int, hence only integers can
 
 stack.size() # returns the number of elements in the stack
 len(stack) # same as stack.size()
-stack.is_empty() # returns True if stack is empty and False otherwise
 
 str(stack) # returns the string representation of the python deque object containing the elements of the stack
 
@@ -84,7 +83,6 @@ queue = Queue(elements_type = str) # type is set to str, hence only strings can 
 
 queue.size() # returns the number of elements in the queue
 len(queue) # same as queue.size()
-queue.is_empty() # return True if queue is empty and False otherwise
 
 str(queue) # returns the string representation of the python deque object containing the elements of the queue
 
@@ -151,7 +149,6 @@ min_heap = MinBinaryHeap(str) # type is set to str, hence only strings can be ad
 
 min_heap.size() # returns the number of elements in the heap
 len(min_heap) # same as min_heap.size()
-min_heap.is_empty() # returns True if the heap doesn't have elements and False otherwise
 
 str(min_heap) # returns a string of the list of elements in the heap
 
@@ -221,7 +218,6 @@ max_heap = MaxBinaryHeap(str) # type is set to str, hence only strings can be ad
 
 max_heap.size() # returns the number of elements in the heap
 len(max_heap) # same as max_heap.size()
-max_heap.is_empty() # returns True if the heap doesn't have elements and False otherwise
 
 str(max_heap) # returns a string of the list of elements in the heap
 
@@ -299,7 +295,6 @@ priority_queue = PriorityQueue(elements_type=str, reverse=True) # type is set to
 
 priority_queue.size() # returns the number of elements in the queue
 len(priority_queue) # same as priority_queue.size()
-priority_queue.is_empty() # returns True if there are no elements in the queue and False otherwise
 
 
 str(priority_queue) # returns a string of the dictionary linking priorities with elements in the queue
@@ -350,7 +345,6 @@ for item in priority_queue:
     print(item)
 # keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
 # is finished the priority_queue will be empty
-priority_queue.is_empty() # will return True
 
 priority_queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
 # returns a boolean representing whether the element's priority has been replaced
@@ -398,8 +392,6 @@ queue = DuplicatePriorityQueue(elements_type=str, reverse=True) # type is set to
 queue.size() # returns the number of elements in the queue, 
 # elements with the same priority are NOT counted as one element, but as ordinary elements
 len(queue) # same as queue.size()
-queue.is_empty() # returns True if there are no elements in the queue and False otherwise
-
 
 str(queue) # returns a string of the dictionary linking priorities with elements in the queue
 # keep in mind that if there is a priority linked to more than one element, the string representation will return
@@ -455,7 +447,6 @@ for item in queue:
     print(item)
 # keep in mind that the iterator uses priority_queue.dequeue() to get the next element, hence after the iteration 
 # is finished the queue will be empty
-queue.is_empty() # will return True
 
 queue.replace_priority(element, priority) # replaces the given element's priority with the new priority argument
 # raises PriorityQueueTypeError if type(priority) is not int
@@ -529,7 +520,6 @@ graph = Graph(float, True, True, True)
 
 graph.size() # returns the number of elements in the graph
 len(graph) # same as graph.size()
-graph.is_empty() # returns True if there are no nodes in the graph and False otherwise
 
 str(graph) # returns a string in the format 'Graph: directed - boolean, oriented - boolean, weighted - boolean'
 
