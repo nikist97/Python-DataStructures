@@ -7,7 +7,7 @@ with open("README.md", "r") as file:
 setup(
     name='pythonic-data-structures',
     packages=['DataStructures'],
-    version='0.1',
+    version='0.2.1',
     description='Python-based implementations for many data structures.',
     long_description=long_description,
     long_description_content_type="text/markdown",
