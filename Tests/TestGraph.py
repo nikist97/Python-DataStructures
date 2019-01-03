@@ -400,7 +400,7 @@ class GraphTest(unittest.TestCase):
         graph.add_node(5.5)
         graph.add_node("string")
         self.assertEqual(len(graph), 3, "Wrong add_node implementation")
-        self.assertEqual(graph.nodes(), [1, 5.5, "string"], "Wrong add_node implementation")
+        self.assertEqual(graph.nodes(), {1, 5.5, "string"}, "Wrong add_node implementation")
 
         graph = Graph(int)
         with self.assertRaises(GraphTypeError):
@@ -449,7 +449,7 @@ class GraphTest(unittest.TestCase):
 
     def test_nodes(self):
         graph = Graph()
-        self.assertEqual(graph.nodes(), [], "Wrong nodes at initialization")
+        self.assertEqual(graph.nodes(), set(), "Wrong nodes at initialization")
         ints = list(range(250, 275))
         for i in ints:
             graph.add_node(i)
@@ -459,19 +459,19 @@ class GraphTest(unittest.TestCase):
 
         original_list = ints + floats
         original_list.sort()
-        nodes = graph.nodes()
+        nodes = list(graph.nodes())
         nodes.sort()
         self.assertEqual(nodes, original_list, "Wrong nodes implementation")
 
         nodes.append(10)
         self.assertNotEqual(nodes, original_list, "Wrong nodes implementation")
-        nodes = graph.nodes()
+        nodes = list(graph.nodes())
         nodes.sort()
         self.assertEqual(nodes, original_list, "Wrong nodes implementation")
 
         graph.add_node(10000)
         original_list.append(10000)
-        nodes = graph.nodes()
+        nodes = list(graph.nodes())
         nodes.sort()
         self.assertEqual(nodes, original_list, "Wrong nodes implementation")
 

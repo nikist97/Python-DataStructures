@@ -1189,11 +1189,10 @@ class Graph(object):
         """
         a getter method for the nodes of the graph
 
-        :return: a deep copy of the list with nodes objects so that the original list containing the nodes of the graph
-            is not manually altered by the user
+        :return: nodes objects in the graph
         """
 
-        return deepcopy(list(self.__nodes.keys()))
+        return self.__nodes.keys()
 
     def edges(self):
         """
@@ -1243,7 +1242,7 @@ class Graph(object):
             raise GraphElementError("You cannot add None nodes to the graph")
 
         if item not in self.__nodes:
-            self.__nodes[item] = len(self.nodes())
+            self.__nodes[item] = len(self.__nodes)
 
             # double the size of the graph edges matrix if resizing needed
             if len(self.__nodes) > len(self.__edges):
